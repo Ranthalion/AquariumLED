@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+	 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  
+	<script src="/scripts/jquery.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script src="/scripts/bootstrap.min.js"></script>
+	<script src="/scripts/raphael.js"></script>
+	<script src="/scripts/moment.min.js"></script>
+	<script src="/scripts/visualizer.js"></script>
+	<script src="/scripts/main.js"></script>
+  </head>
+  <body>
+	<div class='container'>
+		<div class='row'>
+			<div class='col-md-12'>
+				<h1><%= title %></h1
+			</div>
+		</div>
+		<div class='row'>
+			<div class='col-md-12'>
+				<button type='button' id='Add' class='btn btn-default'>Add</button>
+				<button type='button' id='Save' class='btn btn-default'>Save</button>
+				<button type='button' id='GoBack' class='btn btn-default'>Go Back</button>
+			</div>
+		</div>		
+		<div class='row'>
+			<div class='col-md-12'>
+				<div id="visualPanel"></div>
+			</div>
+		</div>
+		<!-- Modal Dialog -->
+		<div class='modal' id='modalDialog'>
+			<div class='modal-dialog'>
+				<div class='modal-content'>
+					<div class='modal-header'>Channel Settings</div>
+					<div class='modal-body'>
+						<div class='row'>
+							<div class='col-md-2 col-sm-2 col-xs-2'>Start Time: </div>
+							<div class='col-md-9 col-sm-9 col-xs-9'><input type='text' id='startTime'></input></div>
+						</div>
+						<div class='row'>
+							<div class='col-md-9 col-sm-9 col-xs-9'>
+								<div class='row' style="padding-top:5px">
+									<div class='col-md-2 col-sm-2 col-xs-2'>Red: </div>
+									<div class='col-md-7 col-sm-7 col-xs-7' id='redSlider'></div>
+									<div class='col-md-1 col-sm-1 col-xs-1'><span/><input class='hide' type='text' id='red'></input></div>
+								</div>
+								<div class='row' style="padding-top:5px">
+									<div class='col-md-2 col-sm-2 col-xs-2'>Green: </div>
+									<div class='col-md-7 col-sm-7 col-xs-7' id='greenSlider'></div>
+									<div class='col-md-1 col-sm-1 col-xs-1'><span/><input class='hide' type='text' id='green'></input></div>
+								</div>
+								<div class='row' style="padding-top:5px">
+									<div class='col-md-2 col-sm-2 col-xs-2'>Blue: </div>
+									<div class='col-md-7 col-sm-7 col-xs-7' id='blueSlider'></div>
+									<div class='col-md-1 col-sm-1 col-xs-1'><span/><input class='hide' type='text' id='blue'></input></div>
+								</div>
+							</div>
+							<div id='swatch' class='col-md-2 col-sm-2 col-xs-2'>
+							</div>
+						</div>
+					</div>
+					<div class='modal-footer'>
+						<button type='button' id='delete' class='btn btn-default' data-dismiss='modal'>Delete</button>
+						<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+						<button type='button' class='btn btn-primary' data-dismiss='modal'>Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end Modal Dialog -->
+	</div>
+  </body>
+</html>
