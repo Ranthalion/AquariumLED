@@ -1,0 +1,51 @@
+<html>
+<head>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+	<script src='jquery.js'></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script src='color.js'></script>
+	<script src='channelEditor.js'></script>
+	
+</head>
+<body>
+	<div>
+		Here is some regular content.
+	</div>
+	<div id='myWidget'>
+	</div>
+	<div id='output' style="clear: both">
+	</div>
+	<div id='swatch' style="border-style:solid;border-width:2px;border-color:black;height:100px; width:100px; background:black;"></div>
+	<script>
+		$(function(){
+			var channels = [
+				{name:'Cool White', color:new Color(212,235,255, .5)},
+				{name:'Red', color:new Color(255,0,0, .25)},
+				{name:'Green', color:new Color(0,255,0, .75)},
+				{name:'Blue', color:new Color(0,0,255, .5)},
+				{name:'Royal Blue', color:new Color(65,105,225, .5)}
+			];
+			$('#myWidget').channelEditor({
+				channels:channels,
+				change: channelChange
+			});
+		});
+		
+		function channelChange(data){
+			var val = '';
+			for(var i = 0; i < data.length; i++){
+				val+= data[i].value;
+				if (i != data.length-1)
+					val+=',';
+			}
+			var colors = new Array();
+			for(var i= 0; i < data.length; i++){
+				colors[i] = data[i].color;
+			}
+			var rgb = Color.Mix(colors).toRGBString();
+			$('#output').text(val  + ' ' + rgb);
+			$('#swatch').css('background', rgb);
+		}
+	</script>
+</body>
+</html>

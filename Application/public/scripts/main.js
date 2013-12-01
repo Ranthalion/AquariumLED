@@ -17,13 +17,20 @@ Setting.prototype.toString = function SettingToString(){
 }
 
 function getLightSettings(){
+	var channels = [
+		{name:'Cool White', color:new Color(212,235,255, .5)},
+		{name:'Red', color:new Color(255,0,0, .25)},
+		{name:'Green', color:new Color(0,255,0, .75)},
+		{name:'Blue', color:new Color(0,0,255, .5)},
+		{name:'Royal Blue', color:new Color(65,105,225, .5)}
+	];
 	var Settings = new Array();
-	Settings.push(new Setting(new Date('1/1/2000 6:00 am'), {r:255,g:0,b:0}));
-    Settings.push(new Setting(new Date('1/1/2000 12:00 pm'), {r:255,g:55,b:255}));
-	Settings.push(new Setting(new Date('1/1/2000 6:00 pm'), {r:0,g:0,b:255}));
-    Settings.push(new Setting(new Date('1/1/2000 9:00 pm'), {r:255,g:0,b:255}));
-    Settings.push(new Setting(new Date('1/1/2000 11:00 pm'), {r:215,g:255,b:0}));
-	Settings.push(new Setting(new Date('1/1/2000 12:15 am'), {r:0,g:0,b:0}));
+	Settings.push(new Setting(new Date('1/1/2000 6:00 am'), channels));
+    Settings.push(new Setting(new Date('1/1/2000 12:00 pm'), channels));
+	Settings.push(new Setting(new Date('1/1/2000 6:00 pm'), channels));
+    Settings.push(new Setting(new Date('1/1/2000 9:00 pm'), channels));
+    Settings.push(new Setting(new Date('1/1/2000 11:00 pm'), channels));
+	Settings.push(new Setting(new Date('1/1/2000 12:15 am'), channels));
 	return Settings;
 }
 var itemToEdit;
