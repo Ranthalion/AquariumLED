@@ -1,0 +1,113 @@
+<html>
+<head>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+	<script src='/scripts/jquery.js'></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script src='/scripts/color.js'></script>
+	<script src='/scripts/channelEditor.js'></script>
+	
+</head>
+<body>
+	<div id='myWidget'>
+	</div>
+	<div id='output' style="clear: both">
+	</div>
+	<div id='swatch' style="border-style:solid;border-width:2px;border-color:black;height:100px; width:100px; background:black;"></div>
+	<script>
+		jQuery.ajaxq = function (queue, options)
+		{
+				// Initialize storage for request queues if it's not initialized yet
+				if (typeof document.ajaxq == "undefined") document.ajaxq = {q:{}, r:null};
+
+				// Initialize current queue if it's not initialized yet
+				if (typeof document.ajaxq.q[queue] == "undefined") document.ajaxq.q[queue] = [];
+				
+				if (typeof options != "undefined") // Request settings are given, enqueue the new request
+				{
+						// Copy the original options, because options.complete is going to be overridden
+
+						var optionsCopy = {};
+						for (var o in options) optionsCopy[o] = options[o];
+						options = optionsCopy;
+						
+						// Override the original callback
+
+						var originalCompleteCallback = options.complete;
+
+						options.complete = function (request, status)
+						{
+								// Dequeue the current request
+								document.ajaxq.q[queue].shift ();
+								document.ajaxq.r = null;
+								
+								while (document.ajaxq.q[queue].length > 1) 
+									document.ajaxq.q[queue].shift();
+								
+								// Run the original callback
+								if (originalCompleteCallback) originalCompleteCallback (request, status);
+
+								// Run the next request from the queue
+								if (document.ajaxq.q[queue].length > 0) document.ajaxq.r = jQuery.ajax (document.ajaxq.q[queue][0]);
+						};
+
+						// Enqueue the request
+						document.ajaxq.q[queue].push (options);
+
+						// Also, if no request is currently running, start it
+						if (document.ajaxq.q[queue].length == 1) document.ajaxq.r = jQuery.ajax (options);
+				}
+				else // No request settings are given, stop current request and clear the queue
+				{
+						if (document.ajaxq.r)
+						{
+								document.ajaxq.r.abort ();
+								document.ajaxq.r = null;
+						}
+
+						document.ajaxq.q[queue] = [];
+				}
+		}
+
+	
+		$(function(){
+			var channels = [
+				{name:'Cool White', color:new Color(212,235,255, .5)},
+				{name:'Red', color:new Color(255,0,0, .25)},
+				{name:'Green', color:new Color(0,255,0, .75)},
+				{name:'Blue', color:new Color(0,0,255, .5)},
+				{name:'Royal Blue', color:new Color(65,105,225, .5)}
+			];
+			$('#myWidget').channelEditor({
+				channels:channels,
+				change: channelChange
+			});
+		});
+		
+		function channelChange(data){
+			var val = '';
+			for(var i = 0; i < data.length; i++){
+				val+= data[i].value;
+				if (i != data.length-1)
+					val+=',';
+			}
+			var colors = new Array();
+			var vals = [];
+			for(var i= 0; i < data.length; i++){
+				colors[i] = data[i].color;
+				vals[i] = data[i].color.a;
+			}
+			$.ajaxq('led', {
+				type: 'POST',
+				url: 'direct/update',
+				cache: false,
+				data: {'channels': JSON.stringify(vals)}				
+			});
+			//$.post('direct/update', {'channels': JSON.stringify(vals)});
+			
+			var rgb = Color.Mix(colors).toRGBString();
+			$('#output').text(val  + ' ' + rgb);
+			$('#swatch').css('background', rgb);
+		}
+	</script>
+</body>
+</html>

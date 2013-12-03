@@ -6,5 +6,7 @@
 // Guide on [routing](http://locomotivejs.org/guide/routing.html) for additional
 // information.
 module.exports = function routes() {
-  this.root('pages#main');
+  this.root('direct#index');
+  this.match('direct/update', 'direct#update', {via: 'POST'});
+  
 }
