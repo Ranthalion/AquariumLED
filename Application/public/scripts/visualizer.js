@@ -46,7 +46,6 @@ Raphael.fn.visualizer = function(cx, cy, r, Settings, cbClick){
 		return result;
 	}
 
-	//TODO: There is still a bug if there are only 2 settings and they are both for the same time. The slices don't get built correctly.
 	function createSlices(s){
 		var r = new Array(360);
 		
@@ -57,7 +56,7 @@ Raphael.fn.visualizer = function(cx, cy, r, Settings, cbClick){
 		if (s.length == 1)
 		{
 			for(var i = 0; i < 360; i++){
-				r[i] = s[0].channelSettings;
+				r[i] = s[0].toRGB();
 			}
 		}
 		else if (s.length > 1)
@@ -68,8 +67,8 @@ Raphael.fn.visualizer = function(cx, cy, r, Settings, cbClick){
 				var endSlice = i == s.length - 1 ? (s[0].time.getMinutes() + s[0].time.getHours() * 60) / 4 : (s[i+1].time.getMinutes() + s[i+1].time.getHours() * 60) / 4;
 				endSlice = Math.floor(endSlice);
 				
-				var current = s[i].channelSettings;
-				var next = s[(i<s.length-1 ? i+1 : 0)].channelSettings;
+				var current = s[i].toRGB();
+				var next = s[(i<s.length-1 ? i+1 : 0)].toRGB();
 				var stepsInSlice = endSlice >= startSlice ? endSlice - startSlice : 360-startSlice + endSlice;
 				
 				for(var j = 0; j < stepsInSlice; j++)
@@ -95,9 +94,10 @@ Raphael.fn.visualizer = function(cx, cy, r, Settings, cbClick){
 	function drawChannelSettings(s){
 		for(var i = 0; i<s.length; i++)
 		{
-			var rgb = 'rgb(' + s[i].channelSettings.r + ',' + 
-							s[i].channelSettings.g + ',' + 
-							s[i].channelSettings.b + ')';
+			var rgb = s[i].toRGB().toRGBString();
+			//var rgb = 'rgb(' + s[i].channelSettings.r + ',' + 
+			//				s[i].channelSettings.g + ',' + 
+			//				s[i].channelSettings.b + ')';
 			var point = getPointOnCircle(cx,cy,r, Raphael.rad(timeToAngle(s[i].time)));
 			paper.circle(point.x, point.y, 10).attr({'fill':rgb,'stroke':'black','stroke-width':'2'})
 				.data('setting', s[i])

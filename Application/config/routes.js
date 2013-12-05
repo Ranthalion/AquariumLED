@@ -8,5 +8,7 @@
 module.exports = function routes() {
   this.root('direct#index');
   this.match('direct/update', 'direct#update', {via: 'POST'});
-  
+  this.match('settings/channels', 'settings#channels', {via: 'GET'});
+  this.match('settings/channels', 'settings#savechannels', {via: 'POST'});
+  this.match('schedule', 'pages#main');
 }

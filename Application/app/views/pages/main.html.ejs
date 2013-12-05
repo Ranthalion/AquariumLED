@@ -22,6 +22,7 @@
 	<script src="/scripts/moment.min.js"></script>
 	<script src="/scripts/color.js"></script>
 	<script src="/scripts/visualizer.js"></script>
+	<script src="/scripts/channelEditor.js"></script>
 	<script src="/scripts/main.js"></script>
   </head>
   <body>
@@ -55,21 +56,7 @@
 						</div>
 						<div class='row'>
 							<div class='col-md-9 col-sm-9 col-xs-9'>
-								<div class='row' style="padding-top:5px">
-									<div class='col-md-2 col-sm-2 col-xs-2'>Red: </div>
-									<div class='col-md-7 col-sm-7 col-xs-7' id='redSlider'></div>
-									<div class='col-md-1 col-sm-1 col-xs-1'><span/><input class='hide' type='text' id='red'></input></div>
-								</div>
-								<div class='row' style="padding-top:5px">
-									<div class='col-md-2 col-sm-2 col-xs-2'>Green: </div>
-									<div class='col-md-7 col-sm-7 col-xs-7' id='greenSlider'></div>
-									<div class='col-md-1 col-sm-1 col-xs-1'><span/><input class='hide' type='text' id='green'></input></div>
-								</div>
-								<div class='row' style="padding-top:5px">
-									<div class='col-md-2 col-sm-2 col-xs-2'>Blue: </div>
-									<div class='col-md-7 col-sm-7 col-xs-7' id='blueSlider'></div>
-									<div class='col-md-1 col-sm-1 col-xs-1'><span/><input class='hide' type='text' id='blue'></input></div>
-								</div>
+								<div id='editor'></div>
 							</div>
 							<div id='swatch' class='col-md-2 col-sm-2 col-xs-2'>
 							</div>

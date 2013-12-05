@@ -56,6 +56,17 @@
 			
 		},
 		
+		getValues: function(){
+			return this.options.channels;
+		},
+		
+		channels: function(val){
+			this.options.channels = val;
+			for (var i in val){
+				this.sliders[i].slider({value:val[i].color.a* 100});
+			}
+		},
+		
 		// Use the _setOption method to respond to changes to options
 		_setOption: function( key, value ) {
 		  switch( key ) {
