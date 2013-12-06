@@ -24,40 +24,22 @@ Setting.prototype.toString = function SettingToString(){
 	
 }
 
+function createSetting(time, v1, v2, v3, v4, v5){
+	var c = [
+		{name:'Cool White', color:new Color(212,235,255, v1)},
+		{name:'Red', color:new Color(255,0,0, v2)},
+		{name:'Green', color:new Color(0,255,0, v3)},
+		{name:'Blue', color:new Color(0,0,255, v4)},
+		{name:'Royal Blue', color:new Color(65,105,225, v5)}
+	];
+	return new Setting(new Date('1/1/2000 ' + time), c);
+}
+
 function getLightSettings(){
-	var channels1 = [
-		{name:'Cool White', color:new Color(212,235,255, 0.01)},
-		{name:'Red', color:new Color(255,0,0, .8)},
-		{name:'Green', color:new Color(0,255,0, .07)},
-		{name:'Blue', color:new Color(0,0,255, .05)},
-		{name:'Royal Blue', color:new Color(65,105,225, .05)}
-	];
-	var channels2 = [
-		{name:'Cool White', color:new Color(212,235,255, 0.01)},
-		{name:'Red', color:new Color(255,0,0, .8)},
-		{name:'Green', color:new Color(0,255,0, .07)},
-		{name:'Blue', color:new Color(0,0,255, .05)},
-		{name:'Royal Blue', color:new Color(65,105,225, .05)}
-	];
-	var channels3 = [
-		{name:'Cool White', color:new Color(212,235,255, 0.01)},
-		{name:'Red', color:new Color(255,0,0, .8)},
-		{name:'Green', color:new Color(0,255,0, .07)},
-		{name:'Blue', color:new Color(0,0,255, .05)},
-		{name:'Royal Blue', color:new Color(65,105,225, .05)}
-	];
-	var channels4 = [
-		{name:'Cool White', color:new Color(212,235,255, 0.01)},
-		{name:'Red', color:new Color(255,0,0, .8)},
-		{name:'Green', color:new Color(0,255,0, .07)},
-		{name:'Blue', color:new Color(0,0,255, .05)},
-		{name:'Royal Blue', color:new Color(65,105,225, .05)}
-	];
 	var Settings = new Array();
-	Settings.push(new Setting(new Date('1/1/2000 6:00 am'), channels1));
-    Settings.push(new Setting(new Date('1/1/2000 12:00 pm'), channels2));
-	Settings.push(new Setting(new Date('1/1/2000 6:00 pm'), channels3));
-    Settings.push(new Setting(new Date('1/1/2000 9:00 pm'), channels4));
+	Settings.push(createSetting('6:00 am', .1, .5, .2, .3, .01));
+	Settings.push(createSetting('11:00 am', .1, .02, .02, .93, .01));
+	Settings.push(createSetting('6:00 pm', .1, .05, .02, .03, .01));
     
 	return Settings;
 }
@@ -81,20 +63,21 @@ $(function(){
 	//initialize Raphael
 	var paper = Raphael('visualPanel', 600, 600);
 	viz = paper.visualizer(300, 300, 200, settings, function(item){ 
-		$('#startTime').val(moment(item.time).format("h:mm a"));
-		
 		itemToEdit = item;
+		
+		$('#startTime').val(moment(itemToEdit.time).format("h:mm a"));
 		editor.channelEditor('channels', itemToEdit.channelSettings);
 		$('#modalDialog').modal('show');
 	});
 	
-	$('#modalDialog .btn-primary').click(function(){
+	var clickCallback = function(){
 		itemToEdit.time = new Date('1/1/2000 ' + $('#startTime').val());
 		itemToEdit.channelSettings = editor.channelEditor('getValues');
 		
 		viz.drawChart();
-	});
+	};
 	
+	$('#modalDialog .btn-primary').click(clickCallback);
 	
 	$('#modalDialog #delete').click(function(){
 		var index = settings.indexOf(itemToEdit);
@@ -106,7 +89,14 @@ $(function(){
 	});
 	
 	$('#Add').click(function(){
-		settings.push(new Setting(new Date('1/1/2000 3:00 PM'), {r:255, g:255, b:255}));
+		var setting = createSetting(moment().format("h:mm a"), .5,.5,.5,.5,.5);
+		itemToEdit = settings;
+		settings.push(setting);
 		viz.drawChart();
+		//itemToEdit = setting;
+		
+		//editor.channelEditor('channels', setting.channelSettings);
+		//clickCallback = createCallback;
+		//$('#modalDialog').modal('show');
 	});
 });

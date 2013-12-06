@@ -4,8 +4,7 @@
 		options: { 
 		  clear: null,
 		  change: null,
-		  channels: null,
-		  change: null
+		  channels: null
 		},
 		
 		sliders: null,
@@ -46,14 +45,17 @@
 			this.element.append(div);
 			return slider;
 		},
-	 
+		
+		_ignoreChanges: false,
+		
 		_sliderChanged: function(event, ui){
-			for(var i = 0; i < this.options.channels.length; i++){
-				this.options.channels[i].color.a = this.sliders[i].slider('value')/100;
+			if (!this._ignoreChanges){
+				for(var i = 0; i < this.options.channels.length; i++){
+					this.options.channels[i].color.a = this.sliders[i].slider('value')/100;
+				}
+				if (this.options.change)
+					this.options.change(this.options.channels);
 			}
-			if (this.options.change)
-				this.options.change(this.options.channels);
-			
 		},
 		
 		getValues: function(){
@@ -61,10 +63,12 @@
 		},
 		
 		channels: function(val){
-			this.options.channels = val;
-			for (var i in val){
+			this._ignoreChanges = true;
+			for (var i = 0; i < val.length; i++){
 				this.sliders[i].slider({value:val[i].color.a* 100});
 			}
+			this.options.channels = val;
+			this._ignoreChanges = false;
 		},
 		
 		// Use the _setOption method to respond to changes to options
