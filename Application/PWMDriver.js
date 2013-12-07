@@ -23,7 +23,7 @@ catch(e){
 var piPins = [4, 18, 17, 24, 22, 23];
 var moment = require('moment');
 var redis = require('redis');
-var settings = null;		
+var settings = [];		
 var client = redis.createClient();
 var db = redis.createClient();
 db.subscribe('led_change');
@@ -49,7 +49,12 @@ for (var i = 0; i < 6; i++)
 client.get('currentChannelSettings', function(err, reply){
 	console.log('Settings channels from saved settings.');
 	settings = JSON.parse(reply);
-	for(var i = 0; i < settings.length; i++){
-		pwm.setPwm(piPins[i], settings[i].value);
+	if (settings){
+		for(var i = 0; i < settings.length; i++){
+			pwm.setPwm(piPins[i], settings[i].value);
+		}
+	}
+	else {
+		settings = [];
 	}
 });
