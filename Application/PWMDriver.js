@@ -2,6 +2,8 @@
 //TODO: Initial values should be passed to this module
 //TODO:  and any changes should be recorded somewhere else
 
+var DAL = require('BLL/DAL');
+
 var pwm = null;
 
 try{
@@ -36,7 +38,8 @@ db.on('message', function(channel, message){
 		pwm.setPwm(piPins[i],channels[i]);
 		settings[i].value = channels[i];
 	}
-	client.set('currentChannelSettings', JSON.stringify(settings));
+	//TODO: This doesn't belong in the the PWM driver
+	//client.set('currentChannelSettings', JSON.stringify(settings));
 	console.log('Channel: ' + output);
 });
 
@@ -46,10 +49,11 @@ for (var i = 0; i < 6; i++)
 	pwm.setPwm(piPins[i],0);
 	
 
-client.get('currentChannelSettings', function(err, reply){
+var db = new DAL();
+db.getCurrentSetting(function(err, settings){
 	console.log('Settings channels from saved settings.');
-	settings = JSON.parse(reply);
 	for(var i = 0; i < settings.length; i++){
 		pwm.setPwm(piPins[i], settings[i].value);
 	}
 });
+db.quit();

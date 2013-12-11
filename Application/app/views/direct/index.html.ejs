@@ -70,13 +70,15 @@
 
 	
 		$(function(){
-			var channels = [
-				{name:'Cool White', color:new Color(212,235,255, .5)},
-				{name:'Red', color:new Color(255,0,0, .25)},
-				{name:'Green', color:new Color(0,255,0, .75)},
-				{name:'Blue', color:new Color(0,0,255, .5)},
-				{name:'Royal Blue', color:new Color(65,105,225, .5)}
-			];
+			var model = <%- JSON.stringify(setting) %>;
+			var channels = new Array();
+			for(var i = 0; i < model.length; i++){
+				channels.push({
+					name: model[i].name, 
+					color: new Color(model[i].r, model[i].g, model[i].b, model[i].value)
+				});
+			}
+			
 			$('#myWidget').channelEditor({
 				channels:channels,
 				change: channelChange
