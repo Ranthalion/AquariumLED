@@ -25,7 +25,7 @@ catch(e){
 var piPins = [4, 18, 17, 24, 22, 23];
 var moment = require('moment');
 var redis = require('redis');
-var settings = null;		
+var settings = [];		
 var client = redis.createClient();
 var db = redis.createClient();
 db.subscribe('led_change');
@@ -52,8 +52,9 @@ for (var i = 0; i < 6; i++)
 var db = new DAL();
 db.getCurrentSetting(function(err, settings){
 	console.log('Settings channels from saved settings.');
+
 	for(var i = 0; i < settings.length; i++){
 		pwm.setPwm(piPins[i], settings[i].value);
-	}
+}
 });
 db.quit();
