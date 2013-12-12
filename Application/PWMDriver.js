@@ -53,8 +53,14 @@ var db = new DAL();
 db.getCurrentSetting(function(err, settings){
 	console.log('Settings channels from saved settings.');
 
-	for(var i = 0; i < settings.length; i++){
-		pwm.setPwm(piPins[i], settings[i].value);
-}
+	settings = JSON.parse(reply);
+	if (settings){
+		for(var i = 0; i < settings.length; i++){
+			pwm.setPwm(piPins[i], settings[i].value);
+		}
+	}
+	else {
+		settings = [];
+	}
 });
 db.quit();
