@@ -11,15 +11,34 @@
 			background: blue;
 		}
 		
-		#container{
-			background: white;
+		#myWidget{
+			float:left;
 		}
+		
+		#container{
+			padding: 8px;
+			border-radius: 8px;
+			background: lightskyblue;
+		}
+		/*
+		#swatch{
+			border-style: solid;
+			border-width:2px;
+			border-color:black;
+			height:200px; 
+			width:200px; 
+			background:black;
+			float:right;
+			border-radius: 4px;
+		}*/
 	</style>
 </head>
 <body>
 	<div id='container'>
 		<div id='myWidget'></div>
-		<div id='swatch' style="border-style:solid;border-width:2px;border-color:black;height:100px; width:100px; background:black;float:right;"></div>
+		<!--<div id='swatch'></div>
+		<div style="clear:both"></div>
+		-->
 	</div>
 	<script>
 	
@@ -41,16 +60,8 @@
 		});
 		
 		function channelChange(data){
-			var val = '';
-			for(var i = 0; i < data.length; i++){
-				val+= data[i].value;
-				if (i != data.length-1)
-					val+=',';
-			}
-			var colors = new Array();
 			var vals = [];
 			for(var i= 0; i < data.length; i++){
-				colors[i] = data[i].color;
 				vals[i] = data[i].color.a;
 			}
 			$.ajaxq('led', {
@@ -59,9 +70,6 @@
 				cache: false,
 				data: {'channels': vals}				
 			});
-			
-			var rgb = Color.Mix(colors).toRGBString();
-			$('#swatch').css('background', rgb);
 		}
 	</script>
 </body>

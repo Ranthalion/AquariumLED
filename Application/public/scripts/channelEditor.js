@@ -8,27 +8,77 @@
 		},
 		
 		sliders: null,
+		swatch: null,
 		
 		// Set up the widget
 		_create: function() {
 			var self = this;
 			this.sliders = new Array();
-			for (var i = 0; i < this.options.channels.length; i++)
-				this.sliders[i] = this.createChannelBar(this.options.channels[i]);
+			var wrapper = $('<div>').css('float','left');
+			
+			for (var i = 0; i < this.options.channels.length; i++){
+				var d = this.createChannelBar(this.options.channels[i]);
+				
+				this.sliders[i] = this.createSlider(this.options.channels[i]);
+				d.append(this.sliders[i])
+				wrapper.append(d);
+			}
+			this.element.append(wrapper);
+			
+			this.resizeLabels();
+			this.createSwatch(wrapper);
+			this.resizeSliders();
+			this.element.after($('<div>').css('clear','both'));
+			this._sliderChanged();
 		},
-		
+		resizeSliders: function(){
+			var spanWidth = this.element.find('span:first').outerWidth();
+			var swatchWidth = this.swatch.outerWidth();
+			this.element.find('.ui-slider').width(this.element.width() - spanWidth -swatchWidth-45);
+		},
+		resizeLabels: function(){
+			var size = 0;
+			this.element.find('span').each(function(){
+				if ($(this).width() > size)
+					size = $(this).width()
+			});
+			this.element.find('span').width(size);
+		},
+		createSwatch: function(el){
+			var size = 0;
+			el.find('div').each(function(){
+				if ($(this).outerHeight() > size)
+					size = $(this).outerHeight();
+			});
+			size = size * this.options.channels.length;
+			this.swatch = $('<div>')
+				.css('width', size)
+				.css('height', size)
+				.css('float', 'right')
+				.css('margin-right', '8px')
+				.css('background', 'black')
+				.css('border-style', 'solid')
+				.css('border-width','2px')
+				.css('border-color','black')
+				.css('border-radius', '4px');
+			
+			this.element.append(this.swatch);
+		},
 		createChannelBar: function(channel) {
 			var div = $('<div>')
 				.css('clear','both')
-				.css('padding','15px 0px 15px 0px');
-			div.append($('<div>')
+				.css('padding','5px 0px 5px 0px');
+			div.append($('<span>')
 				.text(channel.name)
-				.css('float','left')
-				.css('width','100px')
+				.css('display', 'inline-block')
 				.css('margin-right','15px'));
+			return div;
+		},
+		
+		createSlider: function(channel){
 			var slider = $('<div>')
-				.css('float', 'left')
-				.css('width', '80%')
+				.css('display', 'inline-block')
+				.css('width', '200px')
 				.css('background', 'rgb(' + channel.color.r + ',' + channel.color.g + ',' + channel.color.b + ')')
 				.slider({max:100, 
 					slide: $.proxy(this._sliderChanged, this),
@@ -39,20 +89,21 @@
 			slider.find('a')
 				.css('border-width', '2px')
 				.css('border-color', channel.color.toRGBString());
-			
-			div.append(slider);
-			
-			this.element.append(div);
 			return slider;
 		},
-		
 		_ignoreChanges: false,
 		
 		_sliderChanged: function(event, ui){
 			if (!this._ignoreChanges){
+				var colors = new Array();
 				for(var i = 0; i < this.options.channels.length; i++){
 					this.options.channels[i].color.a = this.sliders[i].slider('value')/100;
+					colors.push(this.options.channels[i].color);
 				}
+				
+				var rgb = Color.Mix(colors).toRGBString();
+				this.swatch.css('background', rgb);
+				
 				if (this.options.change)
 					this.options.change(this.options.channels);
 			}
