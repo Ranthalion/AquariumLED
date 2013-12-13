@@ -25,21 +25,18 @@ catch(e){
 var piPins = [4, 18, 17, 24, 22, 23];
 var moment = require('moment');
 var redis = require('redis');
-var settings = [];		
+
 var client = redis.createClient();
 var db = redis.createClient();
 db.subscribe('led_change');
 db.on('message', function(channel, message){
 	console.log(moment().format('h:mm:ss a') + ' : ' + message);
-	var channels = JSON.parse(JSON.parse(message).channels);
+	var channels = JSON.parse(message).channels;
 	var output = '';
 	for(var i = 0; i < channels.length; i++){
 		output += channels[i] + ' ';
 		pwm.setPwm(piPins[i],channels[i]);
-		settings[i].value = channels[i];
 	}
-	//TODO: This doesn't belong in the the PWM driver
-	//client.set('currentChannelSettings', JSON.stringify(settings));
 	console.log('Channel: ' + output);
 });
 
@@ -53,7 +50,6 @@ var db = new DAL();
 db.getCurrentSetting(function(err, settings){
 	console.log('Settings channels from saved settings.');
 
-	settings = JSON.parse(reply);
 	if (settings){
 		for(var i = 0; i < settings.length; i++){
 			pwm.setPwm(piPins[i], settings[i].value);

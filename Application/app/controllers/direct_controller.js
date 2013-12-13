@@ -15,23 +15,28 @@ DirectController.index = function() {
 }
 
 DirectController.update = function() {
-	console.log(this.req.body);
 	
 	var db = require('redis').createClient();
 	db.publish('led_change', JSON.stringify(this.req.body));
 	db.quit();
 	var request = this.req.body;
-	var db = new DAL();
-	db.getCurrentSetting(function(err, setting){
-		if (err)
-			throw new Error(err);
-		for(var i = 0; i < request.length; i++)
-			setting[i].value = request[i];
-		console.log('In Controller, saving settings.');
-		db.saveCurrentSetting(setting);
-		db.quit();
-	});
-	this.res.json({result:'success'});
+	if (request.channels){
+		var db = new DAL();
+		db.getCurrentSetting(function currentSettingsCB(err, setting){
+			if (err)
+				throw new Error(err);
+			
+			for(var i = 0; i < request.channels.length; i++){
+				setting[i].value = request.channels[i];
+			}
+			db.saveCurrentSetting(setting);
+			db.quit();
+		});
+		this.res.json({result:'success'});
+	}
+	else{
+		this.res.json({result:'failure'});
+	}
 }
 
 module.exports = DirectController;
