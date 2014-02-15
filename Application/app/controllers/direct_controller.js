@@ -7,11 +7,27 @@ var DirectController = new Controller();
 DirectController.index = function() {
   var db = new DAL();
   var view = this;
-  this.settings = db.getCurrentSetting(function(err, setting){
-    view.title = 'Direct Control';
-    view.setting = setting;
-	view.render();
+  //TODO: Also retrieve the current mode and send that out in the view.
+  db.getCurrentMode(function(err, mode){
+	  db.getCurrentSetting(function(err, setting){
+		view.title = 'Direct Control';
+		view.setting = setting;
+		view.mode = mode;
+		view.render();
+	  });
   });
+  
+}
+
+DirectController.setMode = function() {
+	console.log(this.req.body);
+	var db = require('redis').createClient();
+	var dal = new DAL();
+	var payload = this.req.body;
+	dal.saveMode(payload.mode);
+	dal.quit();
+	db.publish('setting_change', payload.mode);
+	db.quit();
 }
 
 DirectController.update = function() {

@@ -9,6 +9,7 @@
 		
 		sliders: null,
 		swatch: null,
+		wrapper: null,
 		
 		// Set up the widget
 		_create: function() {
@@ -24,19 +25,27 @@
 				wrapper.append(d);
 			}
 			this.element.append(wrapper);
-			
+			this.wrapper = wrapper;
 			this.resizeLabels();
 			this.createSwatch(wrapper);
 			this.resizeSliders();
 			this.element.after($('<div>').css('clear','both'));
 			this._sliderChanged();
 		},
+		resize: function(){
+			this.resizeLabels();
+			this.resizeSwatch();
+			this.resizeSliders();
+		},
 		resizeSliders: function(){
 			var spanWidth = this.element.find('span:first').outerWidth();
 			var swatchWidth = this.swatch.outerWidth();
-			this.element.find('.ui-slider').width(this.element.width() - spanWidth -swatchWidth-45);
+			console.log('spanWidth: ' + spanWidth);
+			console.log('swatchWidth: ' + swatchWidth);
+			this.element.find('.ui-slider').width(this.element.width() - spanWidth -swatchWidth-50);
 		},
 		resizeLabels: function(){
+			this.element.find('span').width('auto')
 			var size = 0;
 			this.element.find('span').each(function(){
 				if ($(this).width() > size)
@@ -55,7 +64,8 @@
 				.css('width', size)
 				.css('height', size)
 				.css('float', 'right')
-				.css('margin-right', '8px')
+				.css('margin-right', '16px')
+				//.css('padding-right', '8px')
 				.css('background', 'black')
 				.css('border-style', 'solid')
 				.css('border-width','2px')
@@ -63,6 +73,16 @@
 				.css('border-radius', '4px');
 			
 			this.element.append(this.swatch);
+		},
+		resizeSwatch: function(){
+			var size = 0;
+			this.wrapper.find('div').each(function(){
+				if ($(this).outerHeight() > size)
+					size = $(this).outerHeight();
+			});
+			size = size * this.options.channels.length;
+			this.swatch.css('width', size)
+				.css('height', size);
 		},
 		createChannelBar: function(channel) {
 			var div = $('<div>')
@@ -120,6 +140,7 @@
 			}
 			this.options.channels = val;
 			this._ignoreChanges = false;
+			this._sliderChanged();
 		},
 		
 		// Use the _setOption method to respond to changes to options

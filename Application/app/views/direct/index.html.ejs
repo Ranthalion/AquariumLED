@@ -9,36 +9,37 @@
 	<style>
 		body{
 			background: blue;
+			margin: 0px;
+		}
+		
+		.header{
+			color: white;
+			background: black;
+			width:100%:
 		}
 		
 		#myWidget{
 			float:left;
 		}
 		
-		#container{
+		.content{
 			padding: 8px;
 			border-radius: 8px;
 			background: lightskyblue;
+			margin: 5px;
 		}
-		/*
-		#swatch{
-			border-style: solid;
-			border-width:2px;
-			border-color:black;
-			height:200px; 
-			width:200px; 
-			background:black;
-			float:right;
-			border-radius: 4px;
-		}*/
 	</style>
 </head>
 <body>
-	<div id='container'>
+	<div class='header'>
+		<h1>Direct Light Control</h1>
+	</div>
+	<div class='content'>
+		<input type='radio' name='mode' value='direct' <% if(mode == 'direct'){ %> checked='checked' <% } %>>Direct</input>
+		<input type='radio' name='mode' value='schedule' <% if(mode == 'schedule'){ %> checked='checked' <% } %>>Schedule</input>
+	</div>
+	<div id='container' class='content'>
 		<div id='myWidget'></div>
-		<!--<div id='swatch'></div>
-		<div style="clear:both"></div>
-		-->
 	</div>
 	<script>
 	
@@ -56,6 +57,12 @@
 			$('#myWidget').channelEditor({
 				channels:channels,
 				change: channelChange
+			});
+			
+			$(':radio').click(function(){
+				console.log($(this).val());
+				var mode = {mode: $(this).val()};
+				$.post('direct/setMode', mode);
 			});
 		});
 		

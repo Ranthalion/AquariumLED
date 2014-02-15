@@ -46,16 +46,6 @@ function getLightSettings(){
 var itemToEdit;
 var settings;
 
-function refreshSwatch()
-{
-	var r = $( "#redSlider" ).slider( "value" ),
-      g = $( "#greenSlider" ).slider( "value" ),
-      b = $( "#blueSlider" ).slider( "value" );
-    console.debug('rgb('+r+','+g+','+b+')');
-	$('#swatch').css('background-color', 'rgb('+r+','+g+','+b+')');
-	
-}
-
 $(function(){	
 	//Mock DB Access
 	settings = getLightSettings();
@@ -68,6 +58,7 @@ $(function(){
 		$('#startTime').val(moment(itemToEdit.time).format("h:mm a"));
 		editor.channelEditor('channels', itemToEdit.channelSettings);
 		$('#modalDialog').modal('show');
+		setTimeout(function(){editor.channelEditor('resize');}, 100);
 	});
 	
 	var clickCallback = function(){
