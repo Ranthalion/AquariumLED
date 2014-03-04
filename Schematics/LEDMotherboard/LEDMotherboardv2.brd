@@ -23,7 +23,7 @@
 <layer number="13" name="Route13" color="4" fill="5" visible="no" active="no"/>
 <layer number="14" name="Route14" color="1" fill="6" visible="no" active="no"/>
 <layer number="15" name="Route15" color="4" fill="6" visible="no" active="no"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="yes"/>
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="no" active="yes"/>
@@ -123,17 +123,17 @@
 <wire x1="177.78" y1="0" x2="177.78" y2="93.65" width="0" layer="20"/>
 <wire x1="177.78" y1="93.65" x2="0" y2="93.65" width="0" layer="20"/>
 <wire x1="0" y1="93.65" x2="0" y2="0" width="0" layer="20"/>
-<text x="5.08" y="35.56" size="1.778" layer="1" font="vector" ratio="19">12V</text>
-<text x="90.17" y="88.9" size="1.778" layer="1">5V</text>
-<text x="20.32" y="68.58" size="1.778" layer="1" font="vector" ratio="19">CW</text>
-<text x="11.43" y="26.67" size="1.778" layer="1" font="vector" ratio="19">CW</text>
-<text x="60.96" y="27.94" size="1.778" layer="1" font="vector" ratio="19">CW</text>
-<text x="63.5" y="66.04" size="1.778" layer="1" font="vector" ratio="19">R-G</text>
-<text x="125.73" y="68.58" size="1.778" layer="1" font="vector" ratio="19">RB-RB</text>
-<text x="86.36" y="67.31" size="1.778" layer="1" font="vector" ratio="19">G-RB</text>
-<text x="95.25" y="27.94" size="1.778" layer="1" font="vector" ratio="19">B-B</text>
-<text x="124.46" y="27.94" size="1.778" layer="1" font="vector" ratio="19">B-NUL</text>
-<text x="113.03" y="5.08" size="1.778" layer="1" font="vector" ratio="15">LED Aquarium Lights
+<text x="9.525" y="36.195" size="1.778" layer="1" font="vector" ratio="19" rot="MR0">12V</text>
+<text x="90.17" y="88.9" size="1.778" layer="1" rot="MR0" align="bottom-right">5V</text>
+<text x="22.86" y="68.58" size="1.778" layer="1" font="vector" ratio="19" rot="MR0">CW</text>
+<text x="13.97" y="26.67" size="1.778" layer="1" font="vector" ratio="19" rot="MR0">CW</text>
+<text x="63.5" y="27.94" size="1.778" layer="1" font="vector" ratio="19" rot="MR0">CW</text>
+<text x="67.31" y="66.04" size="1.778" layer="1" font="vector" ratio="19" rot="MR0">R-G</text>
+<text x="125.73" y="68.58" size="1.778" layer="1" font="vector" ratio="19" rot="MR0" align="bottom-right">RB-RB</text>
+<text x="92.075" y="67.945" size="1.778" layer="1" font="vector" ratio="19" rot="MR0">G-RB</text>
+<text x="99.695" y="27.305" size="1.778" layer="1" font="vector" ratio="19" rot="MR0">B-B</text>
+<text x="132.08" y="27.94" size="1.778" layer="1" font="vector" ratio="19" rot="MR0">B-NUL</text>
+<text x="140.97" y="5.08" size="1.778" layer="1" font="vector" ratio="15" rot="MR0">LED Aquarium Lights
 Current Driver</text>
 </plain>
 <libraries>
