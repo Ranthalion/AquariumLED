@@ -32,7 +32,7 @@ var db = redis.createClient();
 db.subscribe('led_change');
 
 db.on('message', function(channel, message){
-	console.log(moment().format('h:mm:ss a') + ' : ' + channel + ' - ' + message);
+	console.log(moment().format('h:mm:ss a') + ': ' + channel + '-' + message);
 	//TODO: parse the message, but discard it if it is bad.
 	message = JSON.parse(message);
 	if (!message.channels){

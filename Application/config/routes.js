@@ -11,5 +11,7 @@ module.exports = function routes() {
   this.match('direct/setMode', 'direct#setMode', {via: 'POST'});
   this.match('settings/channels', 'settings#channels', {via: 'GET'});
   this.match('settings/channels', 'settings#savechannels', {via: 'POST'});
-  this.match('schedule', 'pages#main');
+  this.match('schedule', 'schedule#main');
+  this.match('schedule/save', 'schedule#saveSchedule', {via: 'POST'});
+  this.match('schedule/read', 'schedule#read');
 }

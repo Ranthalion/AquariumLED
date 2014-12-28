@@ -3,7 +3,7 @@ var moment = require('moment');
 var redis = require('redis');
 
 var db = redis.createClient();
-var dal = new DAL():
+var dal = new DAL();
 var schedule = null;
 
 
@@ -11,6 +11,9 @@ var schedule = null;
 var timeoutID = null;
 var cb = function(){
 	console.log('callback triggered');
+	if(schedule != null){
+		console.log(schedule);
+	}
 	//TODO: Read the schedule and calculate the current slice...
 	//TODO: Do something with this - db.publish('led_change', '{}');
 };
@@ -21,7 +24,7 @@ dal.getCurrentMode(function(err, mode){
 			schedule = data;
 			cb();
 			timeoutID = setInterval(cb, 1000 * 30);
-		}
+		});
 	}
 });
 
