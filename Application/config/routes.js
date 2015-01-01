@@ -14,4 +14,12 @@ module.exports = function routes() {
   this.match('schedule', 'schedule#main');
   this.match('schedule/save', 'schedule#saveSchedule', {via: 'POST'});
   this.match('schedule/read', 'schedule#read');
+  
+  this.match('api/channels/get', 'api#getChannels');
+  this.match('api/channels/set', 'api#setChannels');
+  this.match('api/mode/get', 'api#getMode');
+  this.match('api/mode/set', 'api#setMode');
+  this.match('api/schedule/get', 'api#getSchedule');
+  this.match('api/schedule/set', 'api#setSchedule');
+  
 }

@@ -15,13 +15,14 @@ Setting.prototype.toRGB = function(){
 	return Color.Mix(colors);
 }
 
-function createSetting(time, v1, v2, v3, v4, v5){
+function createSetting(time, v1, v2, v3, v4, v5, v6){
 	var c = [
 		{name:'Cool White', color:new Color(212,235,255, v1)},
 		{name:'Red', color:new Color(255,0,0, v2)},
 		{name:'Green', color:new Color(0,255,0, v3)},
 		{name:'Blue', color:new Color(0,0,255, v4)},
 		{name:'Royal Blue', color:new Color(65,105,225, v5)}
+		{name:'UV', color:new Color(150,0,160, v6)}
 	];
 	return new Setting(new Date('1/1/2000 ' + time), c);
 }
@@ -42,12 +43,33 @@ function hydrate(data){
 var itemToEdit;
 var settings;
 
+var schedule = new Array();
+var scheduleItem = {
+	time: '12:00',
+	ch1: 0,
+	ch2: 0,
+	ch3: 0,
+	ch4: 0,
+	ch5: 0,
+	ch6: 0	
+};
+
 $(function(){	
+
+	//Initialize the channel editor with channel settings
+	//Then get the schedule and load it into the channel editor
 
 	$.get('schedule/read', function(data){
 		settings = new Array();
-		for(var i =0; i < data.schedule.length; i++){
-			settings.push(hydrate(data.schedule[i]));
+		if (data.schedule && data.schedule.length > 0)
+		{
+			for(var i =0; i < data.schedule.length; i++){
+				settings.push(hydrate(data.schedule[i]));
+			}
+		}
+		else{
+			settings.push(createSetting('12:00', 0, 0, 0, 0, 0, 0));
+			//Populate new fake ones
 		}
 		
 		//settings.push(createSetting('5:00', 1, 1,1,1,1));

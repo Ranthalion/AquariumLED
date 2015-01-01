@@ -52,20 +52,3 @@ console.log('Resetting all channels to 0.');
 
 for (var i = 0; i < 6; i++)
 	pwm.setPwm(piPins[i],0);
-	
-/*
-var db = new DAL();
-db.getCurrentSetting(function(err, settings){
-	console.log('Settings channels from saved settings.');
-
-	if (settings){
-		for(var i = 0; i < settings.length; i++){
-			pwm.setPwm(piPins[i], settings[i].value);
-		}
-	}
-	else {
-		settings = [];
-	}
-});
-db.quit();
-*/
