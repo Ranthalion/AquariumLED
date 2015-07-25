@@ -1,0 +1,10 @@
+{
+  "name": "LightController",
+  "version": "1.0.0",
+  "description": "LightController",
+  "main": "PWMDriver.js",
+  "author": {
+    "name": "Ranthalion",
+    "email": "ranthalion@hotmail.com"
+  }
+}

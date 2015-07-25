@@ -21,7 +21,7 @@ function createSetting(time, v1, v2, v3, v4, v5, v6){
 		{name:'Red', color:new Color(255,0,0, v2)},
 		{name:'Green', color:new Color(0,255,0, v3)},
 		{name:'Blue', color:new Color(0,0,255, v4)},
-		{name:'Royal Blue', color:new Color(65,105,225, v5)}
+		{name:'Royal Blue', color:new Color(65,105,225, v5)},
 		{name:'UV', color:new Color(150,0,160, v6)}
 	];
 	return new Setting(new Date('1/1/2000 ' + time), c);

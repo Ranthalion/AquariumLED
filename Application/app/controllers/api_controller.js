@@ -51,7 +51,7 @@ ApiController.getMode = function(){
   
 	db.getCurrentMode(function(err, mode){
 		response.res.json(mode);
-	}
+	})
 };
 
 ApiController.setMode = function(){
