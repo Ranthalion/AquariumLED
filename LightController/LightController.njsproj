@@ -30,7 +30,10 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="allOff.js" />
     <Compile Include="app.js" />
+    <Compile Include="fadeDown.js" />
+    <Compile Include="fadeUp.js" />
     <Compile Include="pca9685.js" />
     <Compile Include="PWMDriver.js" />
     <Content Include="package.json" />
