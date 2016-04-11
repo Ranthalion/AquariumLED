@@ -1,30 +1,27 @@
-﻿/*Begining of Auto generated code by Atmel studio */
-#include <Arduino.h>
-
-/*End of auto generated code by Atmel studio */
+﻿#include <Arduino.h>
+#include <Wire.h>
+#include <PCA9685.h>
+#include <WString.h>
 
 #define PURPLE_LED 5  // AVR pin 14
 #define ORANGE_LED 6  // AVR pin 12
 #define BLUE_LED 8    // AVR pin 11
 
-#define STATUS_LED 5
+#define STATUS_LED PURPLE_LED
 
 #define ENABLE_TIMER_1 TIMSK1 |= (1 << OCIE1A)
 #define DISABLE_TIMER_1 TIMSK1 &= ~(1 << OCIE1A)
 
-#include <Wire.h>
-#include <PCA9685.h>
-#include <WString.h>
-//Beginning of Auto generated function prototypes by Atmel Studio
-//End of Auto generated function prototypes by Atmel Studio
+
 
 void processCommand(String command);
 void toggleLED(uint8_t LED);
 void setImmediate(int channel, long value);
 void setImmediate(long* values);
 void fadeFixedTime(long* values);
+/*
 void fadeVariableTime(uint8_t duration, long* values);
-
+*/
 
 volatile bool timer_flag;
 uint8_t blueState = LOW;
@@ -52,9 +49,7 @@ int main(void)
 	return 0;
 }
 
-// the setup function runs once when you press reset or power the board
 void setup() {
-	// initialize digital pin 13 as an output.
 	pinMode(PURPLE_LED, OUTPUT);
 	pinMode(ORANGE_LED, OUTPUT);
 	pinMode(BLUE_LED, OUTPUT);
@@ -65,7 +60,7 @@ void setup() {
 	digitalWrite(STATUS_LED, HIGH);
 	
 	// initialize timer1
-	noInterrupts();           // disable all interrupts
+	noInterrupts();           
 	TCCR1A = 0;
 	TCCR1B = 0;
 	TCNT1  = 0;
@@ -79,19 +74,21 @@ void setup() {
 	timer_flag = false;
 }
 
-// the loop function runs over and over again forever
 void loop() {
 
-	// send data only when you receive data:
 	if (Serial.available() > 0) {
-		// read the incoming byte:
 		b = Serial.read();
 		str += b;
+		
+		#ifdef DEBUG
 		Serial.print(b);
+		#endif
 		
 		if (b==13)
 		{
+			#ifdef DEBUG
 			Serial.println();
+			#endif
 			processCommand(str);
 			str = "";
 		}
@@ -121,7 +118,9 @@ void loop() {
 		{
 			TIMSK1 &= ~(1 << OCIE1A);  // disable timer compare interrupt	
 			digitalWrite(ORANGE_LED, LOW);
+			#ifdef DEBUG
 			Serial.println("Fading complete");
+			#endif
 		}
 		
 	}	
@@ -130,9 +129,6 @@ void loop() {
 void processCommand(String command)
 {
 	char prefix = command.charAt(0);
-	Serial.print("Command received: ");
-	
-	Serial.println(command);
 	
 	if (prefix == 'p')
 	{
@@ -151,8 +147,10 @@ void processCommand(String command)
 	}
 	else if (prefix == 'r'){
 		uint8_t pin = String(command.substring(1)).toInt();
+		#ifdef DEBUG
 		Serial.print("Reading pin ");
 		Serial.println(pin);
+		#endif
 		long val = pwm.readChannel(pin);
 		
 		Serial.println(val);
@@ -177,29 +175,17 @@ void processCommand(String command)
 			}
 			else
 			{
-				Serial.print("buff = ");
-				Serial.println(buff);
-				Serial.print(j); 
-				Serial.print(" = ");
 				newSettings[j++] = buff.toInt();
-				Serial.println(newSettings[j-1]);
 				buff = "";
 			}
 			b = command.charAt(++i);
 		}
 		newSettings[j++] = buff.toInt();
-		Serial.print("buff = ");
-		Serial.println(buff);
-		Serial.print(j);
-		Serial.print(" = ");
-		Serial.println(newSettings[j-1]);
 		
 		setImmediate(newSettings);		
 	}
 	else if (prefix == 'a'){
 		uint8_t val = command.substring(1).toInt();
-		Serial.print("Setting all to ");
-		Serial.println(val);
 		DISABLE_TIMER_1;
 		pwm.setAll(val);
 	}
@@ -233,22 +219,12 @@ void processCommand(String command)
 			}
 			else
 			{
-				Serial.print("buff = ");
-				Serial.println(buff);
-				Serial.print(j);
-				Serial.print(" = ");
 				newSettings[j++] = buff.toInt();
-				Serial.println(newSettings[j-1]);
 				buff = "";
 			}
 			b = command.charAt(++i);
 		}
 		newSettings[j++] = buff.toInt();
-		Serial.print("buff = ");
-		Serial.println(buff);
-		Serial.print(j);
-		Serial.print(" = ");
-		Serial.println(newSettings[j-1]);
 		
 		fadeFixedTime(newSettings);
 	}
@@ -283,10 +259,13 @@ void fadeFixedTime(long* values)
 	}
 	ENABLE_TIMER_1;
 }
+
+/*
 void fadeVariableTime(uint8_t duration, long* values)
 {
 	
 }
+*/
 
 ISR(TIMER1_COMPA_vect)          // timer compare interrupt service routine
 {

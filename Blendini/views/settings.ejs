@@ -1,0 +1,51 @@
+<div ng-controller='SettingsCtrl' class='container'>
+
+
+	<p>
+		The settings page will be here.  The values will be loaded via javascript or something like that.  Maybe just switch to angular, durandal, or backbone somewhere...
+	</p>
+	
+	<form ng-submit="submit()">
+	  	<div class='row'>
+	  		<div class='col-md-1'><label>Port</label></div>
+		  	<div class='col-md-3'><label>Color</label></div>
+		  	<div class='col-md-2'><label>Red</label></div>
+		  	<div class='col-md-2'><label>Green</label></div>
+		  	<div class='col-md-2'><label>Blue</label></div>
+		  	<div class='col-md-2'><label>Value</label></div>
+	  	</div>
+
+	    <div ng-repeat='setting in settings | orderBy: "port"'>
+	      <div class='row' style='margin-bottom:5px;'>
+	      	<div class='col-md-1'>
+	      		<label class='sr-only'>Port</label>
+	      		<p class="form-control-static">{{setting.port}}</p>
+			</div>
+	      	<div class='col-md-3'>
+	      		<label class='sr-only' for='color_{{$id}}'>Port</label>
+	      		<input type='text' class='form-control' id='color_{{$id}}' ng-model='setting.color' />
+	  		</div>
+	      	<div class='col-md-2'>
+	      		<label class='sr-only' for='red_{{$id}}'>Red</label>
+	      		<input type='text' class='form-control' id='red_{{$id}}' ng-model='setting.red' />
+	      	</div>
+	      	<div class='col-md-2'>
+	      		<label class='sr-only' for='green_{{$id}}'>Green</label>
+	      		<input type='text' class='form-control' id='green_{{$id}}' ng-model='setting.green' />
+	      	</div>
+	      	<div class='col-md-2'>
+	      		<label class='sr-only' for='blue_{{$id}}'>Blue</label>
+	      		<input type='text' class='form-control' id='blue_{{$id}}' ng-model='setting.blue' />
+	  		</div>
+	      	<div class='col-md-2'>
+	      		<label class='sr-only' for='value_{{$id}}'>Value</label>
+	      		<input type='text' class='form-control' id='value_{{$id}}' ng-model='setting.value' />
+	      	</div>
+	      </div>
+	    </div>
+	    <div class='row'>
+	    	<input type='submit' class='btn btn-primary' value='Save'/>
+	    </div>
+    </form>
+
+</div>

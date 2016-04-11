@@ -55,7 +55,8 @@ var scheduleItem = {
 };
 
 $(function(){	
-
+	//temporarily removing the executin of this function
+	return;
 	//Initialize the channel editor with channel settings
 	//Then get the schedule and load it into the channel editor
 

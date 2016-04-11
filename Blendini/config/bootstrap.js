@@ -11,7 +11,28 @@
 
 module.exports.bootstrap = function(cb) {
 
-  // It's very important to trigger this callback method when you are finished
-  // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
-  cb();
+  	// It's very important to trigger this callback method when you are finished
+  	// with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
+
+  	sails.log.verbose('Checking channel count');
+  	Channel.count().exec(function cb(err, cnt){
+		sails.log.verbose('count = ' + cnt);
+		if (cnt != 6){
+	  	
+	  		sails.log.verbose('Resetting channels since count was ' + cnt);
+			Channel.destroy().exec(function cb(){});
+			var channels = new Array();
+			for(var i = 0; i < 6; i++){
+				channels[i] = {color: 'not defined', value: 0, port: i} 
+			}
+			Channel.create(channels).exec(function createdCallback(err, chans){
+				sails.log.verbose('Created channels');
+				sails.log.verbose(chans);
+
+			});
+		}
+	});
+
+	cb();
+
 };
