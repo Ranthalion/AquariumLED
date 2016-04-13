@@ -17,6 +17,7 @@
 var cssFilesToInject = [
   'bower_components/bootswatch/dist/css/bootstrap.css',
   'bower_components/toastr/toastr.css',
+  '/bower_components/angularjs-slider/dist/rzslider.min.css',
   'styles/**/*.css'
 ];
 
@@ -33,7 +34,8 @@ var jsFilesToInject = [
   '/bower_components/angular-resource/angular-resource.js',
   '/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
   '/bower_components/bootstrap/dist/js/boostrap.js',
-  '/bower_components/toastr/toastr.js',  
+  '/bower_components/toastr/toastr.js',
+  '/bower_components/angularjs-slider/dist/rzslider.min.js',
   
   // Dependencies like jQuery, or Angular are brought in here
   'js/dependencies/**/*.js',

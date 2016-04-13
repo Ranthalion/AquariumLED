@@ -228,3 +228,15 @@ ul.alert-dropdown {
 .mt10{
     margin-top: 10px;
 }
+
+rzslider .rz-pointer {
+    border: 1px solid black;
+}
+
+rzslider .rz-pointer:after {
+    background: #000;
+}
+
+rzslider {
+    margin-top: 31px;
+}

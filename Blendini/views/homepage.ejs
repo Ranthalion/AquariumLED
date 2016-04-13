@@ -14,7 +14,13 @@
                 </div>
                 <a href="#">
                     <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
+                        <div ng-controller='DirectCtrl' class='container-fluid'>
+                            <div class='row'>
+                                <div class='col-sm-12' ng-repeat='setting in settings | orderBy: "port"'>
+                                    <rzslider rz-slider-model="setting.value" rz-slider-options="setting.sliderOptions"></rzslider>
+                                </div>  
+                            </div>
+                        </div>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>

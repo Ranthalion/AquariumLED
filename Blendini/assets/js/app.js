@@ -1,15 +1,8 @@
-var blendiniApp = angular.module('blendiniApp', ['ngResource']);
+var blendiniApp = angular.module('blendiniApp', ['ngResource', 'rzModule']);
 
 blendiniApp.controller('SettingsCtrl', ['$scope', '$http', 'Channel',
 	function($scope, $http, Channel){
 		$scope.settings = Channel.query();
-
-		$scope.submit = function(){
-
-			$scope.settings.forEach(function(setting){
-;			});
-			toastr.success('Channel settings have been saved.')	
-		};
 
 		$scope.getTextColor = function(r,g,b){
 			var yiq = ((r*299)+(g*587)+(b*114))/1000;
@@ -50,4 +43,34 @@ blendiniApp.factory('Channel', ['$resource',
 			'update': {method: 'PUT'}
 		});
 	}
-	]);
+]);
+
+
+blendiniApp.controller('DirectCtrl', ['$scope', 'Channel',
+	function($scope, Channel){
+		
+		//closure function to use in loop.
+		var getColor = function(r, g, b){
+			return function(){ return 'rgb(' + r + ',' + g + ',' + b + ')'; }
+		} 
+
+		Channel.query({}, function(response){
+			for(var i = 0; i <response.length; i++){
+				var channel = response[i];
+				var rgb = 'rgb(' + channel.red + ',' + channel.green + ',' + channel.blue + ')';
+				response[i].sliderOptions = {
+					showSelectionBar: true,
+					hidePointerLabels: true,
+    				hideLimitLabels: true,
+					floor: 0,
+					ceil: 4095,
+					step: 1,
+					getPointerColor: getColor(channel.red, channel.green, channel.blue),
+					getSelectionBarColor: getColor(channel.red, channel.green, channel.blue)
+				};				
+			}
+			$scope.settings = response;
+		});
+
+	}
+]);
