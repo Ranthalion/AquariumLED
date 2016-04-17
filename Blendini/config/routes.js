@@ -47,6 +47,10 @@ module.exports.routes = {
   ***************************************************************************/
   '/settings': {
     view: 'settings'
+  },
+
+  '/scheduler': {
+    view: 'scheduler'
   }
   
 };

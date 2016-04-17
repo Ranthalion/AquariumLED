@@ -59,7 +59,7 @@ $(function(){
 	//Initialize the channel editor with channel settings
 	//Then get the schedule and load it into the channel editor
 
-	$.get('schedule/read', function(data){
+	$.get('schedule', function(data){
 		settings = new Array();
 		if (data.schedule && data.schedule.length > 0)
 		{

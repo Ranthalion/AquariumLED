@@ -17,7 +17,10 @@
 var cssFilesToInject = [
   'bower_components/bootswatch/dist/css/bootstrap.css',
   'bower_components/toastr/toastr.css',
-  '/bower_components/angularjs-slider/dist/rzslider.min.css',
+  'bower_components/angularjs-slider/dist/rzslider.min.css',
+  'bower_components/font-awesome/css/font-awesome.min.css',
+  'bower_components/angular-bootstrap-toggle-switch/style/bootstrap3/angular-toggle-switch-bootstrap-3.css',
+
   'styles/**/*.css'
 ];
 
@@ -34,15 +37,20 @@ var jsFilesToInject = [
   '/bower_components/angular-resource/angular-resource.js',
   '/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
   '/bower_components/bootstrap/dist/js/boostrap.js',
+  '/bower_components/bootstrap/js/modal.js',
   '/bower_components/toastr/toastr.js',
+  '/bower_components/moment/moment.js',
   '/bower_components/angularjs-slider/dist/rzslider.min.js',
-  
+  '/bower_components/angular-bootstrap-toggle-switch/angular-toggle-switch.min.js',  
+
   // Dependencies like jQuery, or Angular are brought in here
   'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.
+   'app/**/*.js',
    'js/**/*.js'
+
 ];
 
 

@@ -240,3 +240,7 @@ rzslider .rz-pointer:after {
 rzslider {
     margin-top: 31px;
 }
+
+.panel-heading h1 {
+    margin: 0;
+}

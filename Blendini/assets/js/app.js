@@ -1,4 +1,4 @@
-var blendiniApp = angular.module('blendiniApp', ['ngResource', 'rzModule']);
+var blendiniApp = angular.module('blendiniApp', ['ngResource', 'rzModule', 'toggle-switch', 'channelSetting', 'ui.bootstrap']);
 
 blendiniApp.controller('SettingsCtrl', ['$scope', '$http', 'Channel',
 	function($scope, $http, Channel){
@@ -11,32 +11,6 @@ blendiniApp.controller('SettingsCtrl', ['$scope', '$http', 'Channel',
 	}
 ]);
 
-blendiniApp.controller('SettingCtrl', ['$scope', '$timeout', 'Channel', 
-	function($scope, $timeout, Channel){
-		var timeout = null;
-		var saveUpdates = function() {
-			if ($scope['form_' + $scope.$id].$valid) {
-				Channel.update($scope.setting);
-			} else {
-				toastr.error('Unable to save settings for Port ' + $scope.setting.port + ' because it is invalid.');
-			}
-		};
-		var debounceUpdate = function(newVal, oldVal) {
-			if (newVal != oldVal) {
-				if (timeout) {
-					$timeout.cancel(timeout);
-				}
-				timeout = $timeout(saveUpdates, 2000);
-			}
-		};
-		$scope.$watch('setting.color', debounceUpdate);
-		$scope.$watch('setting.red', debounceUpdate);
-		$scope.$watch('setting.green', debounceUpdate);
-		$scope.$watch('setting.blue', debounceUpdate);
-
-	}
-	]);
-
 blendiniApp.factory('Channel', ['$resource',
 	function($resource){
 		return $resource('/channel/:id', {id: '@id'}, {
@@ -45,10 +19,12 @@ blendiniApp.factory('Channel', ['$resource',
 	}
 ]);
 
-
 blendiniApp.controller('DirectCtrl', ['$scope', 'Channel',
 	function($scope, Channel){
-		
+		//TODO: [ML] Get the current light controller mode as scheduled or direct
+		$scope.scheduleEnabled = true;
+		$scope.settings = [];
+
 		//closure function to use in loop.
 		var getColor = function(r, g, b){
 			return function(){ return 'rgb(' + r + ',' + g + ',' + b + ')'; }
@@ -59,18 +35,51 @@ blendiniApp.controller('DirectCtrl', ['$scope', 'Channel',
 				var channel = response[i];
 				var rgb = 'rgb(' + channel.red + ',' + channel.green + ',' + channel.blue + ')';
 				response[i].sliderOptions = {
+					id: channel.port,
 					showSelectionBar: true,
 					hidePointerLabels: true,
     				hideLimitLabels: true,
 					floor: 0,
 					ceil: 4095,
+					readOnly: true,
 					step: 1,
 					getPointerColor: getColor(channel.red, channel.green, channel.blue),
-					getSelectionBarColor: getColor(channel.red, channel.green, channel.blue)
+					getSelectionBarColor: getColor(channel.red, channel.green, channel.blue),
+					onEnd: function(id, model, hi){ 
+						//TODO: [ML] Call to serial service to set immediate
+						//TODO: [ML] Add class to handle communication to and from serial port, including message formatting
+						console.log('end: '+ id + ' ' + model + ' ' + hi);
+					}
 				};				
 			}
 			$scope.settings = response;
 		});
+		
+		$scope.$watch('scheduleEnabled', function(newVal, oldVal){ 
+			//TODO: [ML] Add something here to query current settings and periodically get new settings if set to scheduled
+			$scope.settings.forEach(function(setting){ 
+				setting.sliderOptions.readOnly=newVal; 
+			});
+		});
 
 	}
 ]);
+
+blendiniApp.controller('ScheduleCtrl', ['$scope', 
+	function($scope){
+		$scope.mytime = new Date();
+		//TODO: GET channels for port settings and the existing schedule settings
+		$scope.schedule = [
+			{ time: '', values: [200, 212, 654, 3212, 3, 0, 342]},
+			{ time: '', values: [212, 654, 3212, 3, 0, 342, 1231]},
+			{ time: '', values: [654, 3212, 3, 0, 342, 432, 323]}
+		];	
+
+		$scope.save = function(){
+			console.log('TODO: save');
+
+		};
+
+	}
+]);
+
