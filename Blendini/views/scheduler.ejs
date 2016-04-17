@@ -1,8 +1,10 @@
 <div  ng-controller='ScheduleCtrl' >
 
-	<div>
-		<span> The time is {{mytime}}. </span>
-		<uib-timepicker ng-model="mytime" minute-step="5"></uib-timepicker>
+
+	<div ng-repeat='setting	in schedule | orderBy: "time"'>
+		<span> The time is  
+			<uib-timepicker ng-model="setting.time" minute-step="5"></uib-timepicker>
+		</span>
 	</div>
 	
 </div>

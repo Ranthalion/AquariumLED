@@ -7,7 +7,10 @@
 				setting: '='
 			},
 			controller:  function($scope, $timeout, Channel){
-				
+				$scope.getTextColor = function(r,g,b){
+					var yiq = ((r*299)+(g*587)+(b*114))/1000;
+					return (yiq >= 128) ? 'black' : 'white';
+				};
 				var timeout = null;
 				var saveUpdates = function() {
 					if ($scope['form_' + $scope.$id].$valid) {
