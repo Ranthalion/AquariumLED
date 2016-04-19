@@ -3,14 +3,9 @@
 module.exports = {
   attributes: {
 
-    time: {
-      type: 'time',
-      required: true
-    },
-    
-    values: {
-      type: 'array',
-      required: true
+    transitions: {
+      collection: 'lighttransition',
+      via: 'schedule'
     }
 
   }

@@ -1,13 +1,12 @@
 var blendiniApp = angular.module('blendiniApp', ['ngResource', 'rzModule', 'toggle-switch', 'channelSetting', 'ui.bootstrap']);
 
+blendiniApp.constant("moment", moment);
+
 blendiniApp.controller('SettingsCtrl', ['$scope', '$http', 'Channel',
 	function($scope, $http, Channel){
 		$scope.settings = Channel.query();
 
-		$scope.getTextColor = function(r,g,b){
-			var yiq = ((r*299)+(g*587)+(b*114))/1000;
-			return (yiq >= 128) ? 'black' : 'white';
-		};
+		
 	}
 ]);
 
@@ -18,6 +17,16 @@ blendiniApp.factory('Channel', ['$resource',
 		});
 	}
 ]);
+
+blendiniApp.factory('Schedule', ['$resource',
+	function($resource){
+		return $resource('/schedule/:id?populate=transitions', {id: '@id'}, {
+			'update': {method: 'PUT'},
+			'query': {method: 'GET', populate: 'transitions', isArray:true }
+		});
+	}
+]);
+
 
 blendiniApp.controller('DirectCtrl', ['$scope', 'Channel',
 	function($scope, Channel){
@@ -64,21 +73,3 @@ blendiniApp.controller('DirectCtrl', ['$scope', 'Channel',
 
 	}
 ]);
-
-blendiniApp.controller('ScheduleCtrl', ['$scope', 
-	function($scope){
-		//TODO: GET channels for port settings and the existing schedule settings
-		$scope.schedule = [
-			{ time: new Date(), values: [200, 212, 654, 3212, 3, 0, 342]},
-			{ time: new Date(), values: [212, 654, 3212, 3, 0, 342, 1231]},
-			{ time: new Date(), values: [654, 3212, 3, 0, 342, 432, 323]}
-		];	
-
-		$scope.save = function(){
-			console.log('TODO: save');
-
-		};
-
-	}
-]);
-

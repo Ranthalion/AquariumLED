@@ -7,5 +7,9 @@
 
 module.exports = {
 	
+	saveAll: function(req, res){
+		console.log(req.body);
+		return res.ok();
+	}
 
 };

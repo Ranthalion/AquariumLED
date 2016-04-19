@@ -17,6 +17,9 @@ module.exports.bootstrap = function(cb) {
   	sails.log.verbose('Checking channel count');
   	Channel.count().exec(function cb(err, cnt){
 		sails.log.verbose('count = ' + cnt);
+		
+		Schedule.destroy().exec(function cb(){});
+
 		if (cnt != 6){
 	  	
 	  		sails.log.verbose('Resetting channels since count was ' + cnt);

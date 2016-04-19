@@ -1,10 +1,35 @@
-<div  ng-controller='ScheduleCtrl' >
+<div  ng-controller='ScheduleCtrl' class='container' ng-cloak>
+	<form name='scheduleForm' ng-submit="scheduleForm.$dirty && save()">
+		<div class='row'>
+			<div class='col-sm-2'>
+				<label>Time</label>
+			</div>
+			<div class='col-sm-10'>
+				<div class='row'>
+					<div class='col-sm-2' ng-repeat='port in settings'>
+						<label>{{port.color}}</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div ng-repeat='setting	in schedule.transitions' class='row'>
+			<div class='col-sm-2'>
+				<uib-timepicker ng-model="setting.time" minute-step="5"></uib-timepicker>
+			</div>
+			<div class='col-sm-10' style='margin-top:33px;'>
+				
+				<div class='row'>
+					<div ng-repeat="num in setting.values track by $index" class='col-sm-2' 
+						style='background-color:rgb({{settings[$index].red}}, {{settings[$index].green}}, {{settings[$index].blue}})'>				
+						<input type='number' min='0' max='4095' class='form-control' ng-model='setting.values[$index]'>
+					</div>
+					<i class='fa fa-remove' ng-click='remove(setting)' style='position: absolute; margin: 10px; cursor: pointer;'></i>
+				</div>
+			
+			</div>
+		</div>
 
-
-	<div ng-repeat='setting	in schedule | orderBy: "time"'>
-		<span> The time is  
-			<uib-timepicker ng-model="setting.time" minute-step="5"></uib-timepicker>
-		</span>
-	</div>
-	
+		<button type='button' ng-click='addSchedule()' class='btn btn-info'>Add</button>	
+		<button type='submit' class='btn btn-primary pull-right' ng-disabled="scheduleForm.$pristine || !scheduleForm.$valid">Save</button>
+	</form>
 </div>
