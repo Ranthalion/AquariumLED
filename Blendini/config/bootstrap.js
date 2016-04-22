@@ -13,12 +13,16 @@ module.exports.bootstrap = function(cb) {
 
   	// It's very important to trigger this callback method when you are finished
   	// with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
+  	var Scheduler = require('../bootstrap/LightScheduler');
+  	//var scheduler = new Scheduler();
+  	Scheduler.start();
+
 
   	sails.log.verbose('Checking channel count');
   	Channel.count().exec(function cb(err, cnt){
 		sails.log.verbose('count = ' + cnt);
 		
-		Schedule.destroy().exec(function cb(){});
+		//Schedule.destroy().exec(function destroycb(){});
 
 		if (cnt != 6){
 	  	

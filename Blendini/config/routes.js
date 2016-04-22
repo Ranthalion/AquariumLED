@@ -51,6 +51,8 @@ module.exports.routes = {
 
   '/scheduler': {
     view: 'scheduler'
-  }
+  },
+
+  '/refresh': 'ScheduleController.refresh'
   
 };

@@ -20,9 +20,9 @@ blendiniApp.factory('Channel', ['$resource',
 
 blendiniApp.factory('Schedule', ['$resource',
 	function($resource){
-		return $resource('/schedule/:id?populate=transitions', {id: '@id'}, {
+		return $resource('/schedule/:id', {id: '@id'}, {
 			'update': {method: 'PUT'},
-			'query': {method: 'GET', populate: 'transitions', isArray:true }
+			'query': {method: 'GET', isArray:true, params: {populate: 'transitions'} }
 		});
 	}
 ]);

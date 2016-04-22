@@ -1,6 +1,6 @@
 
-angular.module('blendiniApp').controller('ScheduleCtrl', ['$scope', 'moment', 'Channel', 'Schedule',
-	function($scope, moment, Channel, Schedule){
+angular.module('blendiniApp').controller('ScheduleCtrl', ['$scope', 'moment', 'Channel', 'Schedule', '$http',
+	function($scope, moment, Channel, Schedule, $http){
 		$scope.schedule = {};
 		$scope.settings = Channel.query();
 		
@@ -25,7 +25,13 @@ angular.module('blendiniApp').controller('ScheduleCtrl', ['$scope', 'moment', 'C
 		};
 
 		$scope.save = function(){
-			Schedule.save($scope.schedule);
+			Schedule.save($scope.schedule, function(){
+				console.log('refresh now.');
+				$http({
+				  method: 'POST',
+				  url: '/refresh'
+				});
+			});
 			$scope.scheduleForm.$setPristine();	
 		};
 

@@ -1,0 +1,3 @@
+X	1. Add CRON
+	2. Add Serial communication
+X	3. Add something to keep CRON in sync with the application

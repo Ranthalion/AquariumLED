@@ -7,8 +7,11 @@
 
 module.exports = {
 	
-	saveAll: function(req, res){
-		console.log(req.body);
+	refresh: function(req, res){
+		console.log('Stop all the jobs from the controller')
+		var scheduler = require('../../bootstrap/LightScheduler');
+		scheduler.clear();
+		scheduler.start();
 		return res.ok();
 	}
 
