@@ -1,4 +1,5 @@
 var Cron = require('cron');
+var SerialPort = require('serialport').SerialPort;
 
 // Private
 var _jobs = [];
@@ -6,7 +7,12 @@ var _jobs = [];
 function fadeLights(channels){
 	sails.log.debug('Executing Fade Lights');
 	sails.log.debug(channels);
+	port.write('f'  + channels.join(','));
 };
+
+var port = new SerialPort('/dev/ttyAMA0', {
+	parser: serialport.parsers.readline('\n')
+});
 
 // Public
 var self = module.exports = {
