@@ -11,20 +11,19 @@
                         </div>
                         <div class="col-xs-6 text-right">
                             <toggle-switch ng-model='scheduleEnabled' on-label='Schedule' off-label='Direct' class='switch-success' knob-label="TV">
-                            <h1><input type="checkbox" ng-model="ScheduleEnabled" data-toggle="toggle" data-on="Schedule" data-off="Direct" data-onstyle="success" data-offstyle="warning"></h1>
                         </div>
                     </div>
                 </div>
-                
-                    <div class="panel-footer">
-                        <div class='container-fluid'>
-                            <div class='row'>
-                                <div class='col-sm-12' ng-repeat='setting in settings | orderBy: "port"'>
-                                    <rzslider rz-slider-model="setting.value" rz-slider-options="setting.sliderOptions"></rzslider>
-                                </div>  
-                            </div>
+            
+                <div class="panel-footer">
+                    <div class='container-fluid'>
+                        <div class='row'>
+                            <div class='col-sm-12' ng-repeat='setting in settings | orderBy: "port"'>
+                                <rzslider rz-slider-model="setting.value" rz-slider-options="setting.sliderOptions"></rzslider>
+                            </div>  
                         </div>
                     </div>
+                </div>
                 
             </div>
         </div>

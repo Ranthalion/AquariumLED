@@ -5,8 +5,6 @@ blendiniApp.constant("moment", moment);
 blendiniApp.controller('SettingsCtrl', ['$scope', '$http', 'Channel',
 	function($scope, $http, Channel){
 		$scope.settings = Channel.query();
-
-		
 	}
 ]);
 
@@ -27,17 +25,34 @@ blendiniApp.factory('Schedule', ['$resource',
 	}
 ]);
 
+blendiniApp.factory('SystemState', ['$resource',
+	function($resource){
+		return $resource('/systemstate/:id', {id: '@id'}, {
+			'update': {method: 'PUT'}
+		});
+	}
+]);
 
-blendiniApp.controller('DirectCtrl', ['$scope', 'Channel',
-	function($scope, Channel){
+
+blendiniApp.controller('DirectCtrl', ['$scope', 'Channel', 'SystemState',
+	function($scope, Channel, SystemState){
 		//TODO: [ML] Get the current light controller mode as scheduled or direct
 		$scope.scheduleEnabled = true;
 		$scope.settings = [];
+		$scope.mode = {};
 
 		//closure function to use in loop.
 		var getColor = function(r, g, b){
 			return function(){ return 'rgb(' + r + ',' + g + ',' + b + ')'; }
 		} 
+
+		SystemState.query({}, function(state){
+			debugger;
+			if (state.length == 1){
+				$scope.mode = state[0].mode;
+				$scope.scheduleEnabled = ($scope.mode == 'schedule');	
+			}			
+		});
 
 		Channel.query({}, function(response){
 			for(var i = 0; i <response.length; i++){
@@ -66,6 +81,7 @@ blendiniApp.controller('DirectCtrl', ['$scope', 'Channel',
 		
 		$scope.$watch('scheduleEnabled', function(newVal, oldVal){ 
 			//TODO: [ML] Add something here to query current settings and periodically get new settings if set to scheduled
+			$scope.mode = (newVal ? 'schedule' : 'direct');
 			$scope.settings.forEach(function(setting){ 
 				setting.sliderOptions.readOnly=newVal; 
 			});

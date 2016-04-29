@@ -15,8 +15,20 @@ module.exports.bootstrap = function(cb) {
   	// with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   	var Scheduler = require('../bootstrap/LightScheduler');
   	//var scheduler = new Scheduler();
-  	Scheduler.start();
-
+  	
+  	SystemState.count().exec(function(err, cnt){
+  		if (cnt != 1){
+  			SystemState.destroy().exec(function cb(){});
+  			var state = {mode: 'schedule'};
+  			SystemState.create(state).exec(function createdCallback(err, state){
+				if (!err)
+  					sails.log.verbose('System state created.');
+  				else
+  					sails.log.verbose('Error: ' + err);
+  			});
+  		}
+  		Scheduler.start();
+  	});
 
   	sails.log.verbose('Checking channel count');
   	Channel.count().exec(function cb(err, cnt){

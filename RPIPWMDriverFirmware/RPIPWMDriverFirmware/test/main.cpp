@@ -126,6 +126,41 @@ void loop() {
 	}	
 }
 
+/* 
+
+	Commands
+	p - Toggle the purple LED
+		input:  None
+		output: None
+	o - Toggle the orange LED
+		input:  None
+		output: None
+	b - Toggle the blue LED
+		input:  None
+		output: None
+	s -	Set channel immediate 
+		input:  s{channel}v{value}
+		output: None		
+	r - Read channel value 
+		input:  r{channel}
+		output: c{channel}v{value}
+	i - Set all channels immediately 
+		input:  i{[comma separated values]}
+		output: None
+	a - Set all channels to specified value
+		input:	a{value}
+		output: None
+	f - Fade channels to specified values
+		input:	f{[comma separated values]}
+		output: None
+	
+	
+	Pending commands
+	ph
+	temp
+	waterlevel		
+
+*/
 void processCommand(String command)
 {
 	char prefix = command.charAt(0);
@@ -152,7 +187,9 @@ void processCommand(String command)
 		Serial.println(pin);
 		#endif
 		long val = pwm.readChannel(pin);
-		
+		Serial.print("c");
+		Serial.print(pin)
+		Serial.print("v")
 		Serial.println(val);
 	}
 	else if (prefix == 'i'){
@@ -189,15 +226,6 @@ void processCommand(String command)
 		DISABLE_TIMER_1;
 		pwm.setAll(val);
 	}
-	else if (prefix == 'e')
-	{
-		ENABLE_TIMER_1;
-	}
-	else if (prefix == 'd')
-	{
-		DISABLE_TIMER_1;
-		
-	}
 	else if (prefix == 'f')
 	{
 		uint8_t i = 1;
@@ -229,7 +257,7 @@ void processCommand(String command)
 		fadeFixedTime(newSettings);
 	}
 	else {
-		Serial.println("Command not recognized");
+		Serial.println("ERR: Command not recognized");
 	}
 	
 }
