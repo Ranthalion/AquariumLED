@@ -1,3 +1,5 @@
 X	1. Add CRON
-	2. Add Serial communication
+X	2. Add Serial communication
 X	3. Add something to keep CRON in sync with the application
+X	4. Add code to get the current channel settings in the Direct controller and on the direct view
+X	5. DirectController setmode and update implementation

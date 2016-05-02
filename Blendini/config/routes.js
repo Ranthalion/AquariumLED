@@ -53,6 +53,12 @@ module.exports.routes = {
     view: 'scheduler'
   },
 
-  '/refresh': 'ScheduleController.refresh'
+  '/refresh': 'ScheduleController.refresh',
+  '/clear': 'ScheduleController.clear',
+  '/start': 'ScheduleController.start',
+
+  '/currentValues' : 'DirectController.current',
+  '/setChannel': 'DirectController.setChannel',
+  '/setMode': 'DirectController.setMode'
   
 };

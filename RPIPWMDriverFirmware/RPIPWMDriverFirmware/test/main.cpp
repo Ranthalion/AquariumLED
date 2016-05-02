@@ -141,9 +141,9 @@ void loop() {
 	s -	Set channel immediate 
 		input:  s{channel}v{value}
 		output: None		
-	r - Read channel value 
-		input:  r{channel}
-		output: c{channel}v{value}
+	r - Read channel value. If channel is not specified, then all values are returned
+		input:  r[{channel}]
+		output: c{channel}v{value} or v{values}
 	i - Set all channels immediately 
 		input:  i{[comma separated values]}
 		output: None
@@ -181,16 +181,32 @@ void processCommand(String command)
 		setImmediate(channel, value);
 	}
 	else if (prefix == 'r'){
-		uint8_t pin = String(command.substring(1)).toInt();
-		#ifdef DEBUG
-		Serial.print("Reading pin ");
-		Serial.println(pin);
-		#endif
-		long val = pwm.readChannel(pin);
-		Serial.print("c");
-		Serial.print(pin)
-		Serial.print("v")
-		Serial.println(val);
+		if (command.length() == 1)
+		{
+			Serial.print('v');
+			for(int i = 0; i < 6; i++)
+			{
+				long val = pwm.readChannel(i);
+				Serial.print(val);
+				if (i < 5){
+					Serial.print(',');
+				}
+			}
+			Serial.println();
+		}
+		else
+		{
+			uint8_t pin = String(command.substring(1)).toInt();
+			#ifdef DEBUG
+			Serial.print("Reading pin ");
+			Serial.println(pin);
+			#endif
+			long val = pwm.readChannel(pin);
+			Serial.print("c");
+			Serial.print(pin);
+			Serial.print("v");
+			Serial.println(val);
+		}
 	}
 	else if (prefix == 'i'){
 		uint8_t i = 1;

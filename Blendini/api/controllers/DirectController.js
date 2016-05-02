@@ -5,9 +5,31 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var Scheduler = require('../../bootstrap/LightScheduler');
+
 module.exports = {
 	
+  current: function(req, res){
+    sails.log.debug('getting current settings');
+    Scheduler.getCurrentValues(function(values){
+      return res.json(values);
+    });
+  },
 
+  setChannel: function(req, res){
+    var request = req.allParams();
+    Scheduler.setChannel(request.channel, request.value);
+    return res.ok();
+  },
+
+  setMode: function(req, res){
+    if (req.mode == 'direct'){
+      Scheduler.clear();
+    }
+    else{
+      Scheduler.start();
+    }
+  },
 
   /**
    * `DirectController.index()`

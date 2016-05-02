@@ -8,11 +8,24 @@
 module.exports = {
 	
 	refresh: function(req, res){
-		console.log('Stop all the jobs from the controller')
+		sails.log.debug('Stop all the jobs from the controller')
 		var scheduler = require('../../bootstrap/LightScheduler');
 		scheduler.clear();
 		scheduler.start();
 		return res.ok();
-	}
+	}, 
+
+	clear: function(req, res){
+		var scheduler = require('../../bootstrap/LightScheduler');
+		scheduler.clear();
+		return res.ok();
+	},
+
+	start: function(req, res){
+		var scheduler = require('../../bootstrap/LightScheduler');
+		scheduler.start();
+		return res.ok();
+	} 
+
 
 };

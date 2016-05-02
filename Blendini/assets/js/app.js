@@ -34,12 +34,12 @@ blendiniApp.factory('SystemState', ['$resource',
 ]);
 
 
-blendiniApp.controller('DirectCtrl', ['$scope', 'Channel', 'SystemState',
-	function($scope, Channel, SystemState){
-		//TODO: [ML] Get the current light controller mode as scheduled or direct
+blendiniApp.controller('DirectCtrl', ['$scope', 'Channel', 'SystemState', '$http',
+	function($scope, Channel, SystemState, $http){
+		
 		$scope.scheduleEnabled = true;
 		$scope.settings = [];
-		$scope.mode = {};
+		$scope.state = {};
 
 		//closure function to use in loop.
 		var getColor = function(r, g, b){
@@ -47,10 +47,10 @@ blendiniApp.controller('DirectCtrl', ['$scope', 'Channel', 'SystemState',
 		} 
 
 		SystemState.query({}, function(state){
-			debugger;
+			
 			if (state.length == 1){
-				$scope.mode = state[0].mode;
-				$scope.scheduleEnabled = ($scope.mode == 'schedule');	
+				$scope.state = state[0];
+				$scope.scheduleEnabled = ($scope.state.mode == 'schedule');	
 			}			
 		});
 
@@ -70,8 +70,7 @@ blendiniApp.controller('DirectCtrl', ['$scope', 'Channel', 'SystemState',
 					getPointerColor: getColor(channel.red, channel.green, channel.blue),
 					getSelectionBarColor: getColor(channel.red, channel.green, channel.blue),
 					onEnd: function(id, model, hi){ 
-						//TODO: [ML] Call to serial service to set immediate
-						//TODO: [ML] Add class to handle communication to and from serial port, including message formatting
+						$http.post('/setChannel', {channel: id, value: model})
 						console.log('end: '+ id + ' ' + model + ' ' + hi);
 					}
 				};				
@@ -79,12 +78,26 @@ blendiniApp.controller('DirectCtrl', ['$scope', 'Channel', 'SystemState',
 			$scope.settings = response;
 		});
 		
+		$http.get('/currentValues').then(function(response){
+			for(var i = 0; i < response.data.length; i++){
+				$scope.settings[i].value = response.data[i];
+			}
+		});
+
 		$scope.$watch('scheduleEnabled', function(newVal, oldVal){ 
-			//TODO: [ML] Add something here to query current settings and periodically get new settings if set to scheduled
-			$scope.mode = (newVal ? 'schedule' : 'direct');
-			$scope.settings.forEach(function(setting){ 
-				setting.sliderOptions.readOnly=newVal; 
-			});
+			if (newVal != oldVal){
+				$scope.state.mode = (newVal ? 'schedule' : 'direct');
+				$scope.settings.forEach(function(setting){ 
+					setting.sliderOptions.readOnly=newVal; 
+				});
+				SystemState.update($scope.state);
+				if ($scope.state.mode == 'schedule'){
+					$http.get('/start');
+				}
+				else{
+					$http.get('/clear');
+				}
+			}
 		});
 
 	}

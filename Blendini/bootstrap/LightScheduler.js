@@ -1,5 +1,29 @@
 var Cron = require('cron');
-//var SerialPort = require('serialport').SerialPort;
+var SerialPort = null;
+var parser = null;
+
+try{
+	SerialPort = require('serialport').SerialPort;
+	parser = serialport.parsers.readline('\n');
+}
+catch(e){
+	console.log('Serial port not found. Switching to emulation mode.');
+	SerialPort = function(){
+		return {
+			write: function(buff){
+				sails.log.debug('Serial Write: ' + buff);
+			},
+			on: function(event, cb){
+				if (cb != null){
+					sails.log.debug('setting on for ' + event + ' with cb: ' + cb);
+					setTimeout(function(){
+						cb('v100,200,399,400,500,600');
+					}, 1000);
+				}
+			}
+		}
+	};
+}
 
 // Private
 var _jobs = [];
@@ -7,13 +31,13 @@ var _jobs = [];
 function fadeLights(channels){
 	sails.log.debug('Executing Fade Lights');
 	sails.log.debug(channels);
-	//port.write('f'  + channels.join(','));
+	port.write('f'  + channels.join(',') + '\r\n');
 };
-/*
+
 var port = new SerialPort('/dev/ttyAMA0', {
-	parser: serialport.parsers.readline('\n')
+	parser: parser
 });
-*/
+
 // Public
 var self = module.exports = {
 
@@ -24,8 +48,10 @@ var self = module.exports = {
 				console.log('Error getting schedules: ' + err);
 				return;
 			}
+			var transitions = schedules[0].transitions;
+
 			if (transitions != null && transitions.length > 0){
-				var transitions = schedules[0].transitions;
+				
 
 				transitions.forEach(function(transition){
 					var hour = transition.time.getHours();
@@ -46,6 +72,20 @@ var self = module.exports = {
   		for(var i = 0; i < _jobs.length; i++){
   			_jobs[i].stop();
   		}
-  	}  
+  	}, 
+
+  	getCurrentValues: function getCurrentValues(cb){
+  		port.write('r\r\n');
+  		port.on('data', function(data){
+  			port.on('data', null);
+  			if (cb != null){
+  				cb(data.substr(1).split(','));
+  			}
+  		});
+  	},
+
+  	setChannel: function setValue(pin, value){
+  		port.write('s' + pin + 'v' + value + '\r\n');
+  	}
 
 };
