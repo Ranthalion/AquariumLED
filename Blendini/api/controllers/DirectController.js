@@ -12,7 +12,8 @@ module.exports = {
   current: function(req, res){
     sails.log.debug('getting current settings');
     Scheduler.getCurrentValues(function(values){
-      return res.json(values);
+      sails.log.debug("In callback for current");
+      res.json(values);
     });
   },
 

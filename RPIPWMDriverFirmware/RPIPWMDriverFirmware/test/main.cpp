@@ -72,6 +72,13 @@ void setup() {
 	interrupts();             // enable all interrupts
 	
 	timer_flag = false;
+	
+	for(int i = 10; i > 0; i--)
+	{
+		toggleLED(BLUE_LED);
+		delay(100);
+		
+	}
 }
 
 void loop() {
@@ -181,7 +188,12 @@ void processCommand(String command)
 		setImmediate(channel, value);
 	}
 	else if (prefix == 'r'){
-		if (command.length() == 1)
+		#ifdef DEBUG
+		Serial.print(command);
+		Serial.print(" received with length ");
+		Serial.println(command.length());
+		#endif
+		if (command.length() == 2)
 		{
 			Serial.print('v');
 			for(int i = 0; i < 6; i++)
@@ -273,7 +285,9 @@ void processCommand(String command)
 		fadeFixedTime(newSettings);
 	}
 	else {
-		Serial.println("ERR: Command not recognized");
+		Serial.print("ERR: Command not recognized '");
+		Serial.print(prefix);
+		Serial.println("'");
 	}
 	
 }

@@ -1,29 +1,32 @@
 var Cron = require('cron');
-var SerialPort = null;
-var parser = null;
+var port = null;
 
-try{
-	SerialPort = require('serialport').SerialPort;
-	parser = serialport.parsers.readline('\n');
+
+if (require('os').type() == 'Linux'){
+	
+	var serialport = require('serialport');
+	var SerialPort = serialport.SerialPort;
+	port = new SerialPort('/dev/ttyAMA0', {
+		parser: serialport.parsers.readline('\r\n')
+	});	
 }
-catch(e){
-	console.log('Serial port not found. Switching to emulation mode.');
-	SerialPort = function(){
-		return {
-			write: function(buff){
-				sails.log.debug('Serial Write: ' + buff);
-			},
-			on: function(event, cb){
-				if (cb != null){
-					sails.log.debug('setting on for ' + event + ' with cb: ' + cb);
-					setTimeout(function(){
-						cb('v100,200,399,400,500,600');
-					}, 1000);
-				}
+else{
+	sails.log.debug('Serial port not found. Switching to emulation mode.');
+	port = {
+		write: function(buff){
+			sails.log.debug('Serial Write: ' + buff);
+		},
+		on: function(event, cb){
+			if (cb != null){
+				sails.log.debug('setting on for ' + event + ' with cb: ' + cb);
+				setTimeout(function(){
+					cb('v100,200,399,400,500,600');
+				}, 1000);
 			}
 		}
 	};
 }
+
 
 // Private
 var _jobs = [];
@@ -33,10 +36,6 @@ function fadeLights(channels){
 	sails.log.debug(channels);
 	port.write('f'  + channels.join(',') + '\r\n');
 };
-
-var port = new SerialPort('/dev/ttyAMA0', {
-	parser: parser
-});
 
 // Public
 var self = module.exports = {
@@ -48,21 +47,23 @@ var self = module.exports = {
 				console.log('Error getting schedules: ' + err);
 				return;
 			}
-			var transitions = schedules[0].transitions;
+			if (schedules != null && schedules.lengt > 0){
+				var transitions = schedules[0].transitions;
 
-			if (transitions != null && transitions.length > 0){
-				
-
-				transitions.forEach(function(transition){
-					var hour = transition.time.getHours();
-					var minute = transition.time.getMinutes();
-					var second = transition.time.getSeconds();
-					var cronTime = second + " " + minute + " " + hour + " * * *";
-					sails.log.debug('Loading ' + cronTime + ' ' + transition.values);
+				if (transitions != null && transitions.length > 0){
 					
-					var job = new Cron.CronJob(cronTime, function(){fadeLights(transition.values);}, null, true, null);
-					_jobs.push(job);
-					});
+
+					transitions.forEach(function(transition){
+						var hour = transition.time.getHours();
+						var minute = transition.time.getMinutes();
+						var second = transition.time.getSeconds();
+						var cronTime = second + " " + minute + " " + hour + " * * *";
+						sails.log.debug('Loading ' + cronTime + ' ' + transition.values);
+						
+						var job = new Cron.CronJob(cronTime, function(){fadeLights(transition.values);}, null, true, null);
+						_jobs.push(job);
+						});
+					}
 				}
 			});
 			
@@ -75,17 +76,22 @@ var self = module.exports = {
   	}, 
 
   	getCurrentValues: function getCurrentValues(cb){
-  		port.write('r\r\n');
-  		port.on('data', function(data){
-  			port.on('data', null);
+
+  		var data_cb = function(data){
+  			sails.log.debug('data :' + data)
+  			port.removeListener('data', data_cb);
   			if (cb != null){
   				cb(data.substr(1).split(','));
   			}
-  		});
+  		};
+
+  		sails.log.debug('Scheduler GetCurrentValues');
+  		port.write('r\r');
+  		port.on('data', data_cb);
   	},
 
   	setChannel: function setValue(pin, value){
-  		port.write('s' + pin + 'v' + value + '\r\n');
+  		port.write('s' + pin + 'v' + value + '\r');
   	}
 
 };
