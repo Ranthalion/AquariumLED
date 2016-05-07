@@ -36,7 +36,7 @@ blendiniApp.factory('SystemState', ['$resource',
 
 blendiniApp.controller('DirectCtrl', ['$scope', 'Channel', 'SystemState', '$http',
 	function($scope, Channel, SystemState, $http){
-		
+
 		$scope.scheduleEnabled = true;
 		$scope.settings = [];
 		$scope.state = {};
@@ -55,6 +55,7 @@ blendiniApp.controller('DirectCtrl', ['$scope', 'Channel', 'SystemState', '$http
 		});
 
 		Channel.query({}, function(response){
+			console.log('Channels recieved.  Setting readonly to ' + $scope.scheduleEnabled);
 			for(var i = 0; i <response.length; i++){
 				var channel = response[i];
 				var rgb = 'rgb(' + channel.red + ',' + channel.green + ',' + channel.blue + ')';
@@ -65,7 +66,7 @@ blendiniApp.controller('DirectCtrl', ['$scope', 'Channel', 'SystemState', '$http
     				hideLimitLabels: true,
 					floor: 0,
 					ceil: 4095,
-					readOnly: true,
+					readOnly: $scope.scheduleEnabled,
 					step: 1,
 					getPointerColor: getColor(channel.red, channel.green, channel.blue),
 					getSelectionBarColor: getColor(channel.red, channel.green, channel.blue),
@@ -87,6 +88,7 @@ blendiniApp.controller('DirectCtrl', ['$scope', 'Channel', 'SystemState', '$http
 		$scope.$watch('scheduleEnabled', function(newVal, oldVal){ 
 			if (newVal != oldVal){
 				$scope.state.mode = (newVal ? 'schedule' : 'direct');
+				console.log('Slider Readonly set to ' + newVal);
 				$scope.settings.forEach(function(setting){ 
 					setting.sliderOptions.readOnly=newVal; 
 				});
