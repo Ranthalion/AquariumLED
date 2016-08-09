@@ -3,7 +3,7 @@ var port = null;
 
 
 if (require('os').type() == 'Linux'){
-	
+	sails.log.debug('Serial detected.');
 	var serialport = require('serialport');
 	var SerialPort = serialport.SerialPort;
 	port = new SerialPort('/dev/ttyAMA0', {
@@ -27,14 +27,18 @@ else{
 	};
 }
 
+port.on('data', function(data){
+	sails.log.debug('msg :' + data);
+});
 
 // Private
 var _jobs = [];
 
 function fadeLights(channels){
 	sails.log.debug('Executing Fade Lights');
-	sails.log.debug(channels);
-	port.write('f'  + channels.join(',') + '\r\n');
+	var command = 'f'  + channels.join(',');
+	sails.log.debug(command);
+	port.write(command + '\r');
 };
 
 // Public
@@ -47,20 +51,24 @@ var self = module.exports = {
 				console.log('Error getting schedules: ' + err);
 				return;
 			}
-			if (schedules != null && schedules.lengt > 0){
+			if (schedules != null && schedules.length > 0){
 				var transitions = schedules[0].transitions;
 
 				if (transitions != null && transitions.length > 0){
-					
 
+					
 					transitions.forEach(function(transition){
+						
 						var hour = transition.time.getHours();
 						var minute = transition.time.getMinutes();
 						var second = transition.time.getSeconds();
 						var cronTime = second + " " + minute + " " + hour + " * * *";
 						sails.log.debug('Loading ' + cronTime + ' ' + transition.values);
 						
-						var job = new Cron.CronJob(cronTime, function(){fadeLights(transition.values);}, null, true, null);
+						var job = new Cron.CronJob(cronTime, function(){
+							sails.log.debug('In CRON callback');
+							fadeLights(transition.values);
+						}, null, true, null);
 						_jobs.push(job);
 						});
 					}
@@ -78,7 +86,7 @@ var self = module.exports = {
   	getCurrentValues: function getCurrentValues(cb){
 
   		var data_cb = function(data){
-  			sails.log.debug('data :' + data)
+  			sails.log.debug('data :' + data);
   			port.removeListener('data', data_cb);
   			if (cb != null){
   				cb(data.substr(1).split(','));
@@ -91,6 +99,7 @@ var self = module.exports = {
   	},
 
   	setChannel: function setValue(pin, value){
+  		sails.log.debug('s'+ pin  + 'v' + value);
   		port.write('s' + pin + 'v' + value + '\r');
   	}
 

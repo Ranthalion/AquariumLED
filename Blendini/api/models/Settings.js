@@ -5,6 +5,10 @@ module.exports = {
 
     channelSettings: {
       type: 'array'
+    }, 
+
+    pwmFrequency: {
+    	type: 'float'
     }
     
   }

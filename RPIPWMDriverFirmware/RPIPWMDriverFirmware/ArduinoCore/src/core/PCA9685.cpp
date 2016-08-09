@@ -152,6 +152,21 @@ long PCA9685::readChannel(uint8_t pin)
 	
 }
 
+byte PCA9685::readRegister(uint8_t location)
+{
+	byte val;
+	Wire.beginTransmission(_address);
+	Wire.write(location);
+	Wire.endTransmission();
+
+	Wire.requestFrom(_address, 1);
+	while (Wire.available())
+	{
+		val = Wire.read();
+	}
+	return val;
+}
+
 void PCA9685::setPWM(uint8_t num, uint16_t on, uint16_t off) {
 	
 	Wire.beginTransmission(_address);

@@ -160,8 +160,17 @@ void loop() {
 	f - Fade channels to specified values
 		input:	f{[comma separated values]}
 		output: None
+	q - Set PWM frequency
+		input :q{frequency}
+		output: None
+	z - reset
+		input: None
+		output: None
+	m - Read a register
+		input: m{register address}
+		output: {value}
 	
-	
+	//TODO: [ML] Add PCA9685 reset option
 	Pending commands
 	ph
 	temp
@@ -283,6 +292,30 @@ void processCommand(String command)
 		newSettings[j++] = buff.toInt();
 		
 		fadeFixedTime(newSettings);
+	}
+	else if (prefix == 'q'){
+		if (command.length() == 1){
+			
+		}
+		else
+		{
+			float val = command.substring(1).toFloat();
+			pwm.setFrequency(val);
+		}		
+	}
+	else if (prefix == 'z'){
+		pwm.reset();
+		Serial.println('Reset complete');
+	}
+	else if (prefix == 'm')
+	{
+		byte val;
+		uint8_t address;
+		address = command.substring(1).toInt();
+		val = pwm.readRegister(address);
+		Serial.print(address);
+		Serial.print(": ");
+		Serial.println(val);
 	}
 	else {
 		Serial.print("ERR: Command not recognized '");

@@ -54,6 +54,7 @@ class PCA9685 {
   void setChannel(uint8_t channel, long value);
   void setChannels(long* values);
   long readChannel(uint8_t channel);
+  byte readRegister(uint8_t location);
   
 
  private:
