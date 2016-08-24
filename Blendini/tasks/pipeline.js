@@ -30,25 +30,26 @@ var cssFilesToInject = [
 var jsFilesToInject = [
   
   // Load sails.io before everything else
-  'js/dependencies/sails.io.js',
+  //'js/dependencies/sails.io.js',
 
   '/bower_components/jquery/dist/jquery.js',
   '/bower_components/angular/angular.js',
+  '/bower_components/moment/moment.js',
+  '/bower_components/angular-ui-router/release/angular-ui-router.min.js',
   '/bower_components/angular-resource/angular-resource.js',
   '/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
   '/bower_components/bootstrap/dist/js/boostrap.js',
   '/bower_components/bootstrap/js/modal.js',
   '/bower_components/toastr/toastr.js',
-  '/bower_components/moment/moment.js',
+  
   '/bower_components/angularjs-slider/dist/rzslider.min.js',
   '/bower_components/angular-bootstrap-toggle-switch/angular-toggle-switch.min.js',  
-
+  
   // Dependencies like jQuery, or Angular are brought in here
   'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.
-   
    'js/**/*.js',
    'app/**/*.js'
 

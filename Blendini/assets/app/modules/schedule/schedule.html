@@ -1,0 +1,60 @@
+<div  class='container' ng-cloak>
+	<form name='scheduleForm' ng-submit="scheduleForm.$dirty && save()">
+		<div class='row'>
+			<div class='col-sm-2'>
+				<label>Time</label>
+			</div>
+			<div class='col-sm-10'>
+				<div class='row'>
+					<div class='col-sm-2' ng-repeat='port in settings'>
+						<label>{{port.color}}</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class='row' style='margin-bottom:10px;'>
+			
+			<div class='col-sm-2'>
+				<uib-timepicker ng-model="settingToAdd.time" minute-step="5" show-spinners="false"></uib-timepicker>
+			</div>
+
+			<div class='col-sm-9'>
+				
+				<div class='row'>
+					<div ng-repeat="num in settingToAdd.values track by $index" class='col-sm-2' 
+						style='background-color:rgb({{settings[$index].red}}, {{settings[$index].green}}, {{settings[$index].blue}})'>				
+						<input type='number' min='0' max='4095' class='form-control' ng-model='settingToAdd.values[$index]'>
+					</div>
+					
+				</div>
+			</div>
+			<div class='col-sm-1'>
+				<button type='button' ng-click='addSchedule()' class='btn btn-info pull-right'>Add</button>	
+			</div>
+		</div>
+		<div ng-repeat='setting	in schedule.transitions | orderBy: "time":false:timeComparator' class='row'>
+			<div class='col-sm-2'>
+				<uib-timepicker ng-model="setting.time" minute-step="5" show-spinners="false"></uib-timepicker>
+			</div>
+			<div class='col-sm-9'>
+				
+				<div class='row'>
+					<div ng-repeat="num in setting.values track by $index" class='col-sm-2' 
+						style='background-color:rgb({{settings[$index].red}}, {{settings[$index].green}}, {{settings[$index].blue}})'>				
+						<input type='number' min='0' max='4095' class='form-control' ng-model='setting.values[$index]'>
+					</div>
+					<i class='fa fa-remove' ng-click='remove(setting)' style='position: absolute; margin: 10px; cursor: pointer;'></i>
+				</div>
+			
+			</div>
+		</div>
+
+		<div class="row margin-top-10">
+			<div class="col-sm-12">
+				<button type='submit' class='btn btn-primary pull-right' ng-disabled="scheduleForm.$pristine || !scheduleForm.$valid">Save</button>
+			</div>
+		</div>
+		
+		
+	</form>
+</div>

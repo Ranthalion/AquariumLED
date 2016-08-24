@@ -1,0 +1,25 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-xs-6">
+                <h1>
+                    <i class="fa fa-lightbulb-o"></i> Lights
+                </h3>
+            </div>
+            <div class="col-xs-6 text-right">
+                <toggle-switch ng-model='directVm.scheduleEnabled' on-label='Schedule' off-label='Direct' class='switch-success' knob-label="TV">
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-footer">
+        <div class='container-fluid'>
+            <div class='row'>
+                <div class='col-sm-12' ng-repeat='setting in directVm.settings | orderBy: "port"'>
+                    <rzslider rz-slider-model="setting.value" rz-slider-options="setting.sliderOptions"></rzslider>
+                </div>  
+            </div>
+        </div>
+    </div>
+    
+</div>

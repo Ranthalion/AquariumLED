@@ -1,6 +1,4 @@
-X	1. Add CRON
-X	2. Add Serial communication
-X	3. Add something to keep CRON in sync with the application
-X	4. Add code to get the current channel settings in the Direct controller and on the direct view
-X	5. DirectController setmode and update implementation
-	6. Fix the Direct/Manual problem
+X	1. Add ui router
+	2. Update index and layout to use ui router and ui-view
+	3 .Debug and troubleshoot
+	4. ???

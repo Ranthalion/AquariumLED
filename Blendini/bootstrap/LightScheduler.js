@@ -23,7 +23,8 @@ else{
 					cb('v100,200,399,400,500,600');
 				}, 1000);
 			}
-		}
+		},
+		removeListener: function(){}
 	};
 }
 
@@ -36,6 +37,8 @@ var _jobs = [];
 
 function fadeLights(channels){
 	sails.log.debug('Executing Fade Lights');
+	//Write z to reset the pca9685 to ensure that PWM is enabled.
+	port.write('z\r');
 	var command = 'f'  + channels.join(',');
 	sails.log.debug(command);
 	port.write(command + '\r');
@@ -73,8 +76,15 @@ var self = module.exports = {
 						});
 					}
 				}
-			});
-			
+				//push a reset job for noon every day
+				_jobs.push(new Cron.CronJob('0 0 12 * * *', function(){
+					port.write('z\r');
+				}, null, true, null));
+				//push a reset job for just after noon every day
+				_jobs.push(new Cron.CronJob('0 5 12 * * *', function(){
+					port.write('z\r');
+				}, null, true, null));
+			});			
 	},
 	
   	clear: function clear(){

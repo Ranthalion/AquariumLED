@@ -33,7 +33,8 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': {
-    view: 'homepage'
+    view: 'index'
+    //view: 'homepage'
   },
 
   /***************************************************************************
@@ -45,14 +46,7 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  '/settings': {
-    view: 'settings'
-  },
-
-  '/scheduler': {
-    view: 'scheduler'
-  },
-
+  
   '/refresh': 'ScheduleController.refresh',
   '/clear': 'ScheduleController.clear',
   '/start': 'ScheduleController.start',

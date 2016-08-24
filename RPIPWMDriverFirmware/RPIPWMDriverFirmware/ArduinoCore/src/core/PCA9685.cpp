@@ -27,7 +27,6 @@ void PCA9685::reset(void) {
    Wire.write(PCA9685_MODE1);
    Wire.write(0x20);				//Auto Increment
    Wire.endTransmission();
-   setAll(0);
 }
 
 void PCA9685::setFrequency(float frequency) {
