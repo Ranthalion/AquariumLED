@@ -2,13 +2,18 @@
 
 	angular.module('blendiniApp').controller('scheduleController',scheduleController);
 	
-	scheduleController.$inject = ['$scope', 'moment', 'Channel', 'Schedule', '$http'];
+	scheduleController.$inject = ['$scope', 'moment', 'channelService', 'scheduleService', '$http'];
 
-	function scheduleController($scope, moment, Channel, Schedule, $http){
+	function scheduleController($scope, moment, channelService, scheduleService, $http){
 		$scope.schedule = {};
-		$scope.settings = Channel.query();
+		$scope.settings = channelService.query();
+		$scope.settingToAdd = {
+			time: null,
+			values: [0,0,0,0,0,0]
+		};
+
 		
-		var schedules = Schedule.query({}, function(schedules){
+		var schedules = scheduleService.query({}, function(schedules){
 			if (schedules && schedules[0]){
 				$scope.schedule = schedules[0]; 
 			}
@@ -18,7 +23,11 @@
 			if (!$scope.schedule.transitions){
 				$scope.schedule.transitions = [];
 			}
-			$scope.schedule.transitions.push({time: moment(), values: [0,0,0,0,0,0]});
+			$scope.schedule.transitions.push($scope.settingToAdd);
+			$scope.settingToAdd = {
+				time: null,
+				values: [0,0,0,0,0,0]
+			};
 			$scope.scheduleForm.$setDirty();
 		};
 
@@ -29,7 +38,7 @@
 		};
 
 		$scope.save = function(){
-			Schedule.save($scope.schedule, function(){
+			scheduleService.save($scope.schedule, function(){
 				console.log('refresh now.');
 				$http({
 				  method: 'POST',

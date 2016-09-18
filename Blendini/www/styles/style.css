@@ -11,6 +11,15 @@ body {
     background-color: #eee;
 }
 
+.margin-top-10{
+    margin-top:10px;
+}
+
+
+.margin-top-20{
+    margin-top:20px;
+}
+
 @media(min-width:768px) {
     body {
         margin-top: 50px;

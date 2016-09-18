@@ -5,16 +5,18 @@
 	channelSettingController.$inject = ['$scope', '$timeout', 'channelService'];
 
 	function channelSettingController($scope, $timeout, channelService){
-		$scope.getTextColor = function(r,g,b){
+		var channelSetting = this;
+
+		channelSetting.getTextColor = function(r,g,b){
 			var yiq = ((r*299)+(g*587)+(b*114))/1000;
 			return (yiq >= 128) ? 'black' : 'white';
 		};
 		var timeout = null;
 		var saveUpdates = function() {
-			if ($scope['form_' + $scope.$id].$valid) {
-				channelService.update($scope.setting);
+			if (channelSetting['form_' + $scope.$id].$valid) {
+				channelService.update(channelSetting.setting);
 			} else {
-				toastr.error('Unable to save settings for Port ' + $scope.setting.port + ' because it is invalid.');
+				toastr.error('Unable to save settings for Port ' + channelSetting.setting.port + ' because it is invalid.');
 			}
 		};
 		var debounceUpdate = function(newVal, oldVal) {
@@ -25,10 +27,10 @@
 				timeout = $timeout(saveUpdates, 2000);
 			}
 		};
-		$scope.$watch('setting.color', debounceUpdate);
-		$scope.$watch('setting.red', debounceUpdate);
-		$scope.$watch('setting.green', debounceUpdate);
-		$scope.$watch('setting.blue', debounceUpdate);
+		$scope.$watch('channelSetting.setting.color', debounceUpdate);
+		$scope.$watch('channelSetting.setting.red', debounceUpdate);
+		$scope.$watch('channelSetting.setting.green', debounceUpdate);
+		$scope.$watch('channelSetting.setting.blue', debounceUpdate);
 	}
 
 })();

@@ -4,7 +4,6 @@
 	 	'ngResource', 
 	 	'rzModule', 
 	 	'toggle-switch', 
-	 	'channelSetting', 
 	 	'ui.bootstrap', 
 	 	'ui.router'
  	]);

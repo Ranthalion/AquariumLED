@@ -1,3 +1,93 @@
-<div>
-	Home
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <direct></direct>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-camera fa-3x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">Latest Snapshot <a href="#" style="color:white" ng-click='homeVm.refreshSnapshot()'><i class="fa fa-refresh"></i></a></div>
+                            
+                        </div>
+                    </div>
+                </div>                
+                <div class="panel-footer" back-img="{{homeVm.snapshotUrl}}" style="height:321px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-tachometer fa-3x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">Schedule</div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="panel-footer">
+                        <div class='row'>
+                            <div class='col-sm-2 text-right'>
+                                <label>Time</label>
+                            </div>
+                            <div class='col-sm-10'>
+                                <div class='row'>
+                                    <div class='col-sm-2 text-center' ng-repeat='port in homeVm.settings'>
+                                        <label>{{port.color}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-repeat='setting in homeVm.schedule.transitions | orderBy: "time":false:homeVm.timeComparator' class='row'>
+                        <div class='col-sm-2 text-right'>
+                            <span>{{setting.time | date:'shortTime'}}</span>
+                        </div>
+                        <div class='col-sm-10'>
+                            
+                            <div class='row'>
+                                <div ng-repeat="num in setting.values track by $index" class='col-sm-2 text-center'>              
+                                    {{setting.values[$index]}}
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+
+
+                    </div>
+                
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-area-chart fa-3x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">PH &amp; Temperature</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
 </div>

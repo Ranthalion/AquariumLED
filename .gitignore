@@ -16,5 +16,7 @@
 *.b#9
 Debug/
 Release/
+Blendini/tmp/
+Blendini/www/
 Blendini/snapshot.jpg
 Blendini/snapshot.jpg

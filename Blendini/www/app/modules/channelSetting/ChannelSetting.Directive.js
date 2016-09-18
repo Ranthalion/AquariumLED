@@ -1,5 +1,5 @@
 (function(){
-	angular.module('channelSetting', []).directive('channelSetting', function(){
+	angular.module('blendiniApp').directive('channelSetting', function(){
 		
 		return {
 			restrict: 'EA',
@@ -8,7 +8,8 @@
 			},
 			controller: 'channelSettingController',
 			controllerAs: 'channelSetting',
-			templateUrl: 'app/modules/channelSetting/ChannelSettingView.html'
+			templateUrl: 'app/modules/channelSetting/ChannelSetting.html',
+			bindToController: true
 		};
 	});
 }());
