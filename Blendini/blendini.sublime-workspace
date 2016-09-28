@@ -20,83 +20,91 @@
 	"buffers":
 	[
 		{
-			"file": "assets/app/modules/direct/directController.js",
+			"contents": "/**\n * SnapshotController\n *\n * @description :: Server-side logic for serving images and video from the IP camera\n * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers\n */\n\nmodule.exports = {\n	\n	small: function(req, res){\n\n		var curl = require('curlrequest');\n		var fs = require('fs');\n\n		var url = 'http://camera:81/img/snapshot.cgi?user=admin&pwd=888888';\n		\n		var opts = {\n			url: url,\n			output: 'snapshot.jpg',\n			get: ''\n		};\n		\n		curl.request(opts, function cb(err, data, meta){\n			fs.readFile('snapshot.jpg', function(error, img) {\n				res.set('Content-Type', 'image/jpeg');\n				res.send(img);\n			});\n		});\n	}\n};\n",
+			"file": "api/controllers/SnapshotController.js",
+			"file_size": 673,
+			"file_write_time": 131162985598324120,
 			"settings":
 			{
-				"buffer_size": 2219,
+				"buffer_size": 647,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "(function(){\n\n	angular.module('blendiniApp').controller('channelSettingController', channelSettingController);\n	\n	channelSettingController.$inject = ['$scope', '$timeout', 'channelService'];\n\n	function channelSettingController($scope, $timeout, channelService){\n		$scope.getTextColor = function(r,g,b){\n			var yiq = ((r*299)+(g*587)+(b*114))/1000;\n			return (yiq >= 128) ? 'black' : 'white';\n		};\n		var timeout = null;\n		var saveUpdates = function() {\n			if ($scope['form_' + $scope.$id].$valid) {\n				channelService.update($scope.setting);\n			} else {\n				toastr.error('Unable to save settings for Port ' + $scope.setting.port + ' because it is invalid.');\n			}\n		};\n		var debounceUpdate = function(newVal, oldVal) {\n			if (newVal != oldVal) {\n				if (timeout) {\n					$timeout.cancel(timeout);\n				}\n				timeout = $timeout(saveUpdates, 2000);\n			}\n		};\n		$scope.$watch('setting.color', debounceUpdate);\n		$scope.$watch('setting.red', debounceUpdate);\n		$scope.$watch('setting.green', debounceUpdate);\n		$scope.$watch('setting.blue', debounceUpdate);\n	}\n\n})();",
-			"file": "assets/app/shared/channelSetting/ChannelSetting.Controller.js",
-			"file_size": 1093,
-			"file_write_time": 131161375868625745,
+			"file": "assets/app/modules/home/home.html",
 			"settings":
 			{
-				"buffer_size": 1060,
+				"buffer_size": 3909,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "(function(){\n	angular.module('channelSetting', []).directive('channelSetting', function(){\n		\n		return {\n			restrict: 'EA',\n			scope: {\n				setting: '='\n			},\n			controller: 'channelSettingController',\n			controllerAs: 'channelSetting',\n			templateUrl: 'app/shared/channelSetting/ChannelSettingView.html'\n		};\n	});\n}());",
-			"file": "assets/app/shared/channelSetting/ChannelSetting.Directive.js",
-			"file_size": 333,
-			"file_write_time": 131161376094598564,
+			"contents": "Package Control Messages\n========================\n\nPackage Control\n---------------\n\n  Version 3.2 Release Notes\n  \n  This version of Package Control focuses on bug-fixes, with notable changes\n  including:\n  \n   - OS X TLS trust roots are exported using APIs to prevent the error message\n     displayed to some El Capitan users\n  \n   - Theme, syntax and color scheme upgrades have been improved and should result\n     in fewer popup messages when filenames change\n  \n   - Various bugs related to installing dependencies have been resolved\n  \n   - Windows and OS X trust roots are exported in a way that valid/invalid purpose\n     information is now communicated to the OpenSSL-based Python ssl module\n  \n   - Further improvements have been made to handling of git/hg package upgrades\n  \n   - The Windows WinINet downloader has improved compatibility with Windows 10\n",
 			"settings":
 			{
-				"buffer_size": 320,
+				"buffer_size": 865,
+				"line_ending": "Windows",
+				"name": "Package Control Messages",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"file": "bootstrap/LightScheduler.js",
+			"settings":
+			{
+				"buffer_size": 2958,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "<div class='well' style='background:rgb({{channelSetting.setting.red}},{{channelSetting.setting.green}},{{channelSetting.setting.blue}}); color: {{channelSetting.getTextColor(channelSetting.setting.red, channelSetting.setting.green, channelSetting.setting.blue)}};'>\n	<form name=\"form_{{$id}}\" novalidate>\n		<h3 class='text-center'>Port {{channelSetting.setting.port}}</h3>\n		<label for='color_{{$id}}'>Color</label>\n		<input type='text' class='form-control' id='color_{{$id}}' ng-model='channelSetting.setting.color' />\n		<div class='row hidden-sm hidden-xs mt10'>\n			<div class='col-md-4 text-center'>R</div>\n			<div class='col-md-4 text-center'>G</div>\n			<div class='col-md-4 text-center'>B</div>\n		</div>\n		<div class='row'>\n			<div class='col-md-4'>\n			<label class='visible-sm visible-xs mt10'>R</label>\n			<input type='number' min='0' max='255' class='form-control' id='red_{{$id}}' ng-model='channelSetting.setting.red'>\n			</div>\n			<div class='col-md-4'>\n			<label class='visible-sm visible-xs mt10'>G</label>\n				<input type='number' min='0' max='255' class='form-control'  id='green_{{$id}}' ng-model='channelSetting.setting.green'>\n			</div>\n			<div class='col-md-4'>\n			<label class='visible-sm visible-xs mt10'>B</label>\n				<input type='number' min='0' max='255' class='form-control'  id='blue_{{$id}}' ng-model='channelSetting.setting.blue'>\n			</div>\n		</div>\n	</form>\n</div>",
-			"file": "assets/app/shared/channelSetting/ChannelSetting.html",
-			"file_size": 1419,
-			"file_write_time": 131161377218488111,
+			"file": "tasks/config/copy.js",
 			"settings":
 			{
-				"buffer_size": 1394,
+				"buffer_size": 952,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "assets/app/services/systemStateService.js",
-			"settings":
-			{
-				"buffer_size": 280,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "assets/app/services/scheduleService.js",
-			"settings":
-			{
-				"buffer_size": 344,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "assets/app/services/channelService.js",
-			"settings":
-			{
-				"buffer_size": 260,
-				"line_ending": "Windows"
-			}
-		},
-		{
+			"contents": "{\n  \"generators\": {\n    \"modules\": {}\n  }, \n   \"hooks\": {\n        \"sockets\": false,\n        \"pubsub\": false \n    }\n    \"paths\": {\n        \"public\": \"assets\"\n    \n}\n}",
 			"file": ".sailsrc",
+			"file_size": 183,
+			"file_write_time": 131169071835456393,
 			"settings":
 			{
-				"buffer_size": 116,
+				"buffer_size": 165,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "views/index.ejs",
+			"file": "api/controllers/ScheduleController.js",
 			"settings":
 			{
-				"buffer_size": 51,
+				"buffer_size": 684,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "assets/app/modules/schedule/schedule.html",
+			"settings":
+			{
+				"buffer_size": 2104,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "assets/app/modules/home/home.Controller.js",
+			"settings":
+			{
+				"buffer_size": 1405,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "assets/app/app.routes.js",
+			"settings":
+			{
+				"buffer_size": 931,
 				"line_ending": "Windows"
 			}
 		}
@@ -151,23 +159,45 @@
 	"expanded_folders":
 	[
 		"/D/projects/AquariumLED/Blendini",
-		"/D/projects/AquariumLED/Blendini/api/controllers",
-		"/D/projects/AquariumLED/Blendini/api/models",
-		"/D/projects/AquariumLED/Blendini/api/policies",
-		"/D/projects/AquariumLED/Blendini/api/responses",
-		"/D/projects/AquariumLED/Blendini/api/services",
 		"/D/projects/AquariumLED/Blendini/assets",
 		"/D/projects/AquariumLED/Blendini/assets/app",
-		"/D/projects/AquariumLED/Blendini/assets/app/modules/direct",
-		"/D/projects/AquariumLED/Blendini/assets/app/shared",
-		"/D/projects/AquariumLED/Blendini/assets/templates",
-		"/D/projects/AquariumLED/Blendini/www/app/components",
-		"/D/projects/AquariumLED/Blendini/www/styles"
+		"/D/projects/AquariumLED/Blendini/assets/app/modules",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/home",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/schedule",
+		"/D/projects/AquariumLED/Blendini/assets/app/services",
+		"/D/projects/AquariumLED/Blendini/bootstrap"
 	],
 	"file_history":
 	[
-		"/D/projects/AquariumLED/Blendini/assets/app/app.module.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/schedule/schedule.Controller.js",
+		"/D/projects/AquariumLED/Blendini/views/layout.ejs",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/home/home.html",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/direct/direct.Controller.js",
+		"/D/projects/AquariumLED/Blendini/package.json",
 		"/D/projects/AquariumLED/Blendini/config/routes.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/direct/direct.Directive.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/direct/direct.html",
+		"/D/projects/AquariumLED/Blendini/assets/app/app.routes.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/channelSetting/ChannelSetting.Directive.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/channelSetting/ChannelSetting.Controller.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/schedule/schedule.html",
+		"/D/projects/AquariumLED/Blendini/assets/styles/style.css",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/channelSetting/ChannelSetting.html",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/settings/settings.Controller.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/settings/settings.html",
+		"/D/projects/AquariumLED/Blendini/assets/app/app.module.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/direct/directController.js",
+		"/D/projects/AquariumLED/Blendini/TODO.txt",
+		"/D/projects/AquariumLED/Blendini/tasks/pipeline.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/modules/home/home.Controller.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/shared/channelSetting/ChannelSetting.html",
+		"/D/projects/AquariumLED/Blendini/assets/app/shared/channelSetting/ChannelSetting.Directive.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/shared/channelSetting/ChannelSetting.Controller.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/services/systemStateService.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/services/scheduleService.js",
+		"/D/projects/AquariumLED/Blendini/assets/app/services/channelService.js",
+		"/D/projects/AquariumLED/Blendini/.sailsrc",
+		"/D/projects/AquariumLED/Blendini/views/index.ejs",
 		"/D/projects/AquariumLED/Blendini/assets/js/app.js",
 		"/D/projects/AquariumLED/Blendini/bootstrap/LightScheduler.js",
 		"/D/projects/AquariumLED/Blendini/views/index.html",
@@ -176,11 +206,8 @@
 		"/D/projects/AquariumLED/Blendini/api/controllers/SystemStateController.js",
 		"/D/projects/AquariumLED/Blendini/api/models/Settings.js",
 		"/D/projects/AquariumLED/Blendini/config/models.js",
-		"/D/projects/AquariumLED/Blendini/assets/app/app.routes.js",
 		"/D/projects/AquariumLED/Blendini/tasks/config/sails-linker.js",
 		"/D/projects/AquariumLED/Blendini/api/controllers/ChannelController.js",
-		"/D/projects/AquariumLED/Blendini/TODO.txt",
-		"/D/projects/AquariumLED/Blendini/package.json",
 		"/D/projects/AquariumLED/Blendini/api/controllers/DirectController.js",
 		"/D/projects/AquariumLED/Blendini/api/controllers/ScheduleController.js",
 		"/D/projects/AquariumLED/Blendini/views/homepage.ejs",
@@ -192,10 +219,7 @@
 		"/D/projects/AquariumLED/Blendini/config/env/production.js",
 		"/D/projects/AquariumLED/Blendini/config/env/development.js",
 		"/D/projects/AquariumLED/Blendini/api/models/Schedule.js",
-		"/D/projects/AquariumLED/Blendini/assets/styles/style.css",
-		"/D/projects/AquariumLED/Blendini/tasks/pipeline.js",
 		"/D/projects/AquariumLED/Blendini/assets/app/shared/channelSetting/ChannelSettingDirective.js",
-		"/D/projects/AquariumLED/Blendini/views/layout.ejs",
 		"/D/projects/AquariumLED/Blendini/views/settings.ejs",
 		"/D/projects/AquariumLED/Blendini/assets/app/shared/channelSetting/ChannelSettingView.html",
 		"/D/projects/AquariumLED/Blendini/app/shared/channelSetting/ChannelSettingDirective.js",
@@ -318,115 +342,29 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "assets/app/modules/direct/directController.js",
+					"file": "api/controllers/SnapshotController.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2219,
+						"buffer_size": 647,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								690,
-								690
+								463,
+								463
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "assets/app/shared/channelSetting/ChannelSetting.Controller.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1060,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								112,
-								112
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "assets/app/shared/channelSetting/ChannelSetting.Directive.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 320,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								320,
-								320
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "assets/app/shared/channelSetting/ChannelSetting.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1394,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								565,
-								565
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
@@ -437,48 +375,80 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "assets/app/services/systemStateService.js",
+					"buffer": 1,
+					"file": "assets/app/modules/home/home.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 280,
+						"buffer_size": 3909,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								12,
-								0
+								2668,
+								2668
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 631.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 865,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								865,
+								865
+							]
+						],
+						"settings":
+						{
+							"auto_indent": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_width": 2,
+							"word_wrap": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "assets/app/services/scheduleService.js",
+					"buffer": 3,
+					"file": "bootstrap/LightScheduler.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 344,
+						"buffer_size": 2958,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								344
+								940,
+								940
 							]
 						],
 						"settings":
@@ -486,55 +456,56 @@
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 415.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "assets/app/services/channelService.js",
+					"buffer": 4,
+					"file": "tasks/config/copy.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 260,
+						"buffer_size": 952,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								251,
-								251
+								800,
+								800
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 73.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 5,
 					"file": ".sailsrc",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 116,
+						"buffer_size": 165,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								116,
-								116
+								114,
+								114
 							]
 						],
 						"settings":
@@ -545,35 +516,122 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"file": "views/index.ejs",
-					"semi_transient": false,
+					"buffer": 6,
+					"file": "api/controllers/ScheduleController.js",
+					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 51,
+						"buffer_size": 684,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								51,
-								51
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/EJS/EJS.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "assets/app/modules/schedule/schedule.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2104,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1865,
+								1865
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 231.0,
+						"zoom_level": 1.0
+					},
 					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "assets/app/modules/home/home.Controller.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1405,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								593,
+								599
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 39.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "assets/app/app.routes.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 931,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								483,
+								483
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
 					"type": "text"
 				}
 			]
