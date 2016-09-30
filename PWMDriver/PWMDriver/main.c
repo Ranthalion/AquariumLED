@@ -1,41 +1,82 @@
-/*
- * PWMDriver.c
- *
- * Created: 9/26/2016 9:30:17 PM
- * Author : Michael
- */ 
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <util/delay.h>
+#include "leds.h"
 
 #define USART_BAUDRATE 9600
 #define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 16UL))) - 1)
 
-//PD4 - Orange
-#define ORANGE_ON (PORTD |= 1 << PORTD4)
-#define ORANGE_OFF (PORTD &= ~(1 << PORTD4))
-#define ORANGE_TOGGLE (PORTD ^= 1 << PORTD4)
-
-//PD2 - White
-#define WHITE_ON (PORTD |= 1 << PORTD2)
-#define WHITE_OFF (PORTD &= ~(1 << PORTD2))
-#define WHITE_TOGGLE (PORTD ^= 1 << PORTD2)
-
-//PE0 - Blue
-#define BLUE_ON (PORTE |= 1 << PORTE0)
-#define BLUE_OFF (PORTE &= ~(1 << PORTE0))
-#define BLUE_TOGGLE (PORTE ^= 1 << PORTE0)
-
 void init();
-void startup_animation();
 
+volatile unsigned char commandBuffer[32];
+volatile uint8_t idx = 0;
+
+/* 
+
+	Commands
+	w - Toggle the white LED
+		input:  None
+		output: None
+	o - Toggle the orange LED
+		input:  None
+		output: None
+	b - Toggle the blue LED
+		input:  None
+		output: None
+		
+	Pending
+	s -	Set channel immediate 
+		input:  s{channel}v{value}
+		output: None		
+	r - Read channel value. If channel is not specified, then all values are returned
+		input:  r[{channel}]
+		output: c{channel}v{value} or v{values}
+	i - Set all channels immediately 
+		input:  i{[comma separated values]}
+		output: None
+	a - Set all channels to specified value
+		input:	a{value}
+		output: None
+	f - Fade channels to specified values
+		input:	f{[comma separated values]}
+		output: None
+	
+	Pending commands
+	ph
+	temp
+	waterlevel		
+
+*/
 int main(void)
 {
 	init();
 	
     while (1) 
     {
+		if (idx > 0 && (commandBuffer[idx - 1] == 'a' || commandBuffer[idx - 1] == '\n'))
+		{
+			//Process the command
+			if (commandBuffer[0] == 'w')
+			{
+				
+				WHITE_TOGGLE;
+			}
+			else if (commandBuffer[0] == 'o')
+			{
+				ORANGE_TOGGLE;
+			}
+			else if (commandBuffer[0] == 'b')
+			{
+				BLUE_TOGGLE;
+			}
+			else
+			{
+				//Serial write "Command not recognized: <CMD>
+			}
+			
+			idx = 0;
+			
+		}
 		
 		
     }
@@ -43,50 +84,38 @@ int main(void)
 
 void init()
 {	
+	init_leds();
+	startup_animation();
+	
 	UCSR0B = (1 << RXEN0) | (1 << TXEN0);   // Turn on the transmission and reception circuitry
 	UCSR0C = (1 << UCSZ00) | (1 << UCSZ10); // Use 8-bit character sizes
-
 	
 	UBRR0H = (BAUD_PRESCALE >> 8); // Load upper 8-bits of the baud rate value into the high byte of the UBRR register
 	UBRR0L = BAUD_PRESCALE; // Load lower 8-bits of the baud rate value into the low byte of the UBRR register
-	
-	DDRD |= 1 << DDRD4;		//Enable output for orange LED
-	DDRD |= 1 << DDRD2;		//Enable output for white LED
-	DDRE |= 1 << DDRE0;		//Enable output for blue LED
-	
-	startup_animation();
 	
 	UCSR0B |= (1 << RXCIE0); // Enable the USART Receive Complete interrupt (USART_RXC)
 	sei();
 }
 
-void startup_animation()
-{
-	
-	for(int i = 0; i < 3; i++)
-	{
-		WHITE_ON;
-		_delay_ms(100);
-		
-		ORANGE_ON;
-		_delay_ms(100);
-		
-		BLUE_ON;
-		_delay_ms(100);
-		
-		WHITE_OFF;
-		_delay_ms(100);
-		
-		ORANGE_OFF;
-		_delay_ms(100);
-		
-		BLUE_OFF;
-		_delay_ms(100);
-	}
-}
+
 ISR(USART0_RX_vect)
 {
-	char ReceivedByte;
-	ReceivedByte = UDR0; // Fetch the received byte value into the variable "ByteReceived"
-	UDR0 = ReceivedByte; // Echo back the received byte back to the computer
+	commandBuffer[idx++] = UDR0;
+	unsigned char cmd = 'o';
+	if (idx == 3)
+	{
+		ORANGE_TOGGLE;
+	}
+	
+	//This always result in framing error...
+	//UDR0 = 0b00110101;
+	
+	//Echo works
+	UDR0 = commandBuffer[idx-1];
+	
+	if (idx >= 32)
+	{
+		//TODO: [ML] Should this raise some sort of error event?
+		idx = 31;
+	}
 }
