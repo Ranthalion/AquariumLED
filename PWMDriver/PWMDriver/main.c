@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <util/delay.h>
 #include "leds.h"
 
 #define USART_BAUDRATE 9600
@@ -11,6 +12,7 @@ volatile uint8_t txTail = 0;
 volatile unsigned char txBuffer[32];
 
 void init();
+void pwm_init();
 void write_char(char data);
 void write_string(const char *data);
 
@@ -91,6 +93,7 @@ int main(void)
 			
 			idx = 0;			
 		}
+		
     }
 }
 
@@ -99,15 +102,47 @@ void init()
 	init_leds();
 	startup_animation();
 		
-	UBRR0 = BAUD_PRESCALE;
+	UBRR0 = BAUD_PRESCALE;	
+	UCSR0C = _BV(UCSZ00) | _BV(UCSZ01); // Use 8-bit character sizes
+	UCSR0B = _BV(RXEN0) | _BV(TXEN0);   // Turn on the transmission and reception circuitry	
+	UCSR0B |= _BV(RXCIE0); // Enable the USART Receive Complete interrupt (USART_RXC)
 	
-	UCSR0C = (1 << UCSZ00) | (1 << UCSZ01); // Use 8-bit character sizes
-
-	UCSR0B = (1 << RXEN0) | (1 << TXEN0);   // Turn on the transmission and reception circuitry
+	pwm_init();
 	
-	UCSR0B |= (1 << RXCIE0); // Enable the USART Receive Complete interrupt (USART_RXC)
 	
 	sei();
+}
+
+void pwm_init()
+{
+	//Time 0 PWM set up
+	TCCR0A = _BV(COM2A1) | _BV(COM2B1) | _BV(WGM21) | _BV(WGM20); //Enable non inverting 8-Bit Fast PWM on A and B
+	TCCR0B = _BV(CS20); //clock without any prescaler
+	
+	
+	//Timer 1 PWM set up
+	TCCR1A = _BV(COM1A1) | _BV(COM1B1) | _BV(WGM10);
+	TCCR1B = _BV(WGM12) | _BV(CS10);
+	
+	//Timer 2 PWM set up
+	TCCR2A = _BV(COM2A1) | _BV(COM2B1) | _BV(WGM21) | _BV(WGM20); //Enable non inverting 8-Bit Fast PWM on A and B
+	TCCR2B = _BV(CS20); //clock without any prescaler
+	
+	
+	DDRB |= _BV(PORTB1) | _BV(PORTB2) | _BV(PORTB3);  //Enable output for OC1 and OC2A	
+	DDRD |= _BV(PORTD3) | _BV(PORTD5) | _BV(PORTD6);  //Enable output for OC0 and OC2B
+
+	
+	/* Set the compare value to control duty cycle */
+	OCR0A = 120;
+	OCR0B = 220;
+	
+	
+	OCR1A = 32;
+	OCR1B = 200;
+	
+	OCR2A = 64;
+	OCR2B = 128;
 }
 
 
@@ -122,7 +157,7 @@ void write_char (char data)
 	txBuffer[tmp] = data;
 	txHead = tmp;
 	
-	UCSR0B |= (1 << UDRIE0);	// enable UDRE interrupt 
+	UCSR0B |= _BV(UDRIE0);	// enable UDRE interrupt 
 }
 
 void write_string (const char *data)
