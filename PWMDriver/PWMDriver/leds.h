@@ -1,10 +1,4 @@
-/*
- * leds.h
- *
- * Created: 9/28/2016 9:50:20 PM
- *  Author: Michael
- */ 
-
+#include <avr/io.h>
 
 #ifndef LEDS_H_
 #define LEDS_H_
