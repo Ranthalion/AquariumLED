@@ -155,7 +155,8 @@ int main(void)
 					newSettings[i-1] = commandBuffer[i];
 				}
 	
-				read_all_channels(currentSettings);								
+				read_all_channels(currentSettings);
+				
 				ENABLE_TIMER;
 			}
 			else
@@ -188,9 +189,9 @@ int main(void)
 				}
 			}
 			
-			for(uint8_t i = 1; i< 6; i++)
+			for(uint8_t i = 0; i< 6; i++)
 			{
-				set_channel(i-1, currentSettings[i]);
+				set_channel(i, currentSettings[i]);
 			}
 			
 			timer_flag = 0;

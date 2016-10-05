@@ -7,10 +7,11 @@ var port = new serialport('/dev/ttyS0', {
 
 port.on('open', function() {
   var channel = parseInt(args[0]) & 0xff;
-  var buf = new Buffer(3);
+  var buf = new Buffer(4);
   buf[0] = 'r'.charCodeAt();
   buf[1] = channel;
   buf[2] = '\r'.charCodeAt();
+  buf[3] = '\n'.charCodeAt();
   port.write(buf);
 });
 
@@ -21,7 +22,7 @@ port.on('error', function(err) {
 });
 
 port.on('data', function(data){
-  console.log('msg: ', data[3]);
+  console.log(data[3]);
   process.exit(0);
 });
 

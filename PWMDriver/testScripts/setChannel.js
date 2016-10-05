@@ -9,11 +9,12 @@ var port = new serialport('/dev/ttyS0', {
 port.on('open', function() {
   var channel = parseInt(args[0]) & 0xff;
   var val = parseInt(args[1] & 0xff);
-  var buf = new Buffer(4);
+  var buf = new Buffer(5);
   buf[0] = 's'.charCodeAt();
   buf[1] = channel;
   buf[2] = val;
   buf[3] = '\r'.charCodeAt();
+  buf[4] = '\n'.charCodeAt();
   port.write(buf);
   process.exit(0);
 });
