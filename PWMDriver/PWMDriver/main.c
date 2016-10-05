@@ -150,7 +150,13 @@ int main(void)
 			}
 			else if (cmd == 'f')
 			{
-				write_line("Fade received");
+				for(uint8_t i=1; i<=6; i++)
+				{
+					newSettings[i-1] = commandBuffer[i];
+				}
+	
+				read_all_channels(currentSettings);								
+				ENABLE_TIMER;
 			}
 			else
 			{
@@ -217,11 +223,14 @@ void init()
 
 ISR(TIMER3_OVF_vect)
 {
+	cnt++;
 	if (cnt >= 8)
 	{
 		timer_flag = 1;	
 		cnt = 0;
 	}
-	
-	BLUE_TOGGLE;
+	if (cnt & 0x01)
+	{
+		BLUE_TOGGLE;	
+	}	
 }
