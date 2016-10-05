@@ -3,6 +3,10 @@
 #include "pwm.h"
 #include "serial.h"
 
+//Timer 3 for PWM dimming
+#define ENABLE_TIMER_1 TIMSK1 |= (1 << OCIE1A)
+#define DISABLE_TIMER_1 TIMSK1 &= ~(1 << OCIE1A)
+
 void init();
 
 
@@ -48,7 +52,7 @@ int main(void)
 	
     while (1) 
     {
-		if (idx > 0 && (commandBuffer[idx - 1] == '\n' || commandBuffer[idx-1] == '\r'))
+		if (idx > 2 && (commandBuffer[idx - 2] == 13 || commandBuffer[idx-1] == 10))
 		{
 			char cmd = commandBuffer[0];
 			
@@ -76,14 +80,14 @@ int main(void)
 				char val = commandBuffer[2];
 				set_channel(channel, val);
 			}
-			else if (cmd == 'r' && idx == 3)
+			else if (cmd == 'r' && idx == 4)
 			{
 				/********************************************************************************
 				r - Read channel value. If channel is not specified, then all values are returned
 				input:  r[{channel}]
 				output: c{channel}v{value} or v{values}
 				*********************************************************************************/
-				write_line("Reading all");
+				
 				uint8_t channel = commandBuffer[1];
 				uint8_t val = read_channel(channel);
 				write_char('c');
@@ -92,14 +96,14 @@ int main(void)
 				write_char(val);
 				write_line("");				
 			}
-			else if (cmd == 'r' && idx == 2)
+			else if (cmd == 'r' && idx == 3)
 			{
 				/********************************************************************************
 				r - Read channel value. If channel is not specified, then all values are returned
 				input:  r
 				output: v{values}
 				*********************************************************************************/
-				//write_line("Read all");
+				
 				uint8_t vals[6];
 				read_all_channels(vals);
 				
@@ -110,12 +114,11 @@ int main(void)
 				}
 				write_line("");				
 			}
-			else if (cmd == 'i' && idx <= 8)
+			else if (cmd == 'i' && idx > 2)
 			{
-				write_line("Set immediate");
-				for(uint8_t i = 1; i< idx; i++)
+				for(uint8_t i = 1; i< idx-2; i++)
 				{
-					set_channel(i, commandBuffer[i]);	
+					set_channel(i-1, commandBuffer[i]);	
 				}
 			}
 			else if (cmd == 'a')
@@ -125,7 +128,7 @@ int main(void)
 				input:	a{value}
 				output: None
 				****************************************/
-				
+					
 				uint8_t val = commandBuffer[1];
 				set_all_channels(val);
 			}
@@ -140,7 +143,7 @@ int main(void)
 				{
 					write_char(commandBuffer[i]);
 				}
-				write_string("\r\n");
+				write_line("");
 			}
 			
 			idx = 0;			
