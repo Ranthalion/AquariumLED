@@ -4,8 +4,14 @@
 #include "serial.h"
 
 //Timer 3 for PWM dimming
-#define ENABLE_TIMER_1 TIMSK1 |= (1 << OCIE1A)
-#define DISABLE_TIMER_1 TIMSK1 &= ~(1 << OCIE1A)
+#define ENABLE_TIMER TIMSK3 |= _BV(TOIE3)
+#define DISABLE_TIMER TIMSK3 &= ~_BV(TOIE3)
+
+volatile uint8_t timer_flag;
+volatile uint8_t cnt;
+uint8_t currentSettings[6];
+uint8_t newSettings[6];
+uint8_t delta[6];
 
 void init();
 
@@ -52,11 +58,21 @@ int main(void)
 	
     while (1) 
     {
+		
 		if (idx > 2 && (commandBuffer[idx - 2] == 13 || commandBuffer[idx-1] == 10))
 		{
 			char cmd = commandBuffer[0];
 			
-			if (cmd == 'w')
+			if (cmd == 'e')
+			{
+				ENABLE_TIMER;
+			}
+			else if (cmd == 'd')
+			{
+				DISABLE_TIMER;
+				BLUE_OFF;
+			}
+			else if (cmd == 'w')
 			{
 				WHITE_TOGGLE;
 			}
@@ -149,6 +165,38 @@ int main(void)
 			idx = 0;			
 		}
 		
+		if (timer_flag == 1)
+		{
+			uint8_t done = 1;
+			for(int i = 0; i < 6; i++)
+			{
+				if (currentSettings[i] < newSettings[i])
+				{
+					currentSettings[i]++;
+					done = 0;
+				}
+				else if (currentSettings[i] > newSettings[i])
+				{
+					currentSettings[i]--;
+					done = 0;
+				}
+			}
+			
+			for(uint8_t i = 1; i< 6; i++)
+			{
+				set_channel(i-1, currentSettings[i]);
+			}
+			
+			timer_flag = 0;
+			
+			if (done == 1)
+			{
+				DISABLE_TIMER;
+				BLUE_OFF;
+			}
+			
+		}
+		
     }
 }
 
@@ -160,6 +208,20 @@ void init()
 	serial_init();
 	
 	pwm_init();
+	cnt = 0;
+	timer_flag = 0;
+	TCCR3B = _BV(CS31);
 	
 	sei();
+}
+
+ISR(TIMER3_OVF_vect)
+{
+	if (cnt >= 8)
+	{
+		timer_flag = 1;	
+		cnt = 0;
+	}
+	
+	BLUE_TOGGLE;
 }
