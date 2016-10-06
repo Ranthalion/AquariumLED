@@ -34,7 +34,7 @@
 					hidePointerLabels: true,
     				hideLimitLabels: true,
 					floor: 0,
-					ceil: 4095,
+					ceil: 255,
 					readOnly: directVm.scheduleEnabled,
 					step: 1,
 					getPointerColor: getColor(channel.red, channel.green, channel.blue),

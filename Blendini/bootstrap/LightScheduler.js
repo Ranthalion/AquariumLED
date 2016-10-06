@@ -6,8 +6,8 @@ if (require('os').type() == 'Linux'){
 	sails.log.debug('Serial detected.');
 	var serialport = require('serialport');
 	var SerialPort = serialport.SerialPort;
-	port = new SerialPort('/dev/ttyAMA0', {
-		parser: serialport.parsers.readline('\r\n')
+	port = new SerialPort('/dev/ttyS0', {
+		parser: serialport.parsers.byteDelimiter([13, 10]);
 	});	
 }
 else{
@@ -36,12 +36,18 @@ port.on('data', function(data){
 var _jobs = [];
 
 function fadeLights(channels){
+	var buf = new Buffer(9);
+	buf[0] = 'f';
+	for(var i = 0; i < 6; i++){
+		buf[i+1] = parseInt(channel[i]);
+	}
+	buf[7] = '\r';
+	buf[8] = '\n';
+
 	sails.log.debug('Executing Fade Lights');
-	//Write z to reset the pca9685 to ensure that PWM is enabled.
-	port.write('z\r');
-	var command = 'f'  + channels.join(',');
-	sails.log.debug(command);
-	port.write(command + '\r');
+	sails.log.debug(buf);
+
+	port.write(buf);
 };
 
 // Public
@@ -76,14 +82,7 @@ var self = module.exports = {
 						});
 					}
 				}
-				//push a reset job for noon every day
-				_jobs.push(new Cron.CronJob('0 0 12 * * *', function(){
-					port.write('z\r');
-				}, null, true, null));
-				//push a reset job for just after noon every day
-				_jobs.push(new Cron.CronJob('0 5 12 * * *', function(){
-					port.write('z\r');
-				}, null, true, null));
+
 			});			
 	},
 	
@@ -99,18 +98,24 @@ var self = module.exports = {
   			sails.log.debug('data :' + data);
   			port.removeListener('data', data_cb);
   			if (cb != null){
-  				cb(data.substr(1).split(','));
+  				cb(data.splice(1,6));
   			}
   		};
 
   		sails.log.debug('Scheduler GetCurrentValues');
-  		port.write('r\r');
+  		port.write('r\r\n');
   		port.on('data', data_cb);
   	},
 
   	setChannel: function setValue(pin, value){
   		sails.log.debug('s'+ pin  + 'v' + value);
-  		port.write('s' + pin + 'v' + value + '\r');
+  		var buf = new Buffer(5);
+  		buf[0] = 's'.charCodeAt();
+  		buf[1] = pin;
+  		buf[2] = value;
+  		buf[3] = '\r'.charCodeAt();
+  		buf[4] = '\n'.charCodeAt();
+  		port.write(buf);
   	}
 
 };

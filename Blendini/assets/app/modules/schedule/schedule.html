@@ -23,7 +23,7 @@
 				<div class='row'>
 					<div ng-repeat="num in settingToAdd.values track by $index" class='col-sm-2' 
 						style='background-color:rgb({{settings[$index].red}}, {{settings[$index].green}}, {{settings[$index].blue}})'>				
-						<input type='number' min='0' max='4095' class='form-control' ng-model='settingToAdd.values[$index]'>
+						<input type='number' min='0' max='255' class='form-control' ng-model='settingToAdd.values[$index]'>
 					</div>
 					
 				</div>
@@ -41,7 +41,7 @@
 				<div class='row'>
 					<div ng-repeat="num in setting.values track by $index" class='col-sm-2' 
 						style='background-color:rgb({{settings[$index].red}}, {{settings[$index].green}}, {{settings[$index].blue}})'>				
-						<input type='number' min='0' max='4095' class='form-control' ng-model='setting.values[$index]'>
+						<input type='number' min='0' max='255' class='form-control' ng-model='setting.values[$index]'>
 					</div>
 					<i class='fa fa-remove' ng-click='remove(setting)' style='position: absolute; margin: 10px; cursor: pointer;'></i>
 				</div>
