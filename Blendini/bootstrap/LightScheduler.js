@@ -37,9 +37,9 @@ var _jobs = [];
 
 function fadeLights(channels){
 	var buf = new Buffer(9);
-	buf[0] = 'f';
+	buf[0] = 'f'.charCodeAt();
 	for(var i = 0; i < 6; i++){
-		buf[i+1] = parseInt(channel[i]);
+		buf[i+1] = parseInt(channels[i]);
 	}
 	buf[7] = '\r';
 	buf[8] = '\n';

@@ -6,9 +6,4 @@
         "sockets": false,
         "pubsub": false 
     }
-    
-    "paths": {
-        "public": "assets"
-    
-}
 }
