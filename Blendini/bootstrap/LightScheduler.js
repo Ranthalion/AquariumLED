@@ -41,8 +41,8 @@ function fadeLights(channels){
 	for(var i = 0; i < 6; i++){
 		buf[i+1] = parseInt(channels[i]);
 	}
-	buf[7] = '\r';
-	buf[8] = '\n';
+	buf[7] = '\r'.charCodeAt();
+	buf[8] = '\n'.charCodeAt();
 
 	sails.log.debug('Executing Fade Lights');
 	sails.log.debug(buf);
