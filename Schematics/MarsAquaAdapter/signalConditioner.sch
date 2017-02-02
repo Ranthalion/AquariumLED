@@ -2162,7 +2162,7 @@ MMBT4403 - 40V 600mA SOT-23 (TRANS-09245)</description>
 <parts>
 <part name="U$1" library="SMD-RJ45" deviceset="MOLEX-RJ45-SMT" device=""/>
 <part name="J2" library="SparkFun-Connectors" deviceset="M04" device="LONGPADS"/>
-<part name="RC2VD" library="SparkFun-Resistors" deviceset="RESISTOR" device="1206" value="18k"/>
+<part name="RC2VD" library="SparkFun-Resistors" deviceset="RESISTOR" device="1206" value="20k"/>
 <part name="RC2VU" library="SparkFun-Resistors" deviceset="RESISTOR" device="1206" value="330k"/>
 <part name="R2" library="SparkFun-Resistors" deviceset="RESISTOR" device="1206" value="20k"/>
 <part name="RF2A" library="SparkFun-Resistors" deviceset="RESISTOR" device="1206" value="330k"/>
@@ -2197,6 +2197,9 @@ MMBT4403 - 40V 600mA SOT-23 (TRANS-09245)</description>
 <part name="J1" library="SparkFun-Connectors" deviceset="M04" device="LONGPADS"/>
 <part name="GND5" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="GND9" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
+<part name="RC2VD1" library="SparkFun-Resistors" deviceset="RESISTOR" device="1206" value="4.7k"/>
+<part name="RC2VU1" library="SparkFun-Resistors" deviceset="RESISTOR" device="1206" value="330k"/>
+<part name="GND12" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -2212,7 +2215,7 @@ MMBT4403 - 40V 600mA SOT-23 (TRANS-09245)</description>
 <instance part="RF2B" gate="G$1" x="76.2" y="20.32" rot="R90"/>
 <instance part="C2" gate="G$1" x="63.5" y="20.32"/>
 <instance part="GND1" gate="1" x="111.76" y="71.12"/>
-<instance part="GND2" gate="1" x="106.68" y="20.32"/>
+<instance part="GND2" gate="1" x="106.68" y="7.62"/>
 <instance part="GND3" gate="1" x="63.5" y="15.24"/>
 <instance part="GND6" gate="1" x="76.2" y="12.7"/>
 <instance part="GND7" gate="1" x="17.78" y="20.32"/>
@@ -2242,6 +2245,9 @@ MMBT4403 - 40V 600mA SOT-23 (TRANS-09245)</description>
 <instance part="J1" gate="G$1" x="10.16" y="58.42"/>
 <instance part="GND5" gate="1" x="15.24" y="53.34"/>
 <instance part="GND9" gate="1" x="35.56" y="53.34"/>
+<instance part="RC2VD1" gate="G$1" x="106.68" y="17.78" rot="R90"/>
+<instance part="RC2VU1" gate="G$1" x="50.8" y="22.86" rot="R90"/>
+<instance part="GND12" gate="1" x="50.8" y="15.24"/>
 </instances>
 <busses>
 </busses>
@@ -2337,8 +2343,9 @@ MMBT4403 - 40V 600mA SOT-23 (TRANS-09245)</description>
 <pinref part="GND6" gate="1" pin="GND"/>
 </segment>
 <segment>
-<pinref part="RC2VD" gate="G$1" pin="1"/>
 <pinref part="GND2" gate="1" pin="GND"/>
+<wire x1="106.68" y1="10.16" x2="106.68" y2="12.7" width="0.1524" layer="91"/>
+<pinref part="RC2VD1" gate="G$1" pin="1"/>
 </segment>
 <segment>
 <pinref part="U$1" gate="G$1" pin="2"/>
@@ -2391,6 +2398,10 @@ MMBT4403 - 40V 600mA SOT-23 (TRANS-09245)</description>
 <pinref part="GND9" gate="1" pin="GND"/>
 <wire x1="15.24" y1="63.5" x2="35.56" y2="63.5" width="0.1524" layer="91"/>
 <wire x1="35.56" y1="63.5" x2="35.56" y2="55.88" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="RC2VU1" gate="G$1" pin="1"/>
+<pinref part="GND12" gate="1" pin="GND"/>
 </segment>
 </net>
 <net name="BLUE_OUTPUT" class="0">
@@ -2492,6 +2503,15 @@ MMBT4403 - 40V 600mA SOT-23 (TRANS-09245)</description>
 <pinref part="RC1VU4" gate="G$1" pin="1"/>
 <wire x1="45.72" y1="33.02" x2="45.72" y2="38.1" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="43.18" x2="45.72" y2="38.1" width="0.1524" layer="91"/>
+<pinref part="RC2VU1" gate="G$1" pin="2"/>
+<wire x1="50.8" y1="27.94" x2="50.8" y2="38.1" width="0.1524" layer="91"/>
+<junction x="50.8" y="38.1"/>
+</segment>
+</net>
+<net name="N$2" class="0">
+<segment>
+<pinref part="RC2VD" gate="G$1" pin="1"/>
+<pinref part="RC2VD1" gate="G$1" pin="2"/>
 </segment>
 </net>
 </nets>
