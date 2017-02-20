@@ -30,6 +30,12 @@
 				controller: 'scheduleController'
 
 			})
+			.state('console', {
+				url: '/console',
+				templateUrl: 'app/modules/console/console.html',
+				controller: 'consoleController',
+				controllerAs: 'consoleVm'
+			})
 			.state('log', {
 				url: '/log',
 				template: '<div>Coming Soon</div>'

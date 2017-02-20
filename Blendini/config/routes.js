@@ -53,6 +53,9 @@ module.exports.routes = {
 
   '/currentValues' : 'DirectController.current',
   '/setChannel': 'DirectController.setChannel',
-  '/setMode': 'DirectController.setMode'
+  '/setMode': 'DirectController.setMode',
+
+  '/console/readAll': 'ConsoleController.readAll',
+  '/console/sendChar': 'ConsoleController.sendChar'
   
 };

@@ -28,6 +28,9 @@ void init();
 	b - Toggle the blue LED
 		input:  None
 		output: None
+	t - Read current temperature
+		input: None
+		output: current temperature in degrees celcius
 	s -	Set channel immediate 
 		input:  s{byte channel}{byte value}
 		output: None		
@@ -83,6 +86,10 @@ int main(void)
 			else if (cmd == 'b')
 			{
 				BLUE_TOGGLE;
+			}
+			else if (cmd == 't')
+			{
+				//TODO: [ML] Read the temperature
 			}
 			else if (cmd == 's' && idx > 2)
 			{

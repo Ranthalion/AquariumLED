@@ -1,0 +1,24 @@
+<div>
+	<div ng-text="consoleVm.output">
+
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<textarea ng-model="consoleVm.output"></textarea>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" ng-click="consoleVm.sendChar('w');" class="btn btn-primary">white</button>
+			<button type="button" ng-click="consoleVm.sendChar('o');" class="btn btn-primary">orange</button>
+			<button type="button" ng-click="consoleVm.sendChar('b');" class="btn btn-primary">blue</button>
+			<button type="button" ng-click="consoleVm.readAll()" class="btn btn-primary">Read All</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<input type="text" ng-model="consoleVm.command" />
+			<button type="button" ng-click="consoleVm.sendCommand();" class="btn btn-primary">Send</button>
+		</div>
+	</div>
+</div>

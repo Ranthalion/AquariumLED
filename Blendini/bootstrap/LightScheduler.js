@@ -1,36 +1,4 @@
 var Cron = require('cron');
-var port = null;
-
-
-if (require('os').type() == 'Linux'){
-	sails.log.debug('Serial detected.');
-	var serialport = require('serialport');
-	var SerialPort = serialport.SerialPort;
-	port = new SerialPort('/dev/ttyS0', {
-		parser: serialport.parsers.byteDelimiter([13, 10]);
-	});	
-}
-else{
-	sails.log.debug('Serial port not found. Switching to emulation mode.');
-	port = {
-		write: function(buff){
-			sails.log.debug('Serial Write: ' + buff);
-		},
-		on: function(event, cb){
-			if (cb != null){
-				sails.log.debug('setting on for ' + event + ' with cb: ' + cb);
-				setTimeout(function(){
-					cb('v100,200,399,400,500,600');
-				}, 1000);
-			}
-		},
-		removeListener: function(){}
-	};
-}
-
-port.on('data', function(data){
-	sails.log.debug('msg :' + data);
-});
 
 // Private
 var _jobs = [];
@@ -47,7 +15,7 @@ function fadeLights(channels){
 	sails.log.debug('Executing Fade Lights');
 	sails.log.debug(buf);
 
-	port.write(buf);
+	SerialService.write(buf);
 };
 
 // Public
@@ -96,26 +64,24 @@ var self = module.exports = {
 
   		var data_cb = function(data){
   			sails.log.debug('data :' + data);
-  			port.removeListener('data', data_cb);
+  			//port.removeListener('data', data_cb);
   			if (cb != null){
   				cb(data.splice(1,6));
   			}
   		};
 
   		sails.log.debug('Scheduler GetCurrentValues');
-  		port.write('r\r\n');
-  		port.on('data', data_cb);
+  		SerialService.writeLine('r');
+  		//port.on('data', data_cb);
   	},
 
   	setChannel: function setValue(pin, value){
   		sails.log.debug('s'+ pin  + 'v' + value);
-  		var buf = new Buffer(5);
+  		var buf = new Buffer(3);
   		buf[0] = 's'.charCodeAt();
   		buf[1] = pin;
   		buf[2] = value;
-  		buf[3] = '\r'.charCodeAt();
-  		buf[4] = '\n'.charCodeAt();
-  		port.write(buf);
+  		SerialService.writeLine(buf);
   	}
 
 };
