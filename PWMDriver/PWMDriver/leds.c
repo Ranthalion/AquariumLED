@@ -8,22 +8,22 @@ void startup_animation()
 	
 	for(int i = 0; i < 3; i++)
 	{	
-		ORANGE_ON;
+		PURPLE_ON;
 		_delay_ms(100);
 		
-		BLUE_ON;
+		ORANGE_ON;
 		_delay_ms(100);
 	
-		WHITE_ON;
+		BLUE_ON;
 		_delay_ms(100);	
+		
+		PURPLE_OFF;
+		_delay_ms(100);
 		
 		ORANGE_OFF;
 		_delay_ms(100);
 		
 		BLUE_OFF;
-		_delay_ms(100);
-		
-		WHITE_OFF;
 		_delay_ms(100);
 		
 	}

@@ -49,7 +49,7 @@ ISR(USART0_RX_vect)
 {
 	if (idx >= 32)
 	{
-		BLUE_TOGGLE;
+		ORANGE_TOGGLE;
 		//TODO: [ML] Should this raise some sort of error event?
 		idx = 31;
 	}

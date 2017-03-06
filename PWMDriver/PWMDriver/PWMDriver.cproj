@@ -135,6 +135,24 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="crc8.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="crc8.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ds18x20.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ds18x20.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="i2c.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="i2c.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="leds.c">
       <SubType>compile</SubType>
     </Compile>
@@ -142,6 +160,18 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="onewire.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="onewire.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ph.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ph.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="pwm.c">

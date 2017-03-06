@@ -1,25 +1,85 @@
 #include <avr/interrupt.h>
+#include <util/delay.h>
+#include <stdio.h>
 #include "leds.h"
 #include "pwm.h"
 #include "serial.h"
+#include "onewire.h"
+#include "ds18x20.h"
+#include "i2c.h"
+#include "ph.h"
 
-//Timer 3 for PWM dimming
+#define MAXSENSORS 5
+#define MOISTURE_THRESHOLD 64
+//Timer 3
 #define ENABLE_TIMER TIMSK3 |= _BV(TOIE3)
 #define DISABLE_TIMER TIMSK3 &= ~_BV(TOIE3)
 
+//Moisture Sensor
+#define MOISTURE_SENSOR_ON PORTC |= 1 << PORTC2			//Set the output high
+#define MOISTURE_SENSOR_OFF PORTC &= ~(1 << PORTC2)		//Set the output low
+
+#define OFF 0
+#define ORANGE_BLINK 1
+#define PURPLE_BLINK 2
+#define BLUE_BLINK 3
+#define TEMP_SEARCH 4
+
+char led_mode;
 volatile uint8_t timer_flag;
 volatile uint8_t cnt;
+volatile uint8_t read_temp;
+volatile uint8_t adc_counter;
+volatile uint8_t adc_ready;
+volatile uint8_t ph_counter;
+volatile uint8_t ph_ready;
+
 uint8_t currentSettings[6];
 uint8_t newSettings[6];
 uint8_t delta[6];
+uint8_t gSensorIDs[MAXSENSORS][OW_ROMCODE_SIZE];
+char strBuffer[10];
+uint8_t moisture_reading;
+uint8_t buff[10];
 
 void init();
 
 
+static uint8_t search_sensors(void)
+{
+	uint8_t i;
+	uint8_t id[OW_ROMCODE_SIZE];
+	uint8_t diff, nSensors;
+	
+	ow_reset();
+
+	nSensors = 0;
+	
+	diff = OW_SEARCH_FIRST;
+	while ( diff != OW_LAST_DEVICE && nSensors < MAXSENSORS ) {
+		DS18X20_find_sensor( &diff, &id[0] );
+		
+		if( diff == OW_PRESENCE_ERR ) {
+			break;
+		}
+		
+		if( diff == OW_DATA_ERR ) {
+			break;
+		}
+		
+		for ( i=0; i < OW_ROMCODE_SIZE; i++ )
+		gSensorIDs[nSensors][i] = id[i];
+		
+		nSensors++;
+	}
+	
+	return nSensors;
+}
+
 /* 
 
 	Commands
-	w - Toggle the white LED
+	w - Toggle the purple LED
 		input:  None
 		output: None
 	o - Toggle the orange LED
@@ -28,9 +88,6 @@ void init();
 	b - Toggle the blue LED
 		input:  None
 		output: None
-	t - Read current temperature
-		input: None
-		output: current temperature in degrees celcius
 	s -	Set channel immediate 
 		input:  s{byte channel}{byte value}
 		output: None		
@@ -43,21 +100,35 @@ void init();
 	i - Set all channels immediately
 		input:  i{[comma separated values]}
 		output: None
-			
-	Pending
 	f - Fade channels to specified values
 		input:	f{[comma separated values]}
 		output: None
+	t - Read current temperature
+		input: None
+		output: current temperature in degrees celcius
+	p - Read ph
+		input: None
+		output PH reading value multiplied by 1000 ph{xxxx}
+	c - Clear ph calibration
+	m - Calibrate PH mid point
+	l - Calibrate PH low point
+	h - Calibrate PH high point
 	
-	Pending commands
-	ph
-	temp
-	waterlevel		
-
 */
+
 int main(void)
 {
+	uint8_t nSensors;
+	uint8_t i;
+	int16_t decicelsius;
+	uint8_t error;
+		
 	init();
+	//init one wire bus
+	led_mode = TEMP_SEARCH;
+	ENABLE_TIMER;
+	nSensors = search_sensors();
+	led_mode = OFF;
 	
     while (1) 
     {
@@ -66,30 +137,21 @@ int main(void)
 		{
 			char cmd = commandBuffer[0];
 			
-			if (cmd == 'e')
+			if (cmd == 'w')
 			{
-				ENABLE_TIMER;
+				BLUE_TOGGLE;
 			}
-			else if (cmd == 'd')
+			else if (cmd == 'p')
 			{
-				DISABLE_TIMER;
-				BLUE_OFF;
-			}
-			else if (cmd == 'w')
-			{
-				WHITE_TOGGLE;
+				PURPLE_TOGGLE;
 			}
 			else if (cmd == 'o')
 			{
 				ORANGE_TOGGLE;
 			}
-			else if (cmd == 'b')
-			{
-				BLUE_TOGGLE;
-			}
 			else if (cmd == 't')
 			{
-				//TODO: [ML] Read the temperature
+				read_temp = 0;
 			}
 			else if (cmd == 's' && idx > 2)
 			{
@@ -163,8 +225,31 @@ int main(void)
 				}
 	
 				read_all_channels(currentSettings);
-				
-				ENABLE_TIMER;
+				timer_flag = 1;
+				led_mode = ORANGE_BLINK;				
+			}
+			else if (cmd == 'p')
+			{
+				ph_counter = 0;
+			}
+			else if (cmd == 'c')
+			{
+				ph_clear_calibration();
+			}
+			else if (cmd == 'm')
+			{
+				uint32_t ph = 7000;
+				ph_set_calibration(ph, PH_CALIBRATION_MID);
+			}
+			else if (cmd == 'l')
+			{
+				uint32_t ph = 4000;
+				ph_set_calibration(ph, PH_CALIBRATION_LOW);
+			}
+			else if (cmd == 'h')
+			{
+				uint32_t ph = 10000;
+				ph_set_calibration(ph, PH_CALIBRATION_HIGH);
 			}
 			else
 			{
@@ -177,6 +262,81 @@ int main(void)
 			}
 			
 			idx = 0;			
+		}
+		
+		if (ph_counter == 0)
+		{
+			ph_request_reading();
+			ph_counter = 120;
+		}
+		
+		if(ph_ready == 1)
+		{
+			ph_sleep();
+			uint32_t ph = ph_read_ph();
+			write_string("PH ");
+			snprintf(strBuffer, sizeof strBuffer, "%lu", ph);
+			write_string(strBuffer);
+			write_line("");
+			
+			ph_ready = 0;
+		}
+		
+		if (adc_counter == 0)
+		{
+			MOISTURE_SENSOR_ON;
+			//Initiate adc reading
+			//adc_counter = 26;
+			
+			// Enable ADC, start conversion, and enable interrupt
+			ADCSRA |= ((1 << ADEN) | (1 << ADSC) | (1 << ADIE));
+		}
+		
+		if (adc_ready == 1)
+		{
+			MOISTURE_SENSOR_OFF;
+			adc_ready = 0;
+			
+			moisture_reading = ADCH;
+			ADCSRA &= ~(1 << ADEN);
+			
+			adc_counter = 2;
+			if (moisture_reading > MOISTURE_THRESHOLD)
+			{
+				//TODO: [ML] Send notification to the rpi	
+				write_line("LEAK DETECTED");
+			}
+		}
+		
+		if(read_temp == 0)
+		{
+			read_temp = 120;
+			
+			uint8_t read_result = DS18X20_start_meas( DS18X20_POWER_EXTERN, NULL );
+			
+			if ( read_result == DS18X20_OK) {
+				_delay_ms( DS18B20_TCONV_12BIT );
+				for ( i = 0; i < nSensors; i++ ) {
+					write_string( "T" );
+					write_char( (int)i + 1 );
+					write_string(" ");
+					
+					read_result = DS18X20_read_decicelsius( &gSensorIDs[i][0], &decicelsius );
+					if ( read_result == DS18X20_OK ) {
+						DS18X20_format_from_decicelsius(decicelsius, strBuffer, 9);
+						write_string(strBuffer);
+					}
+					else {
+						write_line( "CRC Error (lost connection?)" );
+						error++;
+					}
+					write_line("");
+				}
+			}
+			else {
+				write_line( "Start meas. failed (short circuit?)" );
+				error++;
+			}
 		}
 		
 		if (timer_flag == 1)
@@ -206,7 +366,7 @@ int main(void)
 			if (done == 1)
 			{
 				DISABLE_TIMER;
-				BLUE_OFF;
+				ORANGE_OFF;
 			}
 			
 		}
@@ -224,21 +384,74 @@ void init()
 	pwm_init();
 	cnt = 0;
 	timer_flag = 0;
+	read_temp = 100;
+	ph_counter = 50;
 	TCCR3B = _BV(CS31);
 	
-	sei();
+	//Set PC2 as output and set to 1
+	DDRC |= 1 << DDRC2;		//Enable output for PC2
+	PORTC |= 1 << PORTC2;	//Set the output high
+	
+	//Set PC3 as analog input
+	ADMUX = (1 << ADLAR) | (3); //Left align ADC reading and connect ADC3 to mux
+	
+	// divide ADC clock by 64
+	ADCSRA = (1 << ADPS2) | (1 << ADPS1);
+
+	
+	//Configure interrupt on pin change (pin 32 PD2)
+	EICRA = 0x01;	//Any logical change on INT0 generates an interrupt request
+	EIMSK = 0x01;	//External Interrupt Request 0 Enable
+	EIFR = 0x00;
+	
+	ph_ready = 0;
+	
+	i2c_init();
+	ph_init();
+	adc_ready = 0;
+	
+	sei();	
 }
 
+
 ISR(TIMER3_OVF_vect)
-{
+{	
 	cnt++;
-	if (cnt >= 8)
-	{
-		timer_flag = 1;	
-		cnt = 0;
+	if (cnt == 50){
+		read_temp--;
 	}
-	if (cnt & 0x01)
+	
+	if (cnt == 140)
 	{
-		BLUE_TOGGLE;	
-	}	
+		adc_counter--;
+	}
+	
+	if (cnt == 240)
+	{
+		ph_counter--;
+	}
+	
+	if (led_mode == ORANGE_BLINK){
+		if (cnt & 0x01)
+			ORANGE_TOGGLE;	
+	}else if(led_mode == BLUE_BLINK){
+		if (cnt & 0x01)
+			BLUE_TOGGLE;
+	}else if(led_mode == PURPLE_BLINK){
+		if (cnt & 0x01)
+			PURPLE_TOGGLE;
+	}else if(led_mode == TEMP_SEARCH){
+		if (cnt & 0x110)
+			BLUE_TOGGLE;
+	}		
+}
+
+ISR(ADC_vect)
+{
+	adc_ready = 1;
+}
+
+ISR(INT0_vect)
+{
+	ph_ready = 1;
 }

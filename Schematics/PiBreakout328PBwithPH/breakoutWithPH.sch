@@ -3081,7 +3081,6 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <part name="GND18" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="U2" library="custom-mlane" deviceset="ATMEGA328P_TQFP" device=""/>
 <part name="SUPPLY2" library="SparkFun-Aesthetics" deviceset="VDD" device=""/>
-<part name="R4" library="SparkFun-Resistors" deviceset="RESISTOR" device="1206" value="4.7k"/>
 <part name="J1" library="SparkFun-Connectors" deviceset="M03X2" device="FEMALE" value="FEMALE 2x3"/>
 <part name="GND5" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="C3" library="SparkFun-Capacitors" deviceset="CAP" device="1206"/>
@@ -3114,6 +3113,10 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <part name="C1" library="SparkFun-Capacitors" deviceset="CAP" device="1206" value=".01uF"/>
 <part name="GND4" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="R3" library="SparkFun-Resistors" deviceset="RESISTOR" device="1206" value="10k"/>
+<part name="R4" library="SparkFun-Resistors" deviceset="RESISTOR" device="1206" value="4.7k"/>
+<part name="SUPPLY5" library="SparkFun-Aesthetics" deviceset="VDD" device=""/>
+<part name="R5" library="SparkFun-Resistors" deviceset="RESISTOR" device="1206" value="4.7k"/>
+<part name="SUPPLY6" library="SparkFun-Aesthetics" deviceset="VDD" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -3134,7 +3137,6 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <instance part="GND18" gate="1" x="-55.88" y="22.86"/>
 <instance part="U2" gate="U$1" x="20.32" y="12.7" rot="R90"/>
 <instance part="SUPPLY2" gate="VDD" x="-12.7" y="-55.88" rot="R90"/>
-<instance part="R4" gate="G$1" x="-10.16" y="-50.8" rot="R90"/>
 <instance part="J1" gate="G$1" x="33.02" y="-40.64" rot="R270"/>
 <instance part="GND5" gate="1" x="30.48" y="-50.8"/>
 <instance part="C3" gate="G$1" x="-2.54" y="-60.96" rot="R180"/>
@@ -3167,6 +3169,10 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <instance part="C1" gate="G$1" x="10.16" y="-33.02" rot="R180"/>
 <instance part="GND4" gate="1" x="10.16" y="-40.64"/>
 <instance part="R3" gate="G$1" x="2.54" y="-30.48" rot="R90"/>
+<instance part="R4" gate="G$1" x="101.6" y="88.9" rot="R270"/>
+<instance part="SUPPLY5" gate="VDD" x="101.6" y="93.98"/>
+<instance part="R5" gate="G$1" x="104.14" y="86.36" rot="R270"/>
+<instance part="SUPPLY6" gate="VDD" x="104.14" y="91.44"/>
 </instances>
 <busses>
 </busses>
@@ -3284,9 +3290,6 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 </segment>
 <segment>
 <pinref part="SUPPLY2" gate="VDD" pin="VDD"/>
-<wire x1="-10.16" y1="-55.88" x2="-12.7" y2="-55.88" width="0.1524" layer="91"/>
-<pinref part="R4" gate="G$1" pin="1"/>
-<junction x="-10.16" y="-55.88"/>
 <pinref part="U2" gate="U$1" pin="VCC@4"/>
 <wire x1="-2.54" y1="-12.7" x2="-2.54" y2="-43.18" width="0.1524" layer="91"/>
 <wire x1="2.54" y1="-35.56" x2="2.54" y2="-43.18" width="0.1524" layer="91"/>
@@ -3297,7 +3300,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <wire x1="-5.08" y1="-12.7" x2="-5.08" y2="-43.18" width="0.1524" layer="91"/>
 <junction x="-5.08" y="-43.18"/>
 <wire x1="-5.08" y1="-43.18" x2="-5.08" y2="-55.88" width="0.1524" layer="91"/>
-<wire x1="-5.08" y1="-55.88" x2="-10.16" y2="-55.88" width="0.1524" layer="91"/>
+<wire x1="-5.08" y1="-55.88" x2="-12.7" y2="-55.88" width="0.1524" layer="91"/>
 <junction x="-5.08" y="-55.88"/>
 <pinref part="C3" gate="G$1" pin="2"/>
 <wire x1="-2.54" y1="-58.42" x2="-2.54" y2="-55.88" width="0.1524" layer="91"/>
@@ -3319,6 +3322,14 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <segment>
 <pinref part="SUPPLY4" gate="VDD" pin="VDD"/>
 <pinref part="U1" gate="U1" pin="VCC"/>
+</segment>
+<segment>
+<pinref part="R4" gate="G$1" pin="1"/>
+<pinref part="SUPPLY5" gate="VDD" pin="VDD"/>
+</segment>
+<segment>
+<pinref part="R5" gate="G$1" pin="1"/>
+<pinref part="SUPPLY6" gate="VDD" pin="VDD"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -3468,9 +3479,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <segment>
 <pinref part="U2" gate="U$1" pin="PC6(/RESET)"/>
 <wire x1="-10.16" y1="-12.7" x2="-10.16" y2="-45.72" width="0.1524" layer="91"/>
-<pinref part="R4" gate="G$1" pin="2"/>
 <wire x1="17.78" y1="-45.72" x2="-10.16" y2="-45.72" width="0.1524" layer="91"/>
-<junction x="-10.16" y="-45.72"/>
 <pinref part="R2" gate="G$1" pin="2"/>
 <wire x1="17.78" y1="-40.64" x2="17.78" y2="-45.72" width="0.1524" layer="91"/>
 </segment>
@@ -3542,6 +3551,8 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <wire x1="104.14" y1="81.28" x2="104.14" y2="60.96" width="0.1524" layer="91"/>
 <pinref part="U2" gate="U$1" pin="PC5(ADC5/SCL)"/>
 <wire x1="2.54" y1="35.56" x2="2.54" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="R5" gate="G$1" pin="2"/>
+<junction x="104.14" y="81.28"/>
 </segment>
 </net>
 <net name="N$26" class="0">
@@ -3552,6 +3563,8 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <wire x1="101.6" y1="63.5" x2="0" y2="63.5" width="0.1524" layer="91"/>
 <pinref part="U2" gate="U$1" pin="PC4(ADC4/SDA)"/>
 <wire x1="0" y1="35.56" x2="0" y2="63.5" width="0.1524" layer="91"/>
+<pinref part="R4" gate="G$1" pin="2"/>
+<junction x="101.6" y="83.82"/>
 </segment>
 </net>
 <net name="PRB_GND" class="0">

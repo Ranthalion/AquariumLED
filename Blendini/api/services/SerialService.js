@@ -32,7 +32,9 @@ else{
 }
 
 port.on('data', function(data){
-	sails.log.debug('msg :' + data);
+	var msg = convert(data);
+	var utcDate = new Date().toUTCString();
+	sails.log.debug(utcDate + ' :' + msg);
 	if (callback != null){
 		callback(data);
 		callback = null;
@@ -42,6 +44,20 @@ port.on('data', function(data){
 	}
 
 });
+
+function convert(data){
+	var str = '';
+	for(i=0; i< data.length; i++){
+		if (data[i] >= 32 && data[i] <140){
+			str+=String.fromCharCode(data[i]);
+		}
+		else{
+			str += '[' + data[i] + ']';
+		}
+	}
+	return str;
+}
+
 
 function write(buffer, cb){
 	callback = null;
