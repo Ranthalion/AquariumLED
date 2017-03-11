@@ -44,7 +44,8 @@ var jsFilesToInject = [
   
   '/bower_components/angularjs-slider/dist/rzslider.min.js',
   '/bower_components/angular-bootstrap-toggle-switch/angular-toggle-switch.min.js',  
-  
+  '/bower_components/chart.js/dist/Chart.min.js',
+  '/bower_components/angular-chart.js/dist/angular-chart.min.js',
   // Dependencies like jQuery, or Angular are brought in here
   'js/dependencies/**/*.js',
 

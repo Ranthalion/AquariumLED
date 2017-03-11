@@ -26,6 +26,7 @@
 #define TEMP_SEARCH 4
 
 char led_mode;
+volatile uint8_t fade_mode;
 volatile uint8_t timer_flag;
 volatile uint8_t cnt;
 volatile uint8_t read_temp;
@@ -226,6 +227,7 @@ int main(void)
 	
 				read_all_channels(currentSettings);
 				timer_flag = 1;
+				fade_mode = 1;
 				led_mode = ORANGE_BLINK;				
 			}
 			else if (cmd == 'p')
@@ -310,6 +312,7 @@ int main(void)
 		
 		if(read_temp == 0)
 		{
+			LED3_ON;
 			read_temp = 120;
 			
 			uint8_t read_result = DS18X20_start_meas( DS18X20_POWER_EXTERN, NULL );
@@ -318,7 +321,8 @@ int main(void)
 				_delay_ms( DS18B20_TCONV_12BIT );
 				for ( i = 0; i < nSensors; i++ ) {
 					write_string( "T" );
-					write_char( (int)i + 1 );
+					snprintf(strBuffer, sizeof strBuffer, "%d", (int)i + 1);
+					write_string( strBuffer );
 					write_string(" ");
 					
 					read_result = DS18X20_read_decicelsius( &gSensorIDs[i][0], &decicelsius );
@@ -337,6 +341,7 @@ int main(void)
 				write_line( "Start meas. failed (short circuit?)" );
 				error++;
 			}
+			LED3_OFF;
 		}
 		
 		if (timer_flag == 1)
@@ -365,7 +370,8 @@ int main(void)
 			
 			if (done == 1)
 			{
-				DISABLE_TIMER;
+				led_mode = OFF;
+				fade_mode = 0
 				ORANGE_OFF;
 			}
 			
@@ -384,7 +390,7 @@ void init()
 	pwm_init();
 	cnt = 0;
 	timer_flag = 0;
-	read_temp = 100;
+	read_temp = 10;
 	ph_counter = 50;
 	TCCR3B = _BV(CS31);
 	
@@ -429,6 +435,10 @@ ISR(TIMER3_OVF_vect)
 	if (cnt == 240)
 	{
 		ph_counter--;
+	}
+	
+	if ((fade_mode == 1) && (cnt & (0x07) == 0)){
+		timer_flag = 1;
 	}
 	
 	if (led_mode == ORANGE_BLINK){

@@ -71,7 +71,7 @@ var self = module.exports = {
   		};
 
   		sails.log.debug('Scheduler GetCurrentValues');
-  		SerialService.writeLine('r');
+  		SerialService.writeLine('r', data_cb);
   		//port.on('data', data_cb);
   	},
 

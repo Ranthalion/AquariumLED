@@ -1,0 +1,9 @@
+<div>
+Tank Temperature: {{historyChart.currentTankTemperature}}
+Air Temperature: {{historyChart.currentAirTemperature}}
+PH: {{historyChart.currentPh}}
+	<canvas id="line" class="chart chart-line" chart-data="historyChart.data" 
+		chart-dataset-override="historyChart.datasetOverride" chart-colors="historyChart.colors"
+		chart-series="historyChart.series" chart-options="historyChart.options">
+	</canvas>
+</div>

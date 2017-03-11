@@ -5,7 +5,8 @@
 	 	'rzModule', 
 	 	'toggle-switch', 
 	 	'ui.bootstrap', 
-	 	'ui.router'
+	 	'ui.router',
+	 	'chart.js'
  	]);
 
 	 angular.module('blendiniApp')

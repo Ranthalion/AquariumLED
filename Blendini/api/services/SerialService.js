@@ -34,13 +34,50 @@ else{
 port.on('data', function(data){
 	var msg = convert(data);
 	var utcDate = new Date().toUTCString();
-	sails.log.debug(utcDate + ' :' + msg);
-	if (callback != null){
+	//sails.log.debug(utcDate + ' :' + msg);
+	//TODO: [ML] Check for PH, temperature, or Leak warning. 
+	//convert might not work out.  I might need to move it all to string since 13 and 10 show in brackets...  Maybe just remove it...
+
+	if (msg.startsWith('T'))
+	{
+		var temperature = {
+			time: new Date(),
+			probe: msg[1],
+			celcius: msg.substring(3)
+		};
+		TemperatureReading.create(temperature).exec(function (err, tmp){
+  			if (err) { 
+  				sails.log.debug('Failure saving temperature');
+  				sails.log.debug(err);
+  			}
+		});
+		//TODO: [ML] Log the temperature readings and check for out of range 
+	}
+	else if (msg.startsWith('PH '))
+	{
+		var ph = {
+			time: new Date(),
+			probe: 1,
+			ph: msg.substring(3, 7)/1000
+		};
+		PhReading.create(ph).exec(function (err, tmp){
+  			if (err) { 
+  				sails.log.debug(err);
+  			}
+		});
+		//TODO: [ML] Log the temperature readings and check for out of range 	
+	}
+	else if (msg == 'LEAK DETECTED')
+	{
+		sails.log.debug('Leak detected.  Send alert');
+	}
+	else if (callback != null){
 		callback(data);
 		callback = null;
 	}
 	else{
-		sails.log.debug('  but callback was null');
+
+		sails.log.debug('Unknown Message: ' + msg);
 	}
 
 });
