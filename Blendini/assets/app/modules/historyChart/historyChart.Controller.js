@@ -18,9 +18,10 @@
 		historyChart.data = [ [], [], [] ];
 
 		historyChart.options = {
-			//hover: {
-			//	intersect: false
-			//},
+			tooltips: {
+				mode: 'x'
+			},
+			legend: {display: true},
 			scales: {
 		      xAxes: [{
 		        type: 'time',

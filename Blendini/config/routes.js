@@ -55,6 +55,12 @@ module.exports.routes = {
   '/setChannel': 'DirectController.setChannel',
   '/setMode': 'DirectController.setMode',
 
+  '/calibration/clear': 'CalibrationController.clear',
+  '/calibration/setLow': 'CalibrationController.setLow',
+  '/calibration/setMid': 'CalibrationController.setMid',
+  '/calibration/setHigh': 'CalibrationController.setHigh',
+  '/calibration/temperature': 'CalibrationController.setTemperature',
+
   '/console/readAll': 'ConsoleController.readAll',
   '/console/sendChar': 'ConsoleController.sendChar'
   

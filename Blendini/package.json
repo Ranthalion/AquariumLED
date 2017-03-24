@@ -39,5 +39,7 @@
   "main": "app.js",
   "author": "Ranthalion <Ranthalion@hotmail.com>",
   "license": "",
-  "devDependencies": {}
+  "devDependencies": {
+    "aws-sdk": "^2.28.0"
+  }
 }

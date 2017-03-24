@@ -254,3 +254,9 @@ rzslider {
 .panel-heading h1 {
     margin: 0;
 }
+
+.btn.checked::after {
+    float: right;
+    font-family: fontAwesome;
+    content: "\f00c";
+}

@@ -1,0 +1,41 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="button" class="btn btn-default col-sm-12 alert" 
+				ng-class="{checked: calibrationVm.resetChecked}"
+				ng-click="calibrationVm.reset()" style="font-size: 2em;">
+				Reset Calibration
+			</button>
+		</div>
+		
+		<div class="col-sm-12">
+			<button type="button" class="btn col-sm-12 alert" 
+				style="font-size: 2em;"
+				ng-click="calibrationVm.setPh7()"
+				ng-class="{checked: calibrationVm.ph7Checked, 'alert-warning': !calibrationVm.disable7}"
+				ng-disabled="calibrationVm.disable7">
+				Calibrate PH 7
+			</button>
+		</div>
+		
+		<div class="col-sm-12">
+			<button type="button" class="btn col-sm-12 alert" 
+				style="font-size: 2em;"
+				ng-click="calibrationVm.setPh4()"
+				ng-class="{checked: calibrationVm.ph4Checked, 'alert-danger': !calibrationVm.disable4}"
+				ng-disabled="calibrationVm.disable4">
+				Calibrate PH 4
+			</button>
+		</div>
+
+		<div class="col-sm-12">
+			<button type="button" class="btn col-sm-12 alert" 
+				style="font-size: 2em;"
+				ng-click="calibrationVm.setPh10()"
+				ng-class="{checked: calibrationVm.ph10Checked, 'alert-info': !calibrationVm.disable10}"
+				ng-disabled="calibrationVm.disable10">
+				Calibrate PH 10
+			</button>
+		</div>
+	</div>
+</div>

@@ -36,6 +36,12 @@
 				controller: 'consoleController',
 				controllerAs: 'consoleVm'
 			})
+			.state('calibration', {
+				url: '/calibration',
+				templateUrl: 'app/modules/calibration/calibration.html',
+				controller: 'calibrationController',
+				controllerAs: 'calibrationVm'
+			})
 			.state('log', {
 				url: '/log',
 				template: '<div>Coming Soon</div>'
