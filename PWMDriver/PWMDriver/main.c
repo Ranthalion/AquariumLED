@@ -15,6 +15,9 @@
 #define ENABLE_TIMER TIMSK3 |= _BV(TOIE3)
 #define DISABLE_TIMER TIMSK3 &= ~_BV(TOIE3)
 
+#define PH_DELAY 120
+#define TEMPERATURE_DELAY 120
+
 //Moisture Sensor
 #define MOISTURE_SENSOR_ON PORTC |= 1 << PORTC2			//Set the output high
 #define MOISTURE_SENSOR_OFF PORTC &= ~(1 << PORTC2)		//Set the output low
@@ -269,7 +272,7 @@ int main(void)
 		if (ph_counter == 0)
 		{
 			ph_request_reading();
-			ph_counter = 120;
+			ph_counter = PH_DELAY;
 		}
 		
 		if(ph_ready == 1)
@@ -313,7 +316,7 @@ int main(void)
 		if(read_temp == 0)
 		{
 			LED3_ON;
-			read_temp = 120;
+			read_temp = TEMPERATURE_DELAY;
 			
 			uint8_t read_result = DS18X20_start_meas( DS18X20_POWER_EXTERN, NULL );
 			
@@ -363,15 +366,17 @@ int main(void)
 			
 			for(uint8_t i = 0; i< 6; i++)
 			{
-				set_channel(i, currentSettings[i]);
+				
+				set_channel(i, currentSettings[i]);				
 			}
-			
+			BLUE_TOGGLE;
 			timer_flag = 0;
 			
 			if (done == 1)
 			{
+				BLUE_OFF;
 				led_mode = OFF;
-				fade_mode = 0
+				fade_mode = 0;
 				ORANGE_OFF;
 			}
 			
@@ -437,7 +442,7 @@ ISR(TIMER3_OVF_vect)
 		ph_counter--;
 	}
 	
-	if ((fade_mode == 1) && (cnt & (0x07) == 0)){
+	if ((fade_mode == 1) && ((cnt & 0x07) == 0)){
 		timer_flag = 1;
 	}
 	

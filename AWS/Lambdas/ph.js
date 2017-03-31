@@ -36,6 +36,7 @@ exports.getPh = function(event, contect, callback){
 	//TODO: [ML] Use params to limit the time range and avoid a scan
 	var dynamodb = new AWS.DynamoDB();
 
+	var probe = "1";
 	var end = new Date().toISOString();  	
 	var start = new Date();
 	
@@ -53,6 +54,10 @@ exports.getPh = function(event, contect, callback){
 		end = event.end;
 	}
 
+	if (event.probe !== undefined){
+		probe = event.probe;
+	}
+
 	var params = {
 		TableName: 'PHReadings', 
 		KeyConditionExpression: "probe = :probe and #t between :start and :end",
@@ -61,7 +66,7 @@ exports.getPh = function(event, contect, callback){
 		},
 		ExpressionAttributeValues: {
    			":probe": {
-     			"N": "1"
+     			"N": probe
     		},
     		":start": {
     			"S": start

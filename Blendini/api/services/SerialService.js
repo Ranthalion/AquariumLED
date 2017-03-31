@@ -1,5 +1,6 @@
 var port = null;
 var callback = null;
+var request = require('request');
 
 if (require('os').type() == 'Linux'){
 	sails.log.debug('Serial detected in SerialService.');
@@ -33,7 +34,7 @@ else{
 
 port.on('data', function(data){
 	var msg = convert(data);
-	var utcDate = new Date().toUTCString();
+	var utcDate = new Date().toISOString();
 	//sails.log.debug(utcDate + ' :' + msg);
 	//TODO: [ML] Check for PH, temperature, or Leak warning. 
 	//convert might not work out.  I might need to move it all to string since 13 and 10 show in brackets...  Maybe just remove it...
@@ -41,31 +42,40 @@ port.on('data', function(data){
 	if (msg.startsWith('T'))
 	{
 		var temperature = {
-			time: new Date(),
-			probe: msg[1],
-			celcius: msg.substring(3)
+			timestamp: utcDate,
+			probe: parseInt(msg[1], 10),
+			temperature: parseFloat(msg.substring(3))
 		};
-		TemperatureReading.create(temperature).exec(function (err, tmp){
-  			if (err) { 
-  				sails.log.debug('Failure saving temperature');
-  				sails.log.debug(err);
-  			}
+		
+		request.post({
+		  headers: {'content-type' : 'application/json'},
+		  url:     'https://70dg60pln0.execute-api.us-east-1.amazonaws.com/prod/temperature',
+		  body:    JSON.stringify(temperature)
+		}, function(error, response, body){
+		  	if (error){
+				console.log('Error: ', error);
+			}
 		});
-		//TODO: [ML] Log the temperature readings and check for out of range 
+
 	}
 	else if (msg.startsWith('PH '))
 	{
 		var ph = {
-			time: new Date(),
+			timestamp: utcDate,
 			probe: 1,
 			ph: msg.substring(3, 7)/1000
 		};
-		PhReading.create(ph).exec(function (err, tmp){
-  			if (err) { 
-  				sails.log.debug(err);
-  			}
+		
+		request.post({
+		  headers: {'content-type' : 'application/json'},
+		  url:     'https://70dg60pln0.execute-api.us-east-1.amazonaws.com/prod/phReading',
+		  body:    JSON.stringify(ph)
+		}, function(error, response, body){
+			if (error){
+				console.log('Error: ', error);
+			}
 		});
-		//TODO: [ML] Log the temperature readings and check for out of range 	
+		
 	}
 	else if (msg == 'LEAK DETECTED')
 	{

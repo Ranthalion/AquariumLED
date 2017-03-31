@@ -37,26 +37,29 @@ exports.saveTemperature = function(event, context, callback) {
 };
 
 exports.getTemperatures = function(event, contect, callback){
-	//TODO: [ML] Use params to limit the time range and avoid a scan	
+	
 	var dynamodb = new AWS.DynamoDB();
 	
+	var probe = "1";
 	var end = new Date().toISOString();  	
 	var start = new Date();
 	
 	if (event.start	=== undefined){
-	    console.log('defaulting');
   	    start.setDate(start.getDate() -1);
   	    start = start.toISOString();
 	}
 	else {
-	    console.log('using input');
 	    start = event.start;
 	}
 	
 	if (event.end !== undefined){
 		end = event.end;
 	}
-	
+
+	if (event.probe !== undefined){
+		probe = event.probe;
+	}
+		
 	var params = {
 		TableName: 'TemperatureReadings', 
 		KeyConditionExpression: "probe = :probe and #t between :start and :end",
@@ -65,7 +68,7 @@ exports.getTemperatures = function(event, contect, callback){
 		},
 		ExpressionAttributeValues: {
    			":probe": {
-     			"N": "1"
+     			"N": probe
     		},
     		":start": {
     			"S": start
