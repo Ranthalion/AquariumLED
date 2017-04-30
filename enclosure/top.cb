@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CADFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="0.9.8.0" Name="top">
+  <layers>
+    <layer name="0" color="255,255,255">
+      <ModificationCount>0</ModificationCount>
+      <objects>
+        <pline id="1" Closed="true">
+          <ModificationCount>0</ModificationCount>
+          <mat m="Identity" />
+          <pts>
+            <p>92.9645775760729,3.66390634210501,0</p>
+            <p>85.4395705760729,3.66390634210501,0</p>
+            <p>85.4395705760729,0.963904342104996,0</p>
+            <p>75.2145635760729,0.963904342104996,0</p>
+            <p>75.2145635760729,3.66390634210501,0</p>
+            <p>69.2145585760729,3.66390634210501,0</p>
+            <p>69.2145585760729,0.963904342104996,0</p>
+            <p>63.2145535760729,0.963904342104996,0</p>
+            <p>63.2145535760729,3.66390634210501,0</p>
+            <p>57.2145485760729,3.66390634210501,0</p>
+            <p>57.2145485760729,0.963904342104996,0</p>
+            <p>51.2145435760729,0.963904342104996,0</p>
+            <p>51.2145435760729,3.66390634210501,0</p>
+            <p>45.2145385760729,3.66390634210501,0</p>
+            <p>45.2145385760729,0.963904342105003,0</p>
+            <p>39.2145335760729,0.963904342105003,0</p>
+            <p>39.2145335760729,3.66390634210501,0</p>
+            <p>33.2145285760729,3.66390634210501,0</p>
+            <p>33.2145285760729,0.963904342105003,0</p>
+            <p>27.2145235760729,0.963904342105003,0</p>
+            <p>27.2145235760729,3.66390634210501,0</p>
+            <p>21.2145185760729,3.66390634210501,0</p>
+            <p>21.2145185760729,0.963904342105003,0</p>
+            <p>10.9895105760729,0.963904342105003,0</p>
+            <p>10.9895105760729,3.66390634210501,0</p>
+            <p>3.46450457607294,3.66390634210501,0</p>
+            <p>3.46450457607294,9.31391134210501,0</p>
+            <p>0.764501576072931,9.31391134210501,0</p>
+            <p>0.764500576072933,17.663918342105,0</p>
+            <p>3.46450457607294,17.663918342105,0</p>
+            <p>3.46450457607294,23.663923342105,0</p>
+            <p>0.764501576072931,23.663923342105,0</p>
+            <p>0.764501576072931,29.663928342105,0</p>
+            <p>3.46450457607294,29.663928342105,0</p>
+            <p>3.46450457607294,35.663933342105,0</p>
+            <p>0.764501576072931,35.663933342105,0</p>
+            <p>0.764500576072933,41.663938342105,0</p>
+            <p>3.46450457607294,41.663938342105,0</p>
+            <p>3.46450457607294,47.663943342105,0</p>
+            <p>0.764500576072933,47.663943342105,0</p>
+            <p>0.764501576072931,56.013950342105,0</p>
+            <p>3.46450457607294,56.013950342105,0</p>
+            <p>3.46450457607294,61.663955342105,0</p>
+            <p>10.9895105760729,61.663955342105,0</p>
+            <p>10.9895105760729,64.363955342105,0</p>
+            <p>21.2145185760729,64.363955342105,0</p>
+            <p>21.2145185760729,61.663955342105,0</p>
+            <p>27.2145235760729,61.663955342105,0</p>
+            <p>27.2145235760729,64.363956342105,0</p>
+            <p>33.2145285760729,64.363956342105,0</p>
+            <p>33.2145285760729,61.663955342105,0</p>
+            <p>39.2145335760729,61.663955342105,0</p>
+            <p>39.2145335760729,64.363956342105,0</p>
+            <p>45.2145385760729,64.363956342105,0</p>
+            <p>45.2145385760729,61.663955342105,0</p>
+            <p>51.2145435760729,61.663955342105,0</p>
+            <p>51.2145435760729,64.363955342105,0</p>
+            <p>57.2145485760729,64.363956342105,0</p>
+            <p>57.2145485760729,61.663955342105,0</p>
+            <p>63.2145535760729,61.663955342105,0</p>
+            <p>63.2145535760729,64.363955342105,0</p>
+            <p>69.2145585760729,64.363955342105,0</p>
+            <p>69.2145585760729,61.663955342105,0</p>
+            <p>75.2145635760729,61.663955342105,0</p>
+            <p>75.2145635760729,64.363955342105,0</p>
+            <p>85.4395705760729,64.363956342105,0</p>
+            <p>85.4395705760729,61.663955342105,0</p>
+            <p>92.9645775760729,61.663955342105,0</p>
+            <p>92.9645775760729,56.013950342105,0</p>
+            <p>95.6645805760729,56.013950342105,0</p>
+            <p>95.6645805760729,47.663943342105,0</p>
+            <p>92.9645775760729,47.663943342105,0</p>
+            <p>92.9645775760729,41.663938342105,0</p>
+            <p>95.6645805760729,41.663938342105,0</p>
+            <p>95.6645805760729,35.663933342105,0</p>
+            <p>92.9645775760729,35.663933342105,0</p>
+            <p>92.9645775760729,29.663928342105,0</p>
+            <p>95.6645805760729,29.663928342105,0</p>
+            <p>95.6645805760729,23.663923342105,0</p>
+            <p>92.9645775760729,23.663923342105,0</p>
+            <p>92.9645775760729,17.663918342105,0</p>
+            <p>95.6645805760729,17.663918342105,0</p>
+            <p>95.6645805760729,9.313911342105,0</p>
+            <p>92.9645775760729,9.313911342105,0</p>
+          </pts>
+        </pline>
+        <pline id="2" Closed="true">
+          <ModificationCount>0</ModificationCount>
+          <mat m="Identity" />
+          <pts>
+            <p>10.6245104160729,9.14391026210501,0</p>
+            <p b="-0.414213562373095">10.6245104160729,56.183951422105,0</p>
+            <p>11.4645104160729,57.023951422105,0</p>
+            <p b="-0.414213562373095">84.9645717360729,57.023951422105,0</p>
+            <p>85.8045717360729,56.183951422105,0</p>
+            <p b="-0.414213562373095">85.8045717360729,9.14391026210501,0</p>
+            <p>84.9645717360729,8.30391026210501,0</p>
+            <p b="-0.414213562373095">11.4645104160729,8.30391026210501,0</p>
+          </pts>
+        </pline>
+      </objects>
+    </layer>
+    <layer name="Defpoints" color="255,255,255">
+      <ModificationCount>0</ModificationCount>
+      <objects />
+    </layer>
+  </layers>
+  <MachiningOptions>
+    <OutFile>{$cbfile.name}.nc</OutFile>
+    <PostProcessor>Laser</PostProcessor>
+    <Stock>
+      <PMin>0,0</PMin>
+      <PMax>0,0</PMax>
+      <Color>255,165,0</Color>
+    </Stock>
+    <Style>laser profile</Style>
+    <ToolProfile>Unspecified</ToolProfile>
+  </MachiningOptions>
+  <parts>
+    <part Name="Part1">
+      <machineops>
+        <profile>
+          <WorkPlane state="Default">XY</WorkPlane>
+          <OptimisationMode state="Default">Experimental</OptimisationMode>
+          <RoughingFinishing state="Default">Roughing</RoughingFinishing>
+          <ToolDiameter state="Value">0.21</ToolDiameter>
+          <ToolNumber state="Default">0</ToolNumber>
+          <ToolProfile state="Default">EndMill</ToolProfile>
+          <PlungeFeedrate state="Default">300</PlungeFeedrate>
+          <CutFeedrate state="Default">400</CutFeedrate>
+          <MaxCrossoverDistance state="Default">0.7</MaxCrossoverDistance>
+          <StartPoint state="Default" />
+          <CustomMOPHeader state="Default" />
+          <CustomMOPFooter state="Default" />
+          <Name>Profile1</Name>
+          <StockSurface state="Default">0</StockSurface>
+          <RoughingClearance state="Default">0</RoughingClearance>
+          <ClearancePlane state="Default">3</ClearancePlane>
+          <SpindleDirection state="Default">CW</SpindleDirection>
+          <SpindleSpeed state="Default">1000</SpindleSpeed>
+          <SpindleRange state="Default">0</SpindleRange>
+          <VelocityMode state="Default">Undefined</VelocityMode>
+          <primitive>
+            <prim>2</prim>
+          </primitive>
+          <TargetDepth state="Default">-0.1</TargetDepth>
+          <DepthIncrement state="Default">0.4</DepthIncrement>
+          <FinalDepthIncrement state="Default">0</FinalDepthIncrement>
+          <CutOrdering state="Default">DepthFirst</CutOrdering>
+          <CutWidth state="Default">0</CutWidth>
+          <StepOver state="Default">0.4</StepOver>
+          <StepoverFeedrate state="Default">Plunge Feedrate</StepoverFeedrate>
+          <InsideOutside state="Value">Inside</InsideOutside>
+          <MillingDirection state="Default">Conventional</MillingDirection>
+          <CollisionDetection state="Default">True</CollisionDetection>
+          <CornerOvercut state="Default">False</CornerOvercut>
+          <LeadInMove state="Default" />
+          <LeadOutMove state="Default" />
+          <HoldingTabs state="Default">
+            <TabMethod>None</TabMethod>
+            <Width>3</Width>
+            <Height>3</Height>
+            <MinimumTabs>3</MinimumTabs>
+            <MaximumTabs>6</MaximumTabs>
+            <TabDistance>40</TabDistance>
+            <SizeThreshold>4</SizeThreshold>
+            <UseLeadIns>False</UseLeadIns>
+            <TabStyle>Triangle</TabStyle>
+          </HoldingTabs>
+          <SideProfile state="Default" />
+        </profile>
+        <profile>
+          <WorkPlane state="Default">XY</WorkPlane>
+          <OptimisationMode state="Default">Experimental</OptimisationMode>
+          <RoughingFinishing state="Default">Roughing</RoughingFinishing>
+          <ToolDiameter state="Default">0.22</ToolDiameter>
+          <ToolNumber state="Default">0</ToolNumber>
+          <ToolProfile state="Default">EndMill</ToolProfile>
+          <PlungeFeedrate state="Default">300</PlungeFeedrate>
+          <CutFeedrate state="Default">400</CutFeedrate>
+          <MaxCrossoverDistance state="Default">0.7</MaxCrossoverDistance>
+          <StartPoint state="Default" />
+          <CustomMOPHeader state="Default" />
+          <CustomMOPFooter state="Default" />
+          <Name>Profile2</Name>
+          <StockSurface state="Default">0</StockSurface>
+          <RoughingClearance state="Default">0</RoughingClearance>
+          <ClearancePlane state="Default">3</ClearancePlane>
+          <SpindleDirection state="Default">CW</SpindleDirection>
+          <SpindleSpeed state="Default">1000</SpindleSpeed>
+          <SpindleRange state="Default">0</SpindleRange>
+          <VelocityMode state="Default">Undefined</VelocityMode>
+          <primitive>
+            <prim>1</prim>
+          </primitive>
+          <TargetDepth state="Default">-0.1</TargetDepth>
+          <DepthIncrement state="Default">0.4</DepthIncrement>
+          <FinalDepthIncrement state="Default">0</FinalDepthIncrement>
+          <CutOrdering state="Default">DepthFirst</CutOrdering>
+          <CutWidth state="Default">0</CutWidth>
+          <StepOver state="Default">0.4</StepOver>
+          <StepoverFeedrate state="Default">Plunge Feedrate</StepoverFeedrate>
+          <InsideOutside state="Default">Outside</InsideOutside>
+          <MillingDirection state="Default">Conventional</MillingDirection>
+          <CollisionDetection state="Default">True</CollisionDetection>
+          <CornerOvercut state="Default">False</CornerOvercut>
+          <LeadInMove state="Default" />
+          <LeadOutMove state="Default" />
+          <HoldingTabs state="Default">
+            <TabMethod>None</TabMethod>
+            <Width>3</Width>
+            <Height>3</Height>
+            <MinimumTabs>3</MinimumTabs>
+            <MaximumTabs>6</MaximumTabs>
+            <TabDistance>40</TabDistance>
+            <SizeThreshold>4</SizeThreshold>
+            <UseLeadIns>False</UseLeadIns>
+            <TabStyle>Triangle</TabStyle>
+          </HoldingTabs>
+          <SideProfile state="Default" />
+        </profile>
+      </machineops>
+      <Stock>
+        <PMin>0,0</PMin>
+        <PMax>0,0</PMax>
+        <Color>255,165,0</Color>
+      </Stock>
+      <ToolProfile>Unspecified</ToolProfile>
+      <Nesting>
+        <BasePoint />
+        <NestMethod>None</NestMethod>
+      </Nesting>
+    </part>
+  </parts>
+  <ActiveLayer>0</ActiveLayer>
+  <ActivePart>Part1</ActivePart>
+</CADFile>
