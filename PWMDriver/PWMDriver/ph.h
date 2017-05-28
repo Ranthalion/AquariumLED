@@ -35,5 +35,6 @@ void ph_sleep();
 void ph_clear_calibration();
 void ph_set_calibration(uint32_t calibration_ph, uint8_t calibration_type);
 void ph_set_temparature(uint32_t temperature);
+uint8_t ph_read_address(uint8_t address);
 
 #endif /* PH_H_ */

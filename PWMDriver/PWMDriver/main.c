@@ -15,7 +15,7 @@
 #define ENABLE_TIMER TIMSK3 |= _BV(TOIE3)
 #define DISABLE_TIMER TIMSK3 &= ~_BV(TOIE3)
 
-#define PH_DELAY 120
+#define PH_DELAY 5
 #define TEMPERATURE_DELAY 120
 
 //Moisture Sensor
@@ -47,7 +47,6 @@ uint8_t moisture_reading;
 uint8_t buff[10];
 
 void init();
-
 
 static uint8_t search_sensors(void)
 {
@@ -122,13 +121,16 @@ static uint8_t search_sensors(void)
 
 int main(void)
 {
+	
+	
 	uint8_t nSensors;
 	uint8_t i;
 	int16_t decicelsius;
 	uint8_t error;
-		
+			
 	init();
 	//init one wire bus
+		
 	led_mode = TEMP_SEARCH;
 	ENABLE_TIMER;
 	nSensors = search_sensors();
@@ -221,6 +223,14 @@ int main(void)
 				uint8_t val = commandBuffer[1];
 				set_all_channels(val);
 			}
+			else if (cmd == 'x')
+			{
+				uint8_t addr = commandBuffer[1];
+				uint8_t val;
+				val = ph_read_address(addr);
+				write_char(val);
+				write_line("");
+			}
 			else if (cmd == 'f')
 			{
 				for(uint8_t i=1; i<=6; i++)
@@ -256,6 +266,14 @@ int main(void)
 				uint32_t ph = 10000;
 				ph_set_calibration(ph, PH_CALIBRATION_HIGH);
 			}
+			else if (cmd == 'e')
+			{
+				uint32_t ph = ph_read_ph();
+				write_string("PH ");
+				snprintf(strBuffer, sizeof strBuffer, "%lu", ph);
+				write_string(strBuffer);
+				write_line("");				
+			}
 			else
 			{
 				write_string("Unknown Command: ");
@@ -271,13 +289,13 @@ int main(void)
 		
 		if (ph_counter == 0)
 		{
-			ph_request_reading();
+			//ph_request_reading();
 			ph_counter = PH_DELAY;
 		}
 		
 		if(ph_ready == 1)
 		{
-			ph_sleep();
+			//ph_sleep();
 			uint32_t ph = ph_read_ph();
 			write_string("PH ");
 			snprintf(strBuffer, sizeof strBuffer, "%lu", ph);

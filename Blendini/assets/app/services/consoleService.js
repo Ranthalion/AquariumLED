@@ -8,7 +8,8 @@
 		var api = {
 			sendChar: sendChar,
 			readAll: readAll, 
-			sendCommand: sendCommand
+			sendCommand: sendCommand,
+			readPhRegister: readPhRegister
 		};
 
 		return api;
@@ -23,6 +24,11 @@
 
 		function sendCommand(command){
 			return $http.post("/console/sendchar", {char: command});
+		}
+
+		function readPhRegister(address){
+			console.log(address);
+			return $http.post("/console/readPhRegister", {address: address});
 		}
 
 	}

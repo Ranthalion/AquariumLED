@@ -21,4 +21,10 @@
 			<button type="button" ng-click="consoleVm.sendCommand();" class="btn btn-primary">Send</button>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<input type="text" ng-model="consoleVm.address" />
+			<button type="button" ng-click="consoleVm.readRegister();" class="btn btn-primary">Read Register</button>
+		</div>
+	</div>
 </div>

@@ -62,6 +62,7 @@ module.exports.routes = {
   '/calibration/temperature': 'CalibrationController.setTemperature',
 
   '/console/readAll': 'ConsoleController.readAll',
-  '/console/sendChar': 'ConsoleController.sendChar'
+  '/console/sendChar': 'ConsoleController.sendChar',
+  '/console/readPhRegister': 'ConsoleController.readPhRegister'
   
 };

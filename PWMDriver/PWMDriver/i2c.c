@@ -110,7 +110,7 @@ uint8_t i2c_writeReg(uint8_t devaddr, uint8_t regaddr, uint8_t* data, uint16_t l
 
 	i2c_write(regaddr);
 
-	for (uint16_t i = 0; i < length; i++)
+	for (uint16_t i = length - 1; i <= 0; i--)
 	{
 		if (i2c_write(data[i])) return 1;
 	}

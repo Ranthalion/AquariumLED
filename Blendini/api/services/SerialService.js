@@ -35,7 +35,7 @@ else{
 port.on('data', function(data){
 	var msg = convert(data);
 	var utcDate = new Date().toISOString();
-	//sails.log.debug(utcDate + ' :' + msg);
+	sails.log.debug(utcDate + ' :' + msg);
 	//TODO: [ML] Check for PH, temperature, or Leak warning. 
 	//convert might not work out.  I might need to move it all to string since 13 and 10 show in brackets...  Maybe just remove it...
 
@@ -58,7 +58,7 @@ port.on('data', function(data){
 		});
 
 	}
-	else if (msg.startsWith('PH '))
+	else if (msg.startsWith('xPH '))
 	{
 		var ph = {
 			timestamp: utcDate,
@@ -104,7 +104,6 @@ function convert(data){
 	}
 	return str;
 }
-
 
 function write(buffer, cb){
 	callback = null;

@@ -10,6 +10,7 @@
 		consoleVm.sendChar = sendChar;
 		consoleVm.readAll = readAll;
 		consoleVm.sendCommand = sendCommand;
+		consoleVm.readRegister = readRegister;
 
 		consoleVm.output = "";
 
@@ -27,6 +28,12 @@
 		function sendCommand(){
 			consoleService.sendCommand(consoleVm.command);
 			consoleVm.command = '';
+		}
+
+		function readRegister(){
+			consoleService.readPhRegister(consoleVm.address).then(function(response){
+				consoleVm.output += "\n" + response.data;
+			});
 		}
 
 	}
